@@ -1,0 +1,98 @@
+session_id: 2026-04-28-pinto-beans-sample
+phase: CURATE
+created_at: '2026-04-29T01:04:56.564438'
+updated_at: '2026-04-29T01:04:56.564438'
+intent:
+  star_ingredient: pinto beans
+  cuisine: Honduran
+  cuisine_region: Honduran
+  heat_level: spicy
+  servings: 4
+  time_budget_min: 180
+  exclusions:
+  - shellfish
+  occasion: weeknight dinner
+research_plan:
+  aromatic_base: Latin sofrito (Honduran variant)
+  functional_roles_to_fill:
+  - heat
+  - acid
+  - fat
+  - umami
+  - salt
+  - aromatic_herb
+  techniques_under_consideration:
+  - slow_simmer
+  - pressure_cook
+research_log:
+- timestamp: '2026-04-28T17:30:00'
+  tag: aromatic_base
+  query: Honduran sofrito
+  result_summary: onion, garlic, sweet pepper, recao
+- timestamp: '2026-04-28T17:32:00'
+  tag: functional_role
+  query: Honduran chiles for heat
+  result_summary: cobanero, chiltepe, panameno
+- timestamp: '2026-04-28T17:35:00'
+  tag: candidate
+  query: cobanero substitutes
+  result_summary: guajillo, ancho, chipotle if Mexican drift acceptable
+candidates:
+- name: chile cobanero
+  cuisine_origin: Honduran
+  functional_role: heat
+  intensity: 7
+  notes: smoked, fruity, regionally specific
+- name: chile chiltepe
+  cuisine_origin: Salvadoran
+  functional_role: heat
+  intensity: 8
+  notes: bright, sharp, bird-pepper
+- name: chipotle
+  cuisine_origin: Mexican
+  functional_role: heat
+  intensity: 6
+  notes: Mexican drift but commonly available
+- name: lime
+  cuisine_origin: Latin
+  functional_role: acid
+  intensity: 5
+  notes: finished
+- name: manteca (rendered pork lard)
+  cuisine_origin: Honduran
+  functional_role: fat
+  intensity: 6
+  notes: traditional
+- name: cured pork shoulder
+  cuisine_origin: Honduran
+  functional_role: umami
+  intensity: 8
+  notes: also brings fat and protein
+- name: dried shrimp
+  cuisine_origin: Asian
+  functional_role: umami
+  intensity: 7
+  notes: blocked by shellfish exclusion
+- name: miso
+  cuisine_origin: Japanese
+  functional_role: umami
+  intensity: 8
+  notes: cuisine drift
+- name: sea salt
+  cuisine_origin: generic
+  functional_role: salt
+  intensity: 5
+  notes: ''
+- name: epazote
+  cuisine_origin: Mexican
+  functional_role: aromatic_herb
+  intensity: 5
+  notes: traditional, anti-flatulent
+- name: cilantro
+  cuisine_origin: Latin
+  functional_role: aromatic_herb
+  intensity: 4
+  notes: finishing
+selected: []
+pruned: []
+recipe_path: null

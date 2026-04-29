@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Per-session agent state (user data, not code)
+sessions/*/
+!sessions/.gitkeep
+# Exception: keep the documented sample session as a committed fixture
+!sessions/2026-04-28-pinto-beans-sample/
+!sessions/2026-04-28-pinto-beans-sample/**
+
+# Depth gate working files
+.depth/

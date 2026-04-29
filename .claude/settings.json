@@ -1,0 +1,27 @@
+{
+  "$schema-comment": "Project-local Claude Code settings for mise-en-prompt. Hooks below enforce the chef agent's state contract: state.yaml writes must validate against the schema and respect research_log ordering; recipe.md writes are blocked until state.phase == GUIDE.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python -m mise_en_prompt.hooks.state_validate",
+            "timeout": 5000
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python -m mise_en_prompt.hooks.phase_check",
+            "timeout": 5000
+          }
+        ]
+      }
+    ]
+  }
+}
