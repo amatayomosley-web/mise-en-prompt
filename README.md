@@ -9,13 +9,24 @@ final recipe and cooking guide.
 
 Runs as a Claude Code agent.
 
+## Usage
+
+Invoke with the `/chef` slash command. This activates the chef in the active conversation
+so `AskUserQuestion` can reach your keyboard during CURATE — the role-by-role ingredient
+walk is the load-bearing interaction and only works in an active session.
+
+> **Don't** invoke chef via `subagent_type: chef` (Task tool). Subagents are one-shot and
+> can't fire `AskUserQuestion`, so the CURATE walk collapses into a single recipe-generation
+> turn and you lose the whole point of the agent. See `.claude/commands/chef.md` for the
+> full diagnosis.
+
 ## Status
 
 Pre-alpha. Under active construction.
 
 ## How it works
 
-The agent moves through 7 phases, persisting state to `sessions/<session-id>/state.yaml` between
+The agent moves through 8 phases, persisting state to `sessions/<session-id>/state.yaml` between
 turns:
 
 1. **Intake** — capture the initial request
@@ -25,8 +36,13 @@ turns:
 5. **Curate** — present candidates; user picks; the agent prunes conflicts (cuisine drift,
    functional redundancy, allergy, technique impossibility). Availability is a user concern —
    the user simply doesn't pick what they don't have or can't get.
-6. **Synthesize** — build the recipe from selected ingredients
-7. **Guide** — render the cooking guide with timing cues and tasting protocol
+6. **Synthesize** — draft the recipe from selected ingredients
+7. **Enhance** — walk the draft move-by-move under physics + flavor lenses; classify each
+   candidate (objectively_better / taste_dependent / tradition_respected / cargo_cult);
+   write the deconstruction and elevation candidates to `state.enhancements`
+8. **Guide** — render the cooking guide with operational content above the line and
+   deconstruction + variants below; auto-apply objectively-better upgrades inline with
+   fallbacks; surface taste-dependent options as a Variants menu
 
 ## The three pillars
 

@@ -8,6 +8,9 @@ import pytest
 
 from mise_en_prompt.state import (
     Candidate,
+    DeconstructionNote,
+    EnhancementCandidate,
+    Enhancements,
     Intent,
     Phase,
     PruneRule,
@@ -18,7 +21,7 @@ from mise_en_prompt.state import (
 )
 
 
-def test_phase_enum_has_seven_values():
+def test_phase_enum_has_eight_values():
     assert {p.value for p in Phase} == {
         "INTAKE",
         "CLARIFY",
@@ -26,8 +29,15 @@ def test_phase_enum_has_seven_values():
         "RESEARCH",
         "CURATE",
         "SYNTHESIZE",
+        "ENHANCE",
         "GUIDE",
     }
+
+
+def test_phase_enhance_sits_between_synthesize_and_guide():
+    """Position matters — ENHANCE runs after the recipe is drafted, before it ships."""
+    ordered = list(Phase)
+    assert ordered.index(Phase.SYNTHESIZE) < ordered.index(Phase.ENHANCE) < ordered.index(Phase.GUIDE)
 
 
 def test_prune_rule_enum_has_four_values():
@@ -117,6 +127,89 @@ def test_research_log_entry_rejects_unknown_tag():
             query="x",
             result_summary="y",
         )
+
+
+def test_enhancements_round_trip(tmp_path: Path):
+    """Dumping then loading preserves the deconstruction notes and candidate classifications."""
+    enhancements = Enhancements(
+        deconstruction=[
+            DeconstructionNote(
+                move="step 9 — slow simmer 1.5hr",
+                function="collagen → gelatin transfer; broth body builds",
+                load_bearing=True,
+                tradition_note="long-simmer is the Veracruz default; PC trades depth for time",
+            ),
+        ],
+        candidates=[
+            EnhancementCandidate(
+                move="step 9 — stovetop simmer",
+                lens="physics",
+                classification="objectively_better",
+                proposal="braise lidded at 300°F oven instead of stovetop simmer",
+                mechanism="uniform thermal envelope at 8qt scale; eliminates bottom-scorch",
+                confidence="HIGH",
+                fallback="stovetop simmer covered, partial lid, stir every 30 min if no Dutch oven",
+            ),
+            EnhancementCandidate(
+                move="finishing",
+                lens="flavor",
+                classification="taste_dependent",
+                proposal="add ¼ oz dark chocolate (70%+) at minute 28",
+                mechanism="bitter against piloncillo; lipid + earthy depth; mole-tradition pairing with pork",
+                confidence="HIGH",
+                tradeoff="shifts profile toward Oaxacan mole; some find it muddies the Veracruz character",
+            ),
+        ],
+    )
+    state = State(
+        session_id="enh-test",
+        phase=Phase.ENHANCE,
+        enhancements=enhancements,
+    )
+    target = tmp_path / "state.yaml"
+    state.dump_yaml(target)
+    loaded = State.load_yaml(target)
+
+    assert loaded.enhancements is not None
+    assert len(loaded.enhancements.deconstruction) == 1
+    assert loaded.enhancements.deconstruction[0].load_bearing is True
+    assert len(loaded.enhancements.candidates) == 2
+    assert loaded.enhancements.candidates[0].classification == "objectively_better"
+    assert loaded.enhancements.candidates[0].fallback is not None
+    assert loaded.enhancements.candidates[1].classification == "taste_dependent"
+    assert loaded.enhancements.candidates[1].tradeoff is not None
+
+
+def test_state_default_enhancements_is_none():
+    """Older session yaml files (pre-ENHANCE) validate clean — additive change only."""
+    state = State(session_id="legacy", phase=Phase.CURATE)
+    assert state.enhancements is None
+
+
+def test_intent_cuisine_stance_round_trip(tmp_path: Path):
+    """cuisine_stance survives serialize/deserialize and accepts the two literal values."""
+    for stance in ("tradition", "explore"):
+        intent = Intent(
+            star_ingredient="collard greens",
+            cuisine="Southern American",
+            cuisine_stance=stance,
+        )
+        state = State(session_id=f"stance-{stance}", phase=Phase.CLARIFY, intent=intent)
+        target = tmp_path / f"state-{stance}.yaml"
+        state.dump_yaml(target)
+        loaded = State.load_yaml(target)
+        assert loaded.intent.cuisine_stance == stance
+
+
+def test_intent_cuisine_stance_defaults_to_none():
+    """Pre-existing sessions without the stance field still validate clean."""
+    intent = Intent(star_ingredient="anything")
+    assert intent.cuisine_stance is None
+
+
+def test_intent_rejects_invalid_cuisine_stance():
+    with pytest.raises(ValueError):
+        Intent(cuisine_stance="freestyle")
 
 
 def test_pruned_item_round_trip(tmp_path: Path):
