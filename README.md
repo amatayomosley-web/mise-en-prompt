@@ -22,7 +22,7 @@ walk is the load-bearing interaction and only works in an active session.
 
 ## Status
 
-Pre-alpha. Under active construction.
+Pre-alpha. Last development pass: May 2026. The 8-phase agent flow works end-to-end; further iteration depends on user feedback. Issues and discussion welcome.
 
 ## How it works
 
