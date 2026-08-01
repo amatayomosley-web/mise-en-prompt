@@ -441,14 +441,37 @@ DRINK_PRODUCT_CLASSES: dict[str, list[str]] = {
 
 
 def _find_drink_family(family: str) -> str | None:
-    """Return the group containing the given drink family via case-insensitive substring."""
+    """Return the group containing the given drink family via case-insensitive substring.
+
+    The two match directions are not equally trustworthy, so they are ranked rather than
+    taken first-wins.
+
+    A *naming* match — a member appears inside the query, "milk punch" in "hot milk punch" —
+    means the query names that family, and the first one wins as before.
+
+    A *fragment* match — the query appears inside a member, "punch" in "rum punch" — means the
+    query is a bare word that several families happen to share. DRINK_FAMILIES deliberately
+    withholds those bare words from every group for this reason, but first-wins defeated that:
+    "punch" is a fragment of Tiki's rum punch AND of Flip & punch's milk punch, and whichever
+    group iterated first silently claimed it. A fragment is therefore only honored when it
+    lands in exactly one group; when it straddles groups the honest answer is None, which is
+    the same silent no-claim the matcher already gives an unclassifiable string.
+    """
     if not family:
         return None
     family_lower = family.lower()
+    named: list[str] = []
+    fragments: set[str] = set()
     for group, members in DRINK_FAMILIES.items():
         for member in members:
-            if member in family_lower or family_lower in member:
-                return group
+            if member in family_lower:
+                named.append(group)
+            elif family_lower in member:
+                fragments.add(group)
+    if named:
+        return named[0]
+    if len(fragments) == 1:
+        return next(iter(fragments))
     return None
 
 

@@ -149,6 +149,33 @@ def test_find_drink_family_empty_returns_none():
     assert _find_drink_family("") is None
 
 
+@pytest.mark.parametrize("bare", ["punch", "fizz"])
+def test_a_bare_word_several_families_share_resolves_to_no_family(bare: str):
+    """DRINK_FAMILIES withholds these bare words from every group; the matcher must agree.
+
+    "punch" is a fragment of Tiki's rum punch and of Flip & punch's milk punch, and "fizz" of
+    Highball's gin fizz and Flip & punch's silver fizz. Under first-wins whichever group
+    iterated first silently claimed the word, which made the deliberate omission from the
+    member lists do nothing. Straddling groups means the query is genuinely ambiguous.
+    """
+    from mise_en_prompt.conflicts import DRINK_FAMILIES
+
+    straddled = {g for g, ms in DRINK_FAMILIES.items() if any(bare in m for m in ms)}
+    assert len(straddled) > 1, f"{bare!r} no longer straddles groups; test premise is stale"
+    assert bare not in {m for ms in DRINK_FAMILIES.values() for m in ms}
+    assert _find_drink_family(bare) is None
+
+
+def test_a_fragment_landing_in_exactly_one_group_still_resolves():
+    """Ambiguity is the disqualifier, not fragment-ness — a unique fragment still claims."""
+    assert _find_drink_family("negron") == "Spirit-forward"
+
+
+def test_naming_a_family_beats_a_fragment_in_an_earlier_group():
+    """A member inside the query outranks the query being inside some other group's member."""
+    assert _find_drink_family("hot milk punch") == "Flip & punch"
+
+
 def test_every_declared_family_member_resolves_to_its_own_group():
     """No intra-set collisions: the bidirectional matcher never crosses group boundaries."""
     from mise_en_prompt.conflicts import DRINK_FAMILIES
