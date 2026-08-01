@@ -54,10 +54,10 @@ The historical form is usually quoted as **8 : 4 : 3** (strong : sweet : sour) �
 
 **Why it holds together:** citrus juice is not just acid — lime runs **5–7% titratable acidity** (typically ~6%, mostly citric with a malic fraction), lemon **5–6%** citric, grapefruit **1.5–2.5%**, orange under **1%**. Sugar and acid suppress each other's perception nearly symmetrically, so the drink is stable across a band of ratios rather than balanced at a point. What actually fixes the ratio is the *base spirit's* congener load and proof: a 40% white rum needs less sugar to read as balanced than a 50% overproof or a phenolic mezcal, because sweetness is also doing the work of masking ethanol burn.
 
-- **Daiquiri** — 2 oz white rum, 0.75 oz lime, 0.75 oz 1:1 simple. Shake, fine strain, coupe. The reference sour; if a bar's Daiquiri is wrong, its ice, its citrus, or its syrup is wrong.
-- **Margarita** — 2 oz blanco tequila, 1 oz lime, 0.75 oz orange curaçao (+ 0.25 oz agave syrup if the curaçao is dry). Technically a Sidecar-root drink, since the liqueur carries the sugar.
-- **Whiskey Sour** — 2 oz bourbon, 0.75 oz lemon, 0.75 oz simple, optional egg white. The higher congener load of the whiskey is what lets it carry the full 0.75 oz of sugar without reading sweet.
-- **Gimlet** — 2 oz gin, 0.75 oz lime, 0.75 oz simple. Substituting Rose's cordial changes the drink into a different (older) structure entirely.
+- **Daiquiri** — base + lime + 1:1 simple. Shake, fine strain, coupe. The template with nothing hidden in it, which is why it is the reference sour; if a bar's Daiquiri is wrong, its ice, its citrus, or its syrup is wrong.
+- **Margarita** — base + lime + orange liqueur, with a small agave-syrup patch if the liqueur runs dry. Technically a Sidecar-root drink, since the liqueur carries the sugar.
+- **Whiskey Sour** — base + lemon + simple, optional egg white. The high congener load of a whiskey base is what lets the drink carry the full template sweetener dose — 0.75 oz against a 2 oz base — without reading sweet; a lighter, lower-congener base in the same slot has to run drier to stay in balance.
+- **Gimlet** — base + lime + simple. Substituting a bottled lime cordial changes the drink into a different (older) structure entirely.
 
 **Failure modes:** bottled citrus (cooked, no volatiles, wrong acid balance); citrus juiced more than ~4 hours ahead (lime degrades fastest — its aroma flattens within hours even refrigerated); under-shaking, which leaves the drink warm *and* under-diluted at the same time.
 
@@ -66,22 +66,22 @@ The historical form is usually quoted as **8 : 4 : 3** (strong : sweet : sour) �
 Two distinct roots, both stirred, both served without citrus, and both frequently confused.
 
 **Old Fashioned root — spirit + sugar + bitters + water.**
-2 oz spirit, 0.25 oz rich (2:1) demerara syrup or one sugar cube, 2 dashes Angostura (44.7% ABV), stirred over ice ~25–30 seconds, large rock, expressed citrus peel. Sugar here is a *textural* agent: it raises viscosity and rounds the ethanol edge without announcing itself. Bitters supply the aromatic top note and a trace of bitterness that keeps the sweetness from cloying. The **Sazerac** is the same root with an absinthe rinse and Peychaud's (35% ABV) in place of Angostura.
+A base pour, a small dose of rich (2:1) syrup or its equivalent in undissolved sugar, and bitters at dash scale, stirred; the family ratio, method, ice and glass are in §1.10. Sugar here is a *textural* agent rather than a flavor: it raises viscosity and rounds the ethanol edge without announcing itself, which is why this root's sweetener slot runs at roughly a third of what the sour template carries and why a correct build still reads dry. Bitters supply the aromatic top note and a trace of bitterness that keeps the sweetness from cloying; they are themselves spirits — the aromatic style runs **44.7% ABV** and the anise-cherry style **35%** (§3.8) — so even at dash scale they belong in the ABV arithmetic (§5.3). The **Sazerac** is the same root rebuilt on a higher-proof base, with an anise-spirit rinse and anise-cherry bitters in place of the aromatic ones.
 
 **Martini root — spirit + aromatized/fortified wine.**
 The wine is simultaneously the diluent (it is 15–18% ABV, so it lowers final strength) and the flavoring (it brings botanicals, oxidative notes, and residual sugar). Vermouth ratios have dried steadily over a century: Harry Craddock's *The Savoy Cocktail Book* (1930) specifies the Dry Martini as **equal parts** dry gin and French vermouth; the modern default sits near **5:1 to 3:1**. Audrey Saunders' Pegu Club-era wet Martini specs deliberately walked that back toward the historical range.
 
-| Drink | Spec | Root | Approx. finished ABV |
+| Drink | Structure, by role | Root | Approx. finished ABV |
 |---|---|---|---|
-| Old Fashioned | 2 oz bourbon (45%), 0.25 oz rich demerara, 2 ds Angostura | Old Fashioned | ~32–35% |
-| Sazerac | 2 oz rye (50%), 0.25 oz rich simple, 4 ds Peychaud's, absinthe rinse | Old Fashioned | ~35–38% |
-| Martini | 2.5 oz gin (47%), 0.5 oz dry vermouth (18%), orange bitters | Martini | ~34–35% |
-| Manhattan | 2 oz rye (45%), 1 oz sweet vermouth (16%), 2 ds Angostura | Martini | ~27–30% |
-| Negroni | 1 oz gin (47%), 1 oz Campari (24%), 1 oz sweet vermouth (16%) | Martini | ~22–24% |
-| Boulevardier | 1.25 oz bourbon, 1 oz Campari, 1 oz sweet vermouth | Martini | ~23–25% |
-| Martinez | 1.5 oz Old Tom gin, 1.5 oz sweet vermouth, 0.25 oz maraschino, 2 ds Boker's/Angostura | Martini | ~24–27% |
+| Old Fashioned | base + rich sugar + aromatic bitters | Old Fashioned | ~32–35% |
+| Sazerac | high-proof base + rich sugar + anise-cherry bitters + absinthe rinse | Old Fashioned | ~35–38% |
+| Martini | base + dry aromatized wine at a dry ratio + orange bitters | Martini | ~34–35% |
+| Manhattan | base + sweet aromatized wine at roughly 2:1 + aromatic bitters | Martini | ~27–30% |
+| Negroni | base + red bitter aperitivo + sweet aromatized wine, equal parts | Martini | ~22–24% |
+| Boulevardier | the Negroni structure on a whiskey base, base slot slightly long | Martini | ~23–25% |
+| Martinez | lightly sweetened base + sweet aromatized wine at roughly 1:1 + maraschino accent + bitters | Martini | ~24–27% |
 
-Every figure in the last column is the pre-dilution ABV divided by the stirred dilution band (20–25%), not an estimate: the Martini above carries 1.265 oz of ethanol in 3 oz, so it is 42% in the mixing glass and 33.7–35.1% in the glass. The full arithmetic is worked in §4, and the identity itself in §5.3. A spec that "should" be a Martini but computes to 30% has more vermouth or more water in it than the row says.
+Every figure in the last column is the pre-dilution ABV divided by the stirred dilution band (20–25%), not an estimate: a Martini-root build carrying 1.265 oz of ethanol in 3 oz is 42% in the mixing glass and 33.7–35.1% in the glass. The full arithmetic is worked in §4, and the identity itself in §5.3. That makes the last column a **check on your own arithmetic**: a spec that "should" be a Martini but computes to 30% has more vermouth or more water in it than the row says, and a spec that should be a Negroni and computes to 30% is not an equal-parts build.
 
 **Why stirring, not shaking:** the goal is a clear, dense, cold drink with no aeration. Shaking a spirit-forward drink introduces air bubbles that scatter light, raises the surface area for volatile loss, and produces ice shards. Stirred drinks land near **−7 to −3 °C** at roughly **20–25% dilution** (of the pre-dilution volume — the convention used throughout this document); shaken drinks land colder, **−8 to −4 °C**, and wetter, **25–30%**. Dave Arnold's argument in *Liquid Intelligence* (2014) is that these two numbers are *coupled and not independently adjustable* with ice alone: nearly all the cooling energy comes from the latent heat of fusion of melting ice (334 J/g) rather than from warming the ice itself (~2 J/g·K), so you cannot get a drink much colder without also getting it more dilute. Decoupling them requires pre-chilling, pre-dilution, or batching and freezing.
 
@@ -89,13 +89,13 @@ Every figure in the last column is the pre-dilution ABV divided by the stirred d
 
 **Formula:** 1 part spirit : **2 to 4 parts** carbonated lengthener, built in the glass over ice, no agitation beyond a single lift.
 
-| Drink | Ratio | Lengthener | Finished ABV |
+| Drink | Lengthener | What the lengthener contributes besides volume | Finished ABV |
 |---|---|---|---|
-| Japanese Whisky Highball | 1 : 3 to 1 : 4 | Soda water | ~9–11% |
-| Gin & Tonic | 1 : 2 to 1 : 3 | Tonic (quinine + ~7–9 g/100 mL sugar) | ~11–14% |
-| Cuba Libre | 1 : 3 | Cola + lime | ~10–12% |
-| Americano | 1 oz Campari + 1 oz sweet vermouth : 2–3 oz soda | Soda water | ~9–11% |
-| Paloma | 1 : 2 to 1 : 3 | Grapefruit soda + lime + salt | ~11–13% |
+| Japanese Whisky Highball | Soda water | Nothing but carbonation and cold — the driest reading of the template, and the one that leaves the base fully exposed | ~9–11% |
+| Gin & Tonic | Tonic | Quinine bitterness *and* **~7–9 g/100 mL sugar**; the lengthener is also the sweetener, so nothing else in the build should be | ~11–14% |
+| Cuba Libre | Cola + lime | Sugar, caramel color, phosphoric acid and its own spice load; the base recedes to a supporting voice | ~10–12% |
+| Americano | Soda water | Only volume and carbonation — the bitterness and the sugar already sit in the base slot (§1.9) | ~9–11% |
+| Paloma | Grapefruit soda + lime + salt | Sugar, a second acid against the citric, and salt acting as a bitterness suppressor (§4.1) | ~11–13% |
 
 **Why carbonation is structural, not decorative.** Dissolved CO₂ is converted to carbonic acid at the tongue by **carbonic anhydrase IV** expressed on sour-sensing taste cells, and it independently stimulates trigeminal receptors. Carbonation is therefore simultaneously an *acid*, a *tactile irritant*, and a *volatile carrier* — bursting bubbles eject aroma into the nasal cavity. Sparkling water typically sits at **pH 3.9–5.0**. This is why a highball needs less added acid than an equivalent-strength still drink, and why a flat highball tastes not just dull but noticeably *sweeter*.
 
@@ -113,18 +113,18 @@ Tiki is a sour that has been deliberately over-complicated in three specific way
 2. **Multiple acids.** Lime plus grapefruit, or lime plus passion fruit, layering citric against the malic/tartaric profile of tropical fruit for a longer, less spiky acid curve.
 3. **Compound sweeteners.** Orgeat (almond syrup with orange flower water) contributes sugar, fat/emulsion body, and benzaldehyde-driven almond aroma at once. Falernum (lime, clove, ginger, almond, rum; John D. Taylor's Velvet Falernum is ~11% ABV) contributes sugar, spice, and a small alcohol load.
 
-| Drink | Spec | Structural note |
+| Drink | Structure, by role | Structural note |
 |---|---|---|
-| Mai Tai (Trader Vic, 1944) | 2 oz aged Jamaican rum, 0.75 oz lime, 0.5 oz orange curaçao, 0.25 oz orgeat, 0.25 oz rock candy syrup | Originally one 17-year J. Wray & Nephew; split base is the standard modern reconstruction |
-| Jungle Bird | 1.5 oz blackstrap/dark rum, 0.75 oz Campari, 1.5 oz pineapple, 0.5 oz lime, 0.5 oz simple | Bitter aperitivo in a tropical frame; the outlier that proves the template |
-| Zombie | 1.5 oz Puerto Rican gold + 1.5 oz Jamaican dark + 1 oz overproof Demerara, 0.75 oz lime, 0.5 oz Don's Mix (2:1 grapefruit : cinnamon syrup), 0.5 oz falernum, 1 tsp grenadine, 6 drops absinthe, 1 ds Angostura | Triple-split base and two acid sources; the ceiling of the form |
-| Painkiller | 2 oz dark rum, 4 oz pineapple, 1 oz orange, 1 oz cream of coconut, grated nutmeg | Fat-and-sugar route to body instead of an acid-forward route |
+| Mai Tai (Trader Vic, 1944) | base + lime + orange liqueur + nut orgeat + rich sugar | Originally one 17-year J. Wray & Nephew; split base is the standard modern reconstruction |
+| Jungle Bird | dark base + red bitter aperitivo + pineapple + lime + simple | Bitter aperitivo in a tropical frame; the outlier that proves the template |
+| Zombie | triple-split base (gold + dark + overproof) + lime + a grapefruit-cinnamon syrup + falernum + grenadine, with absinthe and bitters at drop scale | Triple-split base and two acid sources; the ceiling of the form |
+| Painkiller | dark base + pineapple + orange + cream of coconut, grated nutmeg | Fat-and-sugar route to body instead of an acid-forward route |
 
 Jeff "Beachbum" Berry's archival work (*Sippin' Safari*, *Beachbum Berry Remixed*) is the source for the reconstructed Don the Beachcomber specs, including the Zombie; treat any tiki spec without that provenance as a modern interpretation. Tiki drinks are **flash-blended or whip-shaken with crushed ice**, which pushes dilution above the shaken norm — often **30–35% at service, and still climbing in the glass** — which is precisely what makes a 4 oz pour of spirit drinkable.
 
 ### 1.6 Flip, Fizz, and Dairy/Egg {#template-flip}
 
-**Whole egg (flip):** 2 oz spirit or fortified wine, 0.5 oz rich syrup, 1 whole egg, grated nutmeg. **Egg white (sour foam):** 0.75–1 white per drink added to a standard sour. **Yolk only:** maximum richness and emulsification, minimum foam.
+Three doses of the same ingredient, each a different structural job. **Whole egg (flip):** one whole egg per drink, against a base slot and a small rich-syrup dose (ratio in §1.10) — maximum body, moderate foam, and the only form that needs no other texture agent. **Egg white (sour foam):** 0.75–1 white per drink added to a standard sour — foam and a protein mouth-coating, no added richness. **Yolk only:** maximum richness and emulsification, minimum foam.
 
 **Mechanism.** A large egg white is ~33 g, of which ~3.5 g is protein — principally ovalbumin (~54%), ovotransferrin (~12%), ovomucoid (~11%), plus globulins and lysozyme. Agitation denatures these at the air–water interface, where they unfold and cross-link into a viscoelastic film around each air cell. Ethanol is a *surfactant* and destabilizes that film, which is why cocktail foams are far less stable than a meringue and why very high-proof drinks foam poorly. Yolk contributes lecithin (phosphatidylcholine) and lipoproteins, which emulsify fat rather than trapping air; cream contributes fat globules that add viscosity and mouth-coating and blunt both acid and ethanol perception.
 
@@ -135,7 +135,7 @@ Jeff "Beachbum" Berry's archival work (*Sippin' Safari*, *Beachbum Berry Remixed
 - **In-shell pasteurized eggs** (held below coagulation temperature long enough for a ~5-log reduction) foam nearly as well and remove the hazard. They are the correct default for anyone immunocompromised, pregnant, elderly, or very young.
 - Aquafaba (chickpea liquid, ~1 oz per drink) and commercial foamers (methylcellulose or modified starch blends) are structurally valid substitutes; they foam via different mechanisms and give a slightly drier, less rich head.
 
-**Canonical exemplars:** Whiskey Sour with egg white; Pisco Sour (pisco, lime, simple, egg white, Angostura on the foam); Ramos Gin Fizz (gin, lemon *and* lime, sugar, cream, egg white, orange flower water, soda — the long shake is doing emulsification work, not theater); Brandy Alexander (cognac, crème de cacao, cream, 1:1:1); Brandy Flip.
+**Canonical exemplars, by what each one adds to the sour or flip root:** the **Whiskey Sour with egg white** and the **Pisco Sour**, both the sour template plus a white, the latter finishing with aromatic bitters dashed on the foam as an orthonasal top note the drinker meets before the first sip; the **Ramos Gin Fizz**, a split-citrus sour carrying cream *and* egg white plus orange flower water and soda — the long shake is doing emulsification work, not theater; the **Brandy Alexander**, the dairy route to the same texture, where cream replaces the egg entirely and the equal-parts structure of §1.10 makes the liqueur carry both the sweetening and the flavor; and the **Brandy Flip**, the whole-egg root with nothing else in it.
 
 ### 1.7 Champagne and Sparkling-Wine Cocktails {#template-sparkling}
 
@@ -155,10 +155,12 @@ The sparkling wine occupies the highball's lengthener slot but is not neutral: i
 
 Because Brut already contributes up to 12 g/L sugar and real acidity, a sparkling cocktail needs **less added sugar and less added acid** than the equivalent still drink. Build the base in a shaker or mixing glass, strain into a chilled flute or coupe, then top — never shake anything carbonated.
 
-- **French 75** — 1 oz gin, 0.5 oz lemon, 0.5 oz simple, top with 2 oz Champagne. (Cognac in the older reading.)
-- **Old Cuban** (Audrey Saunders) — 1.5 oz aged rum, 0.75 oz lime, 1 oz simple, 2 ds Angostura, 6 mint leaves, shaken, strained, topped with 2 oz Champagne. A mojito and a sparkling cocktail resolved into one structure.
-- **Death in the Afternoon** (Hemingway) — 1.5 oz absinthe topped with Champagne. Structurally a two-ingredient highball, and a deceptively strong one. Run the arithmetic: 1.5 oz of absinthe plus 4.5 oz of Champagne at ~12% fills a 6 oz flute (§8.1), and at a typical 60% absinthe that is 0.9 + 0.54 = 1.44 oz of ethanol in 6 oz — **24% finished**, and **20–28%** across the full 45–74% absinthe range in §3.4. This is a Martini-strength drink wearing a sparkling-cocktail costume, not a 15% aperitif. The lengthener cannot rescue it: even at the bottom of that range, landing the drink at 18% would take 6.75 oz of Champagne on top of the 1.5 oz pour (10.5 oz at 60%), which is more than a flute holds.
-- **Champagne Cocktail** — sugar cube saturated with Angostura in the flute, topped with Champagne. The Old Fashioned root run on wine.
+- **French 75** — a compact gin base + lemon + simple, lengthened with sparkling wine. (Cognac in the older reading.)
+- **Old Cuban** (Audrey Saunders) — aged-rum base + lime + simple + aromatic bitters + mint, shaken, strained, and lengthened with sparkling wine. A mojito and a sparkling cocktail resolved into one structure.
+- **Death in the Afternoon** (Hemingway) — a high-proof anise base lengthened with sparkling wine. Structurally a two-ingredient highball, and a deceptively strong one; see the worked check below.
+- **Champagne Cocktail** — a bitters-saturated sugar cube in the flute, lengthened with sparkling wine. The Old Fashioned root run on wine.
+
+**Worked check — the base-slot proof trap.** This template is the one place where the format lies about the strength, so run the arithmetic on the base-slot band above before trusting it. Take a 1.5 oz pour of a 60% base plus 4.5 oz of sparkling wine at ~12%, which together fill a 6 oz flute (§8.1): that is 0.9 + 0.54 = 1.44 oz of ethanol in 6 oz — **24% finished**, and **20–28%** across the full 45–74% band of the anise-spirit category in §3.4. That is a Martini-strength drink wearing a sparkling-cocktail costume, not a 15% aperitif. The lengthener cannot rescue it either: even at the bottom of that range, landing the drink at 18% would take 6.75 oz of sparkling wine on top of the 1.5 oz pour (10.5 oz at 60%), which is more than a flute holds. Any base-slot spirit above about 45% behaves the same way here, and the glass runs out of room before the arithmetic does — which is the general lesson, and the reason the 1.5–2.5 oz base-slot band above is a ceiling rather than a suggestion.
 
 ### 1.8 Punch {#template-punch}
 
@@ -176,14 +178,16 @@ Modern practice runs drier than the mnemonic (the "two of sweet" reflects period
 
 A family defined by *what replaces the base spirit*: a bitter liqueur or aromatized wine at 11–25% ABV occupies the base slot, and the drink finishes in the **6–12% ABV** band — wine strength, not cocktail strength.
 
-| Drink | Spec | Bittering agent (ABV) | Finished ABV |
+The consequence for volume is the thing most builds get wrong. Because the base is running at a third to a half of a spirit's strength, **the base slot takes a long 2–3 oz pour here, not the 1.5–2.5 oz of a spirit base (§3.1)** — and it still finishes at wine strength rather than at cocktail strength, because a longer pour of a weaker base is exactly what lands the drink in the 6–12% band. Pour a low-ABV base at spirit volumes and the drink comes out thin and short; the family ratio and glass are in §1.10.
+
+| Drink | Structure, by role | Bittering agent (ABV) | Finished ABV |
 |---|---|---|---|
-| Aperol Spritz (IBA) | 3 parts prosecco : 2 parts Aperol : 1 part soda, over ice, orange slice | Aperol (11%) | ~7–9% |
-| Americano | 1 oz Campari, 1 oz sweet vermouth, soda | Campari (20.5% IT / 24% US) | ~9–11% |
-| Bicicletta | 1.5 oz Campari, 3 oz dry white wine, soda | Campari | ~9–11% |
-| Sherry Cobbler | 3 oz amontillado, 0.5 oz simple, fruit, crushed ice | — (amontillado 17–19%) | ~10–13% |
-| Cynar Spritz | 2 oz Cynar, 3 oz prosecco, soda | Cynar (16.5%) | ~8–10% |
-| Adonis | 1.5 oz fino sherry, 1.5 oz sweet vermouth, 2 ds orange bitters | — | ~15–16% |
+| Aperol Spritz (IBA) | low-bitter, heavily sugared aperitivo in the base slot, lengthened with sparkling wine and a splash of soda, over ice | Aperol (11%) | ~7–9% |
+| Americano | bitter aperitivo + sweet vermouth sharing the base slot, lengthened with soda | Campari (20.5% IT / 24% US) | ~9–11% |
+| Bicicletta | bitter aperitivo + dry white wine, lengthened with soda; the wine does the work sparkling wine does in a spritz, without the carbonation | Campari | ~9–11% |
+| Sherry Cobbler | oxidative sherry at a long base pour + a small sugar dose + fruit, crushed ice | — (amontillado 17–19%) | ~10–13% |
+| Cynar Spritz | vegetal artichoke amaro in the base slot, lengthened with sparkling wine and soda | Cynar (16.5%) | ~8–10% |
+| Adonis | biological sherry + sweet vermouth sharing the base slot + orange bitters, no lengthener at all — which is why it finishes highest in the family | — | ~15–16% |
 
 **Why it works.** Bitterness is doing the structural job that ethanol does in a spirit-forward drink: it provides the astringent, palate-clearing counterweight that keeps sugar from dominating. The bittering compounds are real and named — **quinine** in tonic, **gentiopicroside** in gentian (Suze, Aperol's bitter backbone), **cynarin** in artichoke (Cynar), **absinthin** in wormwood-based vermouths, and citrus-peel **naringin/limonin** in the Campari family. Because these liqueurs are already sweetened (Aperol and Campari both carry substantial residual sugar), the aperitivo family usually needs **no added sweetener at all** — adding syrup on top is the most common way to wreck one.
 
@@ -256,7 +260,7 @@ Mashbill and cask are the two dials. Grain sets the *sweetness-versus-spice* axi
 | Irish | Usually triple-distilled, ≥3 years | 40–46% | Light, smooth; **single pot still** (malted + unmalted barley) adds a creamy, spicy grip | Irish Coffee, highballs, light sours |
 | Japanese | Scotch-modeled; JSLMA 2021 standards require mashing, fermentation, distillation and ≥3 years' aging in Japan | 43–48% | Precise, floral; **Mizunara** oak adds sandalwood and incense | The Highball, above all else |
 
-**Design rule:** the higher the rye content and the higher the proof, the more sugar the drink can carry without reading sweet. A 100-proof rye Manhattan tolerates a full 1 oz of sweet vermouth; an 80-proof blended whiskey in the same spec goes flabby.
+**Design rule:** the higher the rye content and the higher the proof, the more sugar the drink can carry without reading sweet. A 100-proof rye tolerates a full 1 oz of sweet vermouth in a stirred build; an 80-proof blended whiskey in the same slot goes flabby.
 
 ### 2.3 Rum {#spirit-rum}
 
@@ -618,7 +622,7 @@ A cocktail is balanced across **three axes at once**, and a diagnosis that names
 2. **Sweet ↔ sour** — sugar and acid suppress each other's perception nearly symmetrically, which is why a sour is stable across a *band* of ratios rather than balanced at a point.
 3. **Texture and temperature** — viscosity, dilution, aeration, and cold. This axis is invisible on paper and accounts for most drinks that are "correct by the recipe" and still wrong in the glass.
 
-Two arithmetic anchors to reason from. A Martini at 2.5 oz gin (47%) plus 0.5 oz dry vermouth (18%) carries 1.265 oz of ethanol in 3 oz — **42% ABV pre-dilution**, falling to about **34%** after 25% dilution. A Daiquiri at 2 oz rum (40%), 1 oz lime, 0.75 oz simple carries 0.8 oz of ethanol in 3.75 oz — **21% pre-dilution**, about **17%** finished. When a drink reads hot, check which of those two structures it actually is before adding anything.
+Two arithmetic anchors to reason from. A stirred Martini-root build — 2.5 oz of a 47% base plus 0.5 oz of an 18% aromatized wine — carries 1.265 oz of ethanol in 3 oz, so **42% ABV pre-dilution**, falling to about **34%** after 25% dilution. A shaken sour — 2 oz of a 40% base, 1 oz citrus, 0.75 oz simple — carries 0.8 oz of ethanol in 3.75 oz, so **21% pre-dilution**, about **17%** finished. When a drink reads hot, check which of those two structures it actually is before adding anything.
 
 ### 4.1 The Drink Rescue Table {#the-drink-rescue-table}
 
@@ -669,16 +673,16 @@ What the pre-dilution taste *is* reliable for: whether the acid is present at al
 
 ### 4.4 Worked Rescues {#worked-rescues}
 
-**A Negroni that reads harsh and medicinal rather than bittersweet.**
-Diagnosis order: the glass is cold, so temperature is not the fault. Dilution is short — it was stirred 15 seconds, not 25–30. Equal-parts Negroni is 1 oz gin (44%), 1 oz Campari (24%), 1 oz sweet vermouth (16%): 0.84 oz ethanol in 3 oz, **28% pre-dilution**, and a spirit-forward drink under-diluted at 28% will lead with alcohol and gentian. Fix: stir 10 seconds longer to reach roughly 22–25% dilution, dropping the finished drink to about 23%. If it is still harsh, the vermouth is the next suspect — check the open date, because oxidized rosso loses its vanilla-and-cocoa cover and leaves the Campari naked. Only after both of those does the ratio come into question, at which point the correct move is walking the gin back to 0.75 oz rather than adding syrup.
+**An equal-parts bitter stirred drink that reads harsh and medicinal rather than bittersweet.**
+Diagnosis order: the glass is cold, so temperature is not the fault. Dilution is short — it was stirred 15 seconds, not 25–30. Equal parts of a 44% base, a 24% bitter aperitivo and a 16% sweet vermouth is 0.84 oz ethanol in 3 oz, **28% pre-dilution**, and a spirit-forward drink under-diluted at 28% will lead with alcohol and gentian. Fix: stir 10 seconds longer to reach roughly 22–25% dilution, dropping the finished drink to about 23%. If it is still harsh, the vermouth is the next suspect — check the open date, because oxidized rosso loses its vanilla-and-cocoa cover and leaves the bitter liqueur naked. Only after both of those does the ratio come into question, at which point the correct move is walking the base slot back by 0.25 oz rather than adding syrup.
 
-**A Whiskey Sour that tastes correct but feels like juice.**
-Sugar and acid are both present at 0.75 oz each, so the sweet/sour axis is fine — the complaint is on the texture axis, which the ratio cannot address. Primary: rebuild the syrup as 2:1 at the same volume, which raises viscosity roughly ten-fold while slightly *reducing* sugar (§3.6). Secondary: 0.75 oz egg white, dry-shaken then shaken with ice, for foam and protein mouth-coating. Tertiary, if the drink must stay vegan and un-thickened: 2 drops of 20% saline, which raises perceived body and sweetness without adding either.
+**A sour that tastes correct but feels like juice.**
+Sugar and acid are both present at the template dose, so the sweet/sour axis is fine — the complaint is on the texture axis, which the ratio cannot address. Primary: rebuild the syrup as 2:1 at the same volume, which raises viscosity roughly ten-fold while slightly *reducing* sugar (§3.6). Secondary: 0.75 oz egg white, dry-shaken then shaken with ice, for foam and protein mouth-coating. Tertiary, if the drink must stay vegan and un-thickened: 2 drops of 20% saline, which raises perceived body and sweetness without adding either.
 
-**A Mai Tai for a guest with a tree-nut allergy.**
-Orgeat is the allergen and it is load-bearing — it supplies the almond aroma, roughly 0.5 oz of sugar-equivalent, and the viscosity that makes the drink read as tiki rather than as a rum sour. Do not silently drop it: the resulting drink is thin, dry, and unrecognizable. Surface the conflict, offer toasted seed orgeat or toasted-rice orgeat as the substitution, and note that curaçao (§3.4) is unaffected. Then check the rest of the build for the same failure — falernum, amaretto, and crème de noyaux all appear in tiki specs and none of them contain a nut word (§3.5).
+**A nut-orgeat tiki drink for a guest with a tree-nut allergy.**
+Orgeat is the allergen and it is load-bearing — it supplies the almond aroma, roughly half an ounce of sugar-equivalent, and the viscosity that makes the drink read as tiki rather than as a rum sour. Do not silently drop it: the resulting drink is thin, dry, and unrecognizable. Surface the conflict, offer toasted seed orgeat or toasted-rice orgeat as the substitution, and note that the orange liqueur slot (§3.4) is unaffected. Then check the rest of the build for the same failure — falernum, amaretto, and crème de noyaux all appear in tiki specs and none of them contain a nut word (§3.5).
 
-**A batched Manhattan that tastes flat at service after tasting perfect at prep.**
+**A batched stirred drink that tastes flat at service after tasting perfect at prep.**
 The batch was tasted as concentrate at room temperature, where sweetness and ethanol both read high and oxidation is obvious. In the glass, cold and at 22% dilution, the sugar drops out first. Fix at the source: pre-dilute the batch with the calculated water, hold it at −18 °C, and taste it at serving temperature and serving dilution before the first guest — not as syrup at the prep bench.
 
 
@@ -775,25 +779,25 @@ Equivalently, ABV_final = ABV_pre ÷ (1 + d). Note what this means: dilution nev
 
 **Step 4 — Standard drinks.** Divide the ethanol volume by the local standard-drink definition (see §5.5).
 
-#### Worked Example A — Stirred, spirit-forward (Manhattan)
+#### Worked Example A — a stirred spirit-forward build
 
 | Component | Volume | ABV | Ethanol contributed |
 |---|---|---|---|
-| Rye whiskey, 90 proof | 2.00 fl oz | 45% | 0.900 fl oz |
-| Sweet vermouth | 1.00 fl oz | 16% | 0.160 fl oz |
-| Angostura, 2 dashes (~1.2 mL) | 0.04 fl oz | 44.7% | 0.018 fl oz |
+| Base spirit, 90 proof | 2.00 fl oz | 45% | 0.900 fl oz |
+| Aromatized wine (sweet vermouth style) | 1.00 fl oz | 16% | 0.160 fl oz |
+| Aromatic bitters, 2 dashes (~1.2 mL) | 0.04 fl oz | 44.7% | 0.018 fl oz |
 | **Pre-dilution total** | **3.04 fl oz** | **35.5%** | **1.078 fl oz** |
 
 Stirred to 22% dilution: water added = 0.22 × 3.04 = 0.67 fl oz. Final volume 3.71 fl oz (110 mL). Final ABV = 1.078 ÷ 3.71 = **29.1%**.
 
 Sensitivity check across the plausible stirred band: at 20% dilution the drink lands at 29.6%; at 25%, at 28.4%. **The served ABV barely moves.** What moves across that band is temperature, viscosity and the perceived heat of the alcohol — which is exactly why "stir until cold" is a texture instruction, not a strength instruction. Ethanol served: 1.078 fl oz = **1.80 US standard drinks**.
 
-#### Worked Example B — Shaken sour (Daiquiri)
+#### Worked Example B — a shaken sour
 
 | Component | Volume | ABV | Ethanol contributed |
 |---|---|---|---|
-| White rum, 80 proof | 2.00 fl oz | 40% | 0.800 fl oz |
-| Fresh lime juice | 0.75 fl oz | 0% | 0 |
+| Base spirit, 80 proof | 2.00 fl oz | 40% | 0.800 fl oz |
+| Fresh citrus juice | 0.75 fl oz | 0% | 0 |
 | Simple syrup, 1:1 by weight | 0.75 fl oz | 0% | 0 |
 | **Pre-dilution total** | **3.50 fl oz** | **22.9%** | **0.800 fl oz** |
 
@@ -837,7 +841,7 @@ A finished drink's strength (%ABV) tells you how it tastes. The **ethanol volume
 | Australia / New Zealand | 12.5 mL | 10 g |
 | Canada | ~17 mL | ~13.5 g |
 
-Worked back to the examples above: the Manhattan is **1.8 US standard drinks** and the Daiquiri **1.33**, before any garnish, second round, or the fact that a 3.7 fl oz drink is finished in ten minutes. A three-cocktail evening of spirit-forward stirred drinks is five to six standard drinks. Design accordingly — that is what low-ABV templates, split bases and long builds are *for*, not merely a stylistic preference.
+Worked back to the examples above: the stirred build in Example A is **1.8 US standard drinks** and the shaken sour in Example B **1.33**, before any garnish, second round, or the fact that a 3.7 fl oz drink is finished in ten minutes. A three-cocktail evening of spirit-forward stirred drinks is five to six standard drinks. Design accordingly — that is what low-ABV templates, split bases and long builds are *for*, not merely a stylistic preference.
 
 Practical service rules, stated once and without moralising: serve water alongside; do not serve anyone underage; do not serve anyone already impaired; keep a genuine zero-proof option on the list that was designed rather than subtracted; and when a guest asks how strong something is, give them the standard-drink number, not the ABV.
 
@@ -1157,26 +1161,26 @@ Batching is not scaling a recipe. When you pre-batch, you delete the ice-contact
 
 **Establish your dilution empirically.** Published ranges: stirred spirit-forward drinks typically finish at roughly **20–25% dilution** by volume of the pre-dilution ingredients; hard-shaken drinks run higher, roughly **25–30%**, because the ice is fracturing and the surface area is much greater. *Liquid Intelligence* is the source that put real measurement behind these numbers, and Arnold's point is that you should not adopt a figure from a book — you should measure your own. The method takes two minutes: build the drink to spec, stir or shake it exactly as you normally would, strain it into a graduated cylinder, and subtract the summed volume of the ingredients. The difference, divided by that summed volume, is your dilution percentage. It is a property of your ice, your technique, and your glassware, and it is stable once you know it.
 
-**Worked example — batched Negroni, 20 servings.**
+**Worked example — a batched equal-parts stirred drink, 20 servings.**
 
-Spec: 30 mL gin (47% ABV) : 30 mL Campari (24%) : 30 mL sweet vermouth (16%). Undiluted volume 90 mL. Target dilution 25%.
+Spec by role: 30 mL base (47% ABV) : 30 mL bitter aperitivo (24%) : 30 mL sweet vermouth (16%). Undiluted volume 90 mL. Target dilution 25%.
 
 | Component | Per serving | ×20 | Ethanol contributed (×20) |
 |---|---|---|---|
-| Gin, 47% | 30 mL | 600 mL | 282 mL |
-| Campari, 24% | 30 mL | 600 mL | 144 mL |
+| Base, 47% | 30 mL | 600 mL | 282 mL |
+| Bitter aperitivo, 24% | 30 mL | 600 mL | 144 mL |
 | Sweet vermouth, 16% | 30 mL | 600 mL | 96 mL |
 | **Water (25% of 90 mL)** | **22.5 mL** | **450 mL** | 0 |
 | Total | 112.5 mL | 2250 mL | 522 mL |
 
 Finished ABV = 522 / 2250 = **23.2%**. Undiluted, the same batch would be 522 / 1800 = 29.0% — a difference you can taste immediately.
 
-**Worked example — batched Manhattan, freezer service.** 60 mL rye (50%) : 30 mL sweet vermouth (16%) : 2 dashes bitters. Ethanol = 30 + 4.8 = 34.8 mL in 90 mL, or 38.7% ABV undiluted. Add 25% dilution (22.5 mL water) → 112.5 mL at **30.9% ABV**.
+**Worked example — a batched 2:1 stirred drink, freezer service.** 60 mL base (50%) : 30 mL sweet vermouth (16%) : 2 dashes bitters. Ethanol = 30 + 4.8 = 34.8 mL in 90 mL, or 38.7% ABV undiluted. Add 25% dilution (22.5 mL water) → 112.5 mL at **30.9% ABV**.
 
 **Why that number matters for storage.** Use the freezing-point table in §5 (Overview): ~20% ABV freezes near −9 °C, ~25% near −12 °C, ~30% near −15 °C, ~35% near −19 °C, ~40% near −23 °C. A domestic freezer runs at about −18 °C, though many run nearer −15 °C. So:
 
-- The 30.9% Manhattan is **thick and just pourable** at −18 °C and fully liquid in a freezer running at −15 °C. Poured straight into a chilled glass with no ice contact, that viscosity is a feature, not a fault — but check your own freezer before promising it.
-- The 23.2% Negroni **will freeze** at −18 °C. Refrigerate it instead (2–4 °C) and pour over a large cube, accepting a small amount of additional dilution.
+- The 30.9% batch is **thick and just pourable** at −18 °C and fully liquid in a freezer running at −15 °C. Poured straight into a chilled glass with no ice contact, that viscosity is a feature, not a fault — but check your own freezer before promising it.
+- The 23.2% batch **will freeze** at −18 °C. Refrigerate it instead (2–4 °C) and pour over a large cube, accepting a small amount of additional dilution.
 - Alternatively, batch **without** the water, freeze the concentrate (29% and 38.7% respectively — the second holds fully liquid, the first goes viscous), and add measured chilled water at service. This gains you shelf life and freezer compatibility at the cost of one extra motion per drink, and it is the only route that gets a sub-30% drink into freezer service at all.
 
 **Storage and shelf life of batches.**
