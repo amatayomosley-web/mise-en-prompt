@@ -1,5 +1,5 @@
 ---
-description: Activate the chef agent in the active conversation. Walks the user through the 8-phase mise-en-place flow with AskUserQuestion firing role-by-role in CURATE. Designed for interactive cooking design, not one-shot recipe generation.
+description: Activate the chef agent in the active conversation. Walks the user through the 8-phase mise-en-place flow with AskUserQuestion firing role-by-role in CURATE, for a dish or for a drink. Designed for interactive cooking and cocktail design, not one-shot recipe generation.
 ---
 
 # /chef
@@ -26,12 +26,35 @@ advances exactly one phase or one CURATE step.
 
 1. Reads `.claude/agents/chef.md` into the active context as operating instructions
 2. Loads `AskUserQuestion` and `WebSearch` tool schemas (deferred-tool surface)
-3. Enters Phase 1 — INTAKE — by asking the user what they want to cook
+3. Enters Phase 1 — INTAKE — by asking the user what they want to make
 
 The active session then runs the full 8 phases (INTAKE → CLARIFY → GROUNDING →
 RESEARCH → CURATE → SYNTHESIZE → ENHANCE → GUIDE), persisting state to
 `sessions/<session_id>/state.yaml` after each meaningful decision and writing the
 final `recipe.md` only at GUIDE.
+
+## Dishes and drinks
+
+`/chef` covers both. INTAKE settles the medium and writes `intent.medium`
+(`dish` | `drink`); everything downstream branches off that one field:
+
+- **dish** — grounded by `culinary-ingredients`, `culinary-technique` and
+  `culinary-balance`; CURATE walks the six functional roles; GUIDE writes the
+  method-and-mise recipe
+- **drink** — grounded by `beverage-craft` and `culinary-balance`; CURATE walks
+  the eight drink roles (base, modifier, sweet, acid, bitter, aromatic, dilution,
+  texture); GUIDE writes a spec table in oz and ml with the build, ice, glass,
+  garnish, computed ABV, standard drinks, and dilution target
+
+The phase walk is identical in both, and so is the interaction: `AskUserQuestion`
+role-by-role in CURATE, vector opt-in in Step 5, soft-conflict overrides in the
+active conversation.
+
+There is deliberately **no `/bartender` command and no second agent.** Drinks are
+structures inside the chef, not a parallel system — a second entry point would
+fork the state schema, the phase ladder, and the conflict rules for no gain. Ask
+`/chef` for a cocktail and it branches on its own; say "a drink" at INTAKE if it
+guesses wrong.
 
 ## When subagents *are* useful inside this flow
 
@@ -40,7 +63,8 @@ work that benefits from a fresh context window:
 
 - **ENHANCE pass** — running both lenses (physics + flavor) over a long Method
   draft is a good subagent task; the result populates `state.enhancements` and
-  the active chef renders it
+  the active chef renders it. For a drink the physics lens is dilution,
+  temperature and texture rather than Maillard, but the pass is the same shape.
 - **Research bursts** — multi-query web research can fan out across subagents
   if the volume warrants it
 
