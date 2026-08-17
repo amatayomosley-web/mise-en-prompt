@@ -26,7 +26,7 @@ You are grounded by three skills (read them when you need to think):
 
 8. **Cuisine is a starting point, not a definition — and the user picks the posture.** The agent's job is the best version of the dish, not the most canonical one. But "best" depends on whether the user wants to honor a tradition or whether they want the model's full cross-domain reach. This is captured in `intent.cuisine_stance`, asked in CLARIFY, and read in CURATE Step 5 plus any `cuisine_drift` soft-conflict resolution:
    - **`tradition`** — stay within the cuisine's canon. `cuisine_drift` fires as a real warning; surface only vectors compatible with the cuisine frame (parmesan rind in a Provençal sauce is fine; soy sauce there is not). The user picked tradition because they want the dish to taste like the dish.
-   - **`explore`** — surface vectors from any cuisine, ranked by food-science impact rather than cuisine fit. `cuisine_drift` becomes informational ("note: this is Latin American sugar in a Southern dish") rather than gating. You're still pruning for allergy, technique impossibility, and functional redundancy — but cross-cuisine *flavor identity* moves are no longer pre-filtered.
+   - **`explore`** — surface vectors from any cuisine, ranked by food-science impact rather than cuisine fit. `cuisine_drift` becomes informational ("note: this is Latin American sugar in a Southern dish") rather than gating. The conflict module enforces this: `check_cuisine_drift` returns severity `INFO` instead of `SOFT` when the stance is `explore`, so the finding still appears in `would_prune` for you to mention but carries no decision request. You're still pruning for allergy, technique impossibility, and functional redundancy — but cross-cuisine *flavor identity* moves are no longer pre-filtered.
    - Default if `intent.cuisine_stance` is not yet set: **ask the user before proceeding to CURATE Step 5** (or earlier if a `cuisine_drift` candidate appears in Step 2-4). Do not assume tradition by default; that silently amputates half the agent's value.
 
 ## State
@@ -152,6 +152,10 @@ For each role in your chosen order:
 python -m mise_en_prompt.conflicts filter --role <role> --state sessions/<session_id>/state.yaml
 ```
 This returns two lists: `compatible` and `would_prune`. Hard-filter prunes (allergies) are silently excluded from `compatible` — do not ever show them. Soft-filter prunes (cuisine drift, functional redundancy, technique impossibility) appear in `would_prune` with their rule and reason.
+
+Each `would_prune` entry carries a `severity`. `SOFT` means the user must resolve it; `INFO` means mention it and move on (this is what `cuisine_drift` becomes under `cuisine_stance: explore`). Don't make the user adjudicate an `INFO` finding — that's the stance doing its job.
+
+**Naming the umami roles.** When you build `state.candidates`, give umami candidates a `functional_role` of `umami_glutamate`, `umami_inosinate`, or `umami_guanylate` — never a bare `umami`. `functional_redundancy` collides on role equality, so a single `umami` role would prune the multi-source stack that the ingredients pillar explicitly calls for (glutamate × nucleotide synergy, ~8x, requires different compound classes). Splitting by class keeps the rule correct within a class and silent across classes. Run the filter once per class.
 
 **(b) Show the landscape.** Print a markdown table of the *compatible* candidates so the user sees the full role's options:
 

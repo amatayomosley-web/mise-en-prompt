@@ -95,9 +95,21 @@ Four prune rules apply during CURATE (see [`conflicts.py`](src/mise_en_prompt/co
 | Rule | Severity | Behavior |
 |---|---|---|
 | `allergy_hard_filter` | HARD | Candidates matching `intent.exclusions` are silently removed (with alias expansion: "shellfish" → shrimp/lobster/crab/etc.). |
-| `cuisine_drift` | SOFT | Candidates in a different cuisine group from the target dish are flagged; the user decides. |
-| `functional_redundancy` | SOFT | Adding a same-role candidate within intensity ±2 of an already-selected one is flagged. Stackable roles (herbs, spices) skip this check. |
+| `cuisine_drift` | SOFT / INFO | Candidates in a different cuisine group from the target dish are flagged; the user decides. Downgrades to INFO when `intent.cuisine_stance` is `explore`, where the named cuisine is a starting point rather than a boundary. |
+| `functional_redundancy` | SOFT | Adding a same-role candidate within intensity ±2 of an already-selected one is flagged. Stackable roles (herbs, spices) skip this check. Umami candidates must name their compound class (`umami_glutamate` / `umami_inosinate` / `umami_guanylate`) — see below. |
 | `technique_impossibility` | SOFT | v1 stub. v2 will check candidate prep time against `intent.time_budget_min`. |
+
+Findings carry a severity: `HARD` candidates are silently excluded and never displayed, `SOFT` ones are surfaced
+as warnings the user resolves case-by-case, and `INFO` ones are surfaced for awareness with no decision requested.
+`filter_candidates_for_role` returns the severity on each `PrunedItem` so callers can tell them apart.
+
+### Umami is named by compound class
+
+Umami candidates take a `functional_role` of `umami_glutamate`, `umami_inosinate`, or `umami_guanylate` — never a
+bare `umami`. `functional_redundancy` uses role equality as its collision test, and umami is the one taste where
+multiple sources are the *goal* rather than a mistake: the roughly 8x amplification comes from glutamate × nucleotide
+synergy and requires sources from different classes. Splitting by class makes the rule fire correctly within a class
+(two glutamate sources at the same intensity really are redundant) while leaving the cross-class stack alone.
 
 Run them on a session yourself:
 

@@ -39,6 +39,24 @@ class Phase(str, Enum):
     GUIDE = "GUIDE"
 
 
+class Severity(str, Enum):
+    """How strongly a conflict finding constrains a candidate.
+
+    Lives here rather than in ``conflicts`` because ``PrunedItem`` records it, and
+    the schema module cannot import from the rule module without a cycle.
+
+    - ``HARD``: silently excluded, never shown to the user (allergies, exclusions).
+    - ``SOFT``: surfaced as a warning the user resolves case-by-case.
+    - ``INFO``: surfaced for awareness only, no decision requested. ``cuisine_drift``
+      downgrades to INFO when ``intent.cuisine_stance == "explore"``, where the named
+      cuisine is a starting point rather than a boundary.
+    """
+
+    HARD = "HARD"
+    SOFT = "SOFT"
+    INFO = "INFO"
+
+
 class PruneRule(str, Enum):
     """Why a candidate ingredient was removed during CURATE."""
 
@@ -125,7 +143,21 @@ class Candidate(BaseModel):
 
     name: str
     cuisine_origin: str
+
     functional_role: str
+    """The role this candidate fills — ``heat``, ``acid``, ``fat``, ``salt``, ``sweet``,
+    ``bean``, ``spice``, and so on.
+
+    Umami is a special case: name it by compound class, as ``umami_glutamate``,
+    ``umami_inosinate``, or ``umami_guanylate``, never as a bare ``umami``.
+    ``check_functional_redundancy`` uses role equality as its collision test, so a
+    single ``umami`` role makes every additional umami source look redundant. That is
+    backwards for this taste specifically: per the ingredients pillar, the ~8x
+    amplification comes from glutamate x nucleotide synergy and *requires* sources from
+    different classes. Splitting by class makes the rule fire correctly within a class
+    (two glutamate sources at the same intensity really are redundant) while leaving
+    the cross-class stack the science calls for untouched."""
+
     intensity: int | None = None
     notes: str | None = None
 
@@ -138,6 +170,12 @@ class PrunedItem(BaseModel):
     name: str
     rule: PruneRule
     reason: str
+
+    severity: Severity | None = None
+    """Severity of the finding that fired. Optional so state files written before
+    this field existed still load. Set by ``filter_candidates_for_role`` so callers
+    can distinguish a warning the user must resolve (SOFT) from an awareness note
+    (INFO) from a silent exclusion (HARD)."""
 
 
 EnhancementLens = Literal["physics", "flavor"]
