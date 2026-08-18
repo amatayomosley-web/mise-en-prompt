@@ -17,7 +17,6 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from enum import Enum
 from pathlib import Path
 
 from pydantic import BaseModel, ConfigDict
@@ -26,13 +25,21 @@ from mise_en_prompt.state import (
     Candidate,
     PruneRule,
     PrunedItem,
+    Severity,
     State,
 )
 
-
-class Severity(str, Enum):
-    HARD = "HARD"
-    SOFT = "SOFT"
+__all__ = [
+    "CUISINE_ADJACENCY",
+    "ConflictFinding",
+    "Severity",
+    "check_allergy",
+    "check_candidate",
+    "check_cuisine_drift",
+    "check_functional_redundancy",
+    "check_technique_impossibility",
+    "filter_candidates_for_role",
+]
 
 
 class ConflictFinding(BaseModel):
@@ -109,6 +116,42 @@ CUISINE_GROUPS: dict[str, list[str]] = {
 }
 
 
+# Group pairs with enough historical culinary exchange that crossing them is a note,
+# not a warning. CUISINE_GROUPS is a partition, but real cuisines are not partitioned:
+# chili con carne is genuinely both Latin American and North American, and no single
+# group value is correct for it. Rather than forcing a dish to pick one group (or
+# widening Intent.cuisine to a set, which every consumer would then have to handle),
+# adjacency makes drift a function of *distance* between groups instead of mere
+# inequality. Adjacent crossings report INFO; distant ones report SOFT.
+#
+# Kept deliberately short. If everything is adjacent to everything, the signal is gone.
+_ADJACENT_GROUP_PAIRS: tuple[tuple[str, str], ...] = (
+    ("Latin American", "North American"),      # Tex-Mex, Cal-Mex, Southwestern, Creole
+    ("Latin American", "European"),            # Columbian exchange; Iberian colonization
+    ("Latin American", "Sub-Saharan African"), # transatlantic: okra, rice, black-eyed peas
+    ("North American", "European"),            # settler cuisine; most US canon is European-derived
+    ("European", "Middle Eastern"),            # the Mediterranean basin is one food world
+    ("Middle Eastern", "South Asian"),         # Persian-Mughal exchange
+    ("Middle Eastern", "Sub-Saharan African"), # trans-Saharan trade; the North African bridge
+    ("South Asian", "East Asian"),             # Buddhist trade routes; curry dispersal
+)
+
+CUISINE_ADJACENCY: dict[str, frozenset[str]] = {
+    group: frozenset(
+        other
+        for pair in _ADJACENT_GROUP_PAIRS
+        for other in pair
+        if group in pair and other != group
+    )
+    for group in CUISINE_GROUPS
+}
+
+
+def _groups_are_adjacent(one: str, other: str) -> bool:
+    """True if crossing between these two groups is a note rather than a warning."""
+    return other in CUISINE_ADJACENCY.get(one, frozenset())
+
+
 # Roles where stacking multiple candidates is normal — skip redundancy check.
 STACKABLE_ROLES: set[str] = {
     "aromatic_herb", "aromatic_herbs", "spice", "spices", "aromatic", "aromatics",
@@ -116,15 +159,37 @@ STACKABLE_ROLES: set[str] = {
 
 
 def _find_cuisine_group(cuisine: str) -> str | None:
-    """Return the group containing the given cuisine via case-insensitive substring."""
+    """Return the group containing the given cuisine.
+
+    Resolution order, most specific first:
+
+    1. Exact match against a group name or one of its members.
+    2. Longest group name or member that appears *inside* the query, so
+       "Central American Stew" resolves on "central american" rather than on the
+       shorter "american" it also contains.
+
+    A query shorter than a member no longer matches it. That direction
+    (``cuisine_lower in member``) previously made "American" resolve to Latin
+    American, because "american" is a substring of "central american" and dict
+    iteration reaches Latin American first — a silent false negative that let a
+    Mexican candidate pass clean in an American dish. Returning None is better
+    than misrouting.
+    """
     if not cuisine:
         return None
-    cuisine_lower = cuisine.lower()
+    cuisine_lower = cuisine.lower().strip()
+
     for group, members in CUISINE_GROUPS.items():
-        for member in members:
-            if member in cuisine_lower or cuisine_lower in member:
-                return group
-    return None
+        if cuisine_lower == group.lower() or cuisine_lower in members:
+            return group
+
+    best_group: str | None = None
+    best_len = 0
+    for group, members in CUISINE_GROUPS.items():
+        for token in (group.lower(), *members):
+            if token in cuisine_lower and len(token) > best_len:
+                best_group, best_len = group, len(token)
+    return best_group
 
 
 def check_allergy(candidate: Candidate, state: State) -> ConflictFinding | None:
@@ -157,13 +222,20 @@ def check_cuisine_drift(candidate: Candidate, state: State) -> ConflictFinding |
     target_group = _find_cuisine_group(state.intent.cuisine)
     candidate_group = _find_cuisine_group(candidate.cuisine_origin)
     if target_group and candidate_group and target_group != candidate_group:
+        exploring = state.intent.cuisine_stance == "explore"
+        adjacent = _groups_are_adjacent(target_group, candidate_group)
+        reason = (
+            f'"{candidate.name}" is {candidate.cuisine_origin} ({candidate_group}); '
+            f'target is {state.intent.cuisine} ({target_group})'
+        )
+        if adjacent:
+            reason += " — adjacent groups, long history of exchange"
+        if exploring:
+            reason += " — informational only, cuisine_stance is explore"
         return ConflictFinding(
-            severity=Severity.SOFT,
+            severity=Severity.INFO if (exploring or adjacent) else Severity.SOFT,
             rule=PruneRule.CUISINE_DRIFT,
-            reason=(
-                f'"{candidate.name}" is {candidate.cuisine_origin} ({candidate_group}); '
-                f'target is {state.intent.cuisine} ({target_group})'
-            ),
+            reason=reason,
         )
     return None
 
@@ -239,10 +311,12 @@ def filter_candidates_for_role(
     compatible: ordered candidates with no HARD findings. SOFT findings still allow
                 inclusion — the chef agent surfaces those in the conflict-resolution
                 AskUserQuestion prompt so the user can override or accept.
-    would_prune: PrunedItems for both kinds of findings. Hard ones are silently
-                 excluded from compatible (the agent never displays them). Soft
-                 ones appear in compatible AND here so the agent can tell the user
-                 "this one would drift cuisine" before they pick it.
+    would_prune: PrunedItems for every finding, carrying the severity that fired.
+                 HARD ones are silently excluded from compatible (the agent never
+                 displays them). SOFT and INFO ones appear in compatible AND here,
+                 so the agent can tell the user "this one would drift cuisine"
+                 before they pick it. Read ``severity`` to tell a warning the user
+                 must resolve (SOFT) from an awareness note (INFO).
     """
     role_lower = role.lower()
     compatible: list[Candidate] = []
@@ -252,7 +326,7 @@ def filter_candidates_for_role(
             continue
         findings = check_candidate(candidate, state)
         hard_findings = [f for f in findings if f.severity == Severity.HARD]
-        soft_findings = [f for f in findings if f.severity == Severity.SOFT]
+        advisory_findings = [f for f in findings if f.severity != Severity.HARD]
         if hard_findings:
             for finding in hard_findings:
                 would_prune.append(
@@ -260,16 +334,18 @@ def filter_candidates_for_role(
                         name=candidate.name,
                         rule=finding.rule,
                         reason=finding.reason,
+                        severity=finding.severity,
                     )
                 )
             continue
         compatible.append(candidate)
-        for finding in soft_findings:
+        for finding in advisory_findings:
             would_prune.append(
                 PrunedItem(
                     name=candidate.name,
                     rule=finding.rule,
                     reason=finding.reason,
+                    severity=finding.severity,
                 )
             )
     return compatible, would_prune

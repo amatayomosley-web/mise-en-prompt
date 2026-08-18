@@ -7,7 +7,10 @@ import sys
 from pathlib import Path
 
 from mise_en_prompt.conflicts import (
+    CUISINE_ADJACENCY,
+    CUISINE_GROUPS,
     Severity,
+    _find_cuisine_group,
     check_allergy,
     check_candidate,
     check_cuisine_drift,
@@ -349,3 +352,219 @@ def test_cli_check_command(tmp_path: Path):
     output = json.loads(result.stdout)
     rules = [f["rule"] for f in output["findings"]]
     assert PruneRule.CUISINE_DRIFT.value in rules
+
+
+# _find_cuisine_group ----------------------------------------------------------
+
+
+def test_american_resolves_to_north_american():
+    """Regression: "American" used to resolve to Latin American.
+
+    ``_find_cuisine_group`` matched bidirectionally, so "american" hit the longer
+    member "central american" and dict iteration reached Latin American first. The
+    failure was silent — for a dish with cuisine "American", a Mexican candidate
+    produced no cuisine_drift finding because both sides resolved to the same group.
+    """
+    assert _find_cuisine_group("American") == "North American"
+
+
+def test_american_dish_flags_mexican_candidate_as_drift():
+    """The user-visible consequence of the bug above: drift must actually fire.
+
+    Before the fix this returned None, because "American" resolved to Latin American
+    and so did "Mexican". It now fires at INFO — North American and Latin American are
+    adjacent, so the crossing is real but unremarkable.
+    """
+    state = _state_with(Intent(cuisine="American"))
+    candidate = Candidate(name="guajillo", cuisine_origin="Mexican", functional_role="heat")
+    finding = check_cuisine_drift(candidate, state)
+    assert finding is not None
+    assert finding.rule == PruneRule.CUISINE_DRIFT
+    assert finding.severity == Severity.INFO
+
+
+def test_every_group_member_resolves_to_its_own_group():
+    """No member may be captured by a different group's substring."""
+    for group, members in CUISINE_GROUPS.items():
+        for member in members:
+            assert _find_cuisine_group(member) == group, (
+                f"{member!r} resolved to {_find_cuisine_group(member)!r}, expected {group!r}"
+            )
+
+
+def test_group_names_resolve_to_themselves():
+    for group in CUISINE_GROUPS:
+        assert _find_cuisine_group(group) == group
+
+
+def test_longest_member_wins_inside_a_longer_query():
+    """"Central American Stew" contains both "central american" and "american"."""
+    assert _find_cuisine_group("Central American Stew") == "Latin American"
+    assert _find_cuisine_group("Honduran sofrito") == "Latin American"
+
+
+def test_query_shorter_than_a_member_does_not_match_it():
+    """The removed direction. "Mex" no longer resolves via "mexican"; None beats misrouting."""
+    assert _find_cuisine_group("Mex") is None
+
+
+def test_unknown_cuisine_resolves_to_none():
+    assert _find_cuisine_group("Klingon") is None
+    assert _find_cuisine_group("") is None
+
+
+# cuisine_stance == explore ----------------------------------------------------
+
+
+def test_cuisine_drift_downgrades_to_info_when_exploring():
+    """chef.md Principle 8: under `explore`, drift is informational, not gating."""
+    state = _state_with(Intent(cuisine="Tex-Mex", cuisine_stance="explore"))
+    candidate = Candidate(
+        name="fish sauce", cuisine_origin="Vietnamese",
+        functional_role="umami_glutamate",
+    )
+    finding = check_cuisine_drift(candidate, state)
+    assert finding is not None
+    assert finding.severity == Severity.INFO
+    assert "explore" in finding.reason
+
+
+def test_cuisine_drift_stays_soft_under_tradition():
+    state = _state_with(Intent(cuisine="Tex-Mex", cuisine_stance="tradition"))
+    candidate = Candidate(
+        name="fish sauce", cuisine_origin="Vietnamese",
+        functional_role="umami_glutamate",
+    )
+    finding = check_cuisine_drift(candidate, state)
+    assert finding is not None
+    assert finding.severity == Severity.SOFT
+
+
+def test_cuisine_drift_stays_soft_when_stance_unset():
+    state = _state_with(Intent(cuisine="Tex-Mex"))
+    candidate = Candidate(
+        name="fish sauce", cuisine_origin="Vietnamese",
+        functional_role="umami_glutamate",
+    )
+    finding = check_cuisine_drift(candidate, state)
+    assert finding is not None
+    assert finding.severity == Severity.SOFT
+
+
+def test_filter_reports_info_findings_with_severity():
+    """INFO findings stay visible in would_prune and keep the candidate compatible."""
+    candidate = Candidate(
+        name="dried porcini", cuisine_origin="Italian",
+        functional_role="umami_guanylate", intensity=6,
+    )
+    state = _state_with(
+        Intent(cuisine="Tex-Mex", cuisine_stance="explore"), candidates=[candidate],
+    )
+    compatible, would_prune = filter_candidates_for_role("umami_guanylate", state)
+    assert [c.name for c in compatible] == ["dried porcini"]
+    assert len(would_prune) == 1
+    assert would_prune[0].severity == Severity.INFO
+    assert would_prune[0].rule == PruneRule.CUISINE_DRIFT
+
+
+# umami compound-class convention ----------------------------------------------
+
+
+def test_umami_classes_do_not_collide_across_compound_classes():
+    """The synergy the ingredients pillar calls for must survive the redundancy rule.
+
+    Glutamate x guanylate is the ~8x multiplicative pairing. Modeled as a single
+    `umami` role these would collide on intensity and the rule would prune exactly
+    the stack the science recommends.
+    """
+    glutamate = Candidate(
+        name="fish sauce", cuisine_origin="Vietnamese",
+        functional_role="umami_glutamate", intensity=8,
+    )
+    guanylate = Candidate(
+        name="dried shiitake", cuisine_origin="Japanese",
+        functional_role="umami_guanylate", intensity=9,
+    )
+    state = _state_with(
+        Intent(cuisine="Tex-Mex"),
+        candidates=[glutamate, guanylate],
+        selected=["fish sauce"],
+    )
+    assert check_functional_redundancy(guanylate, state) is None
+
+
+def test_umami_same_compound_class_still_flags_redundancy():
+    """Two glutamate sources at close intensity are genuinely redundant.
+
+    Glutamate x glutamate is additive, not synergistic — unlike the cross-class case.
+    """
+    fish_sauce = Candidate(
+        name="fish sauce", cuisine_origin="Vietnamese",
+        functional_role="umami_glutamate", intensity=8,
+    )
+    msg = Candidate(
+        name="MSG", cuisine_origin="Japanese",
+        functional_role="umami_glutamate", intensity=7,
+    )
+    state = _state_with(
+        Intent(cuisine="Tex-Mex"),
+        candidates=[fish_sauce, msg],
+        selected=["fish sauce"],
+    )
+    finding = check_functional_redundancy(msg, state)
+    assert finding is not None
+    assert finding.rule == PruneRule.FUNCTIONAL_REDUNDANCY
+
+
+# cuisine adjacency ------------------------------------------------------------
+
+
+def test_adjacency_is_symmetric():
+    for group, neighbours in CUISINE_ADJACENCY.items():
+        for neighbour in neighbours:
+            assert group in CUISINE_ADJACENCY[neighbour], (
+                f"{group!r} lists {neighbour!r} but not the reverse"
+            )
+
+
+def test_adjacency_covers_every_group_key():
+    assert set(CUISINE_ADJACENCY) == set(CUISINE_GROUPS)
+
+
+def test_no_group_is_adjacent_to_itself():
+    for group, neighbours in CUISINE_ADJACENCY.items():
+        assert group not in neighbours
+
+
+def test_adjacency_stays_sparse():
+    """If everything is adjacent to everything, the finding carries no signal."""
+    total = sum(len(n) for n in CUISINE_ADJACENCY.values())
+    complete = len(CUISINE_GROUPS) * (len(CUISINE_GROUPS) - 1)
+    assert total < complete / 2, "adjacency map has grown too dense to be meaningful"
+
+
+def test_adjacent_crossing_reports_info_even_under_tradition():
+    """Bacon in a Tex-Mex pot is a note, not a decision to adjudicate."""
+    state = _state_with(Intent(cuisine="Tex-Mex", cuisine_stance="tradition"))
+    candidate = Candidate(name="bacon", cuisine_origin="American", functional_role="fat")
+    finding = check_cuisine_drift(candidate, state)
+    assert finding is not None
+    assert finding.severity == Severity.INFO
+    assert "adjacent" in finding.reason
+
+
+def test_distant_crossing_still_reports_soft_under_tradition():
+    """Fish sauce in a Tex-Mex pot is a real crossing; the user should decide."""
+    state = _state_with(Intent(cuisine="Tex-Mex", cuisine_stance="tradition"))
+    candidate = Candidate(
+        name="fish sauce", cuisine_origin="Vietnamese", functional_role="umami_glutamate",
+    )
+    finding = check_cuisine_drift(candidate, state)
+    assert finding is not None
+    assert finding.severity == Severity.SOFT
+
+
+def test_same_group_reports_nothing_regardless_of_adjacency():
+    state = _state_with(Intent(cuisine="Tex-Mex", cuisine_stance="tradition"))
+    candidate = Candidate(name="chipotle", cuisine_origin="Mexican", functional_role="heat")
+    assert check_cuisine_drift(candidate, state) is None
