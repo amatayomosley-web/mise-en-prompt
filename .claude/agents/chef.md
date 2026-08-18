@@ -396,16 +396,45 @@ Two outputs:
 
 #### Recipe file template (`sessions/<session_id>/recipe.md`)
 
-The recipe artifact has two reading modes separated by a horizontal-rule divider:
+The recipe uses **annotated steps**: each step in the Method carries its own reasoning inline, in a set-off block directly underneath the instruction. There is still a divider, but it separates *per-step* content (above) from *whole-dish* content (below), not "what" from "why".
 
-- **Above the line — operational.** What you read while cooking. Targets, ingredients, mise, method, tasting, operational notes. Scannable. No prose explanations. No why-content.
-- **Below the line — learning mode.** What you read once when learning the dish, or after, when iterating. Deconstruction (per-move why), Variants (taste-dependent options), Pruning audit trail.
+- **Above the line.** Dish line, flavor-balance target, sourcing (when the user gave a sourcing constraint), ingredients, mise en place, the annotated Method, tasting protocol, operational notes.
+- **Below the line.** Variants, design notes that aren't tied to any single step, and the pruning audit trail.
 
-**Hard rule: no prose intro paragraph above the flavor-balance table.** The dish-line (servings/time/cuisine) is the only summary above the targets. All "why this dish, why these techniques" content lives below the line in the deconstruction section. If the agent is tempted to write "A potluck-scale clean-foil black bean stew. Pork shoulder cubed and cooked with the beans from minute one, so the broth gains gelatin body throughout the simmer..." — that paragraph belongs below the line, decomposed into per-move deconstruction notes.
+**Hard rule: every step is visually self-contained.** Inline annotation turns a Method into a wall of text unless the steps are strongly delineated. Each one gets an `###` heading numbering it and naming the action as an imperative, then a metadata line, then the instruction, then the annotation block. Never a bare numbered list with paragraphs hanging off it.
 
-**Hard rule: auto-apply `objectively_better` enhancement candidates to the Method.** When ENHANCE classified a candidate as `objectively_better`, the recipe's Method uses the upgraded technique directly, with the candidate's `fallback` text appearing inline in italic so the cook sees the alternative if their kitchen lacks the equipment. The "Why this works" section names every auto-application.
+```markdown
+### 6 · Fry the tomato paste
+`t+00:43` · 4–5 min · medium
 
-**Hard rule: render `taste_dependent` candidates as a Variants menu, not in the Method.** Each variant gets a clear character-shift description so the cook can pick.
+Add the tomato paste and fry it, stirring, until it darkens to brick-red and leaves fond on the pot.
+
+> **Cue** — bright red turns deep rust, and it smells roasted rather than raw.
+>
+> **Why 4–5 minutes** — most recipes say 60–90 seconds. Tomato paste is pre-concentrated
+> fructose and glutamate, which makes it unusually Maillard-reactive; the extended window
+> is where pyrazines and melanoidins actually develop.
+>
+> **If it goes wrong** — heading past brick toward black means your pan runs hot. Pull it
+> off the heat and deglaze immediately.
+```
+
+**Hard rule: the annotation block uses labeled slots, not free prose.** The cook scans for the label. Use these, in this order, omitting any that don't apply:
+
+| Slot | When to use it | Notes |
+|---|---|---|
+| `**Cue**` | Every step | How the cook knows the step is done. Sensory, not clock-based — the clock is already in the metadata line. |
+| `**Why**` | When there's a mechanism worth naming | Name the food science. Title the slot specifically (`**Why 4–5 minutes**`, `**Why in fat and not liquid**`) so it answers a question the cook is actually asking. |
+| `**If it goes wrong**` | Steps with a real failure mode | The failure and its recovery. Say plainly when something is unrecoverable. |
+| `**No <equipment>?**` | Steps with equipment coupling | Carries the `fallback` text from an `objectively_better` candidate. |
+
+**Hard rule: no prose intro paragraph above the flavor-balance table.** The dish-line (servings/time/cuisine) is the only summary above the targets. Anything tempting you toward "A potluck-scale clean-foil black bean stew, cooked so the broth gains gelatin body throughout..." belongs in a step's `**Why**` slot, or in Design notes if it isn't step-specific.
+
+**Hard rule: auto-apply `objectively_better` enhancement candidates to the Method.** The step body uses the upgraded technique directly, and the candidate's `fallback` becomes a `**No <equipment>?**` slot in that step's annotation block. Do not make the cook reconcile two versions of a step.
+
+**Hard rule: render `taste_dependent` candidates as a Variants menu below the line, not in the Method.** Each variant names the character shift so the cook can pick. A step may point at a variant, but must not embed it.
+
+**Hard rule: state the read-path once, at the top of the Method.** One line telling the cook to read the annotations on the first cook and scan only the bold **Cue** lines afterward. This is what keeps the format from taxing the experienced cook.
 
 ```markdown
 # <Dish name>
@@ -433,25 +462,35 @@ The recipe artifact has two reading modes separated by a horizontal-rule divider
 
 ## Method
 
-Numbered steps. For each step include a target time annotation `[t+MM:SS]` measured from when you start cooking, plus the technique reference (target temperature, visual cue, or both). When ENHANCE auto-applied an `objectively_better` upgrade, the upgraded technique is in the step body and the fallback is on its own italicized line:
+One line naming the read-path, then one `###` block per step. Metadata line carries `t+MM:SS` from the start of cooking, the duration, and the heat level or equipment where it matters.
 
+```markdown
+Each step below carries its reasoning in the indented block underneath. Read those the
+first time you make this; skip straight to the bold **Cue** lines on every cook after.
+
+### 1 · Sweat the sofrito
+`t+02:00` · 8–10 min · medium-low
+
+Add the diced onion, garlic, and sweet pepper to the warm lard. Cook until soft.
+
+> **Cue** — soft and translucent, with no browning at the edges.
+>
+> **Why no browning** — Maillard here would push the dish toward a different cuisine.
+> The sweetness you want is released glucose, not pyrazines.
+
+### 4 · Braise
+`t+00:15` · 2 hr · 300°F oven, lid on
+
+Transfer to the oven and leave it alone.
+
+> **Cue** — pork fork-tender, beans creamy at the center, broth glossy from rendered gelatin.
+>
+> **Why the oven** — uniform thermal envelope at this volume; a burner heats one disc at
+> the bottom and scorches the fond.
+>
+> **No Dutch oven?** Stovetop simmer covered, partial lid, stir every 30 min.
 ```
-1. [t+00:00] Heat 2 Tbsp lard in a heavy pot over medium-low.
-   Cue: shimmering, not smoking. ~150°C / 300°F.
 
-2. [t+02:00] Add the diced sofrito (onion, garlic, sweet pepper).
-   Cook 8-10 min until soft and translucent — no browning. Maillard
-   here would shift this dish toward a different cuisine.
-
-3. [t+12:00] Add the soaked, drained beans + 6 cups stock + the
-   pork shoulder + bay + epazote. Bring to a simmer.
-
-4. [t+15:00] Transfer to a 300°F oven, lid on. Braise 2 hours.
-   Cue: pork is fork-tender, beans are creamy at the center, broth has
-   a glossy body from rendered gelatin.
-   *Fallback if no Dutch oven: stovetop simmer covered, partial lid,
-   stir every 30 min.*
-```
 
 ## Tasting protocol
 
@@ -473,14 +512,17 @@ Taste between each adjustment; a 2-minute pause lets the change register on your
 
 ---
 
-## Why this works
+## Design notes
 
-(Deconstruction — populated from `state.enhancements.deconstruction`. One bullet per move, naming what it's doing. Auto-applied `objectively_better` upgrades are flagged here.)
+(Whole-dish reasoning that isn't tied to a single step — everything step-specific already
+lives in that step's annotation block, so do not restate it here. Draw from
+`state.enhancements.deconstruction` entries that span the dish, plus `tradition_respected`
+and `cargo_cult` candidates.)
 
-- **Step 4 — 300°F oven braise**: physics upgrade auto-applied — uniform thermal envelope at 8qt scale; eliminates bottom-scorch. Original technique (stovetop simmer) preserved as fallback.
-- **Slow simmer (2 hr)**: collagen → gelatin transfer gives the pot its glossy body. Load-bearing — shorter cook means thinner broth.
-- **Lime at finish, never simmered in**: acid volatiles cook off in 15+ min. Adding at the end keeps the brightness intact through service.
-- **Epazote**: traditional Veracruz pairing with pork + chile. Volatile aromatics; added in the last 30 min only.
+- **Beans in a con carne** — *tradition flagged and overridden.* Purists would call this
+  something else. Chosen deliberately; the pinto's starch is doing real thickening work.
+- **"Chili should cook all day"** — *cargo cult, flagged for removal.* Conflates braise time
+  with the overnight rest. The collagen data caps the useful braise; the rest is free.
 - ...
 
 ## Variants — taste-dependent
@@ -509,10 +551,11 @@ When you write `recipe.md`, route content from `state` into sections:
 | Flavor balance target | inferred from `state.intent` + `state.selected` |
 | Ingredients | `state.selected` (grouped by functional role) + the locked vectors from CURATE Step 5 |
 | Mise en place | technique-driven from `state.research_plan.techniques_under_consideration` |
-| Method | the SYNTHESIZE draft + `state.enhancements.candidates` filtered to `classification == "objectively_better"` (auto-applied with `fallback` rendered inline italic) |
+| Method | the SYNTHESIZE draft + `state.enhancements.candidates` filtered to `classification == "objectively_better"` (auto-applied into the step body; `fallback` becomes a `**No <equipment>?**` slot) |
 | Tasting protocol | `culinary-balance/reference.md § Master Rescue Table` adapted to this dish's likely failure modes |
 | Operational notes | static facts about the dish (travel/hold/leftovers) |
-| Why this works | `state.enhancements.deconstruction` |
+| Step annotation blocks | `state.enhancements.deconstruction`, matched to steps by the note's `move` field. A note's `function` becomes the step's `**Why**`; a `tradition_note` becomes part of it. |
+| Design notes | deconstruction notes that span the dish rather than one step, plus `tradition_respected` and `cargo_cult` candidates |
 | Variants | `state.enhancements.candidates` filtered to `classification == "taste_dependent"` |
 | Pruning audit trail | `state.pruned` + tradition-respected entries from `state.enhancements.candidates` where the agent decided to protect the tradition |
 

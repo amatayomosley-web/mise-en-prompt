@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 
 from mise_en_prompt.conflicts import (
+    CUISINE_ADJACENCY,
     CUISINE_GROUPS,
     Severity,
     _find_cuisine_group,
@@ -368,12 +369,18 @@ def test_american_resolves_to_north_american():
 
 
 def test_american_dish_flags_mexican_candidate_as_drift():
-    """The user-visible consequence of the bug above: drift must actually fire."""
+    """The user-visible consequence of the bug above: drift must actually fire.
+
+    Before the fix this returned None, because "American" resolved to Latin American
+    and so did "Mexican". It now fires at INFO — North American and Latin American are
+    adjacent, so the crossing is real but unremarkable.
+    """
     state = _state_with(Intent(cuisine="American"))
     candidate = Candidate(name="guajillo", cuisine_origin="Mexican", functional_role="heat")
     finding = check_cuisine_drift(candidate, state)
     assert finding is not None
     assert finding.rule == PruneRule.CUISINE_DRIFT
+    assert finding.severity == Severity.INFO
 
 
 def test_every_group_member_resolves_to_its_own_group():
@@ -507,3 +514,57 @@ def test_umami_same_compound_class_still_flags_redundancy():
     finding = check_functional_redundancy(msg, state)
     assert finding is not None
     assert finding.rule == PruneRule.FUNCTIONAL_REDUNDANCY
+
+
+# cuisine adjacency ------------------------------------------------------------
+
+
+def test_adjacency_is_symmetric():
+    for group, neighbours in CUISINE_ADJACENCY.items():
+        for neighbour in neighbours:
+            assert group in CUISINE_ADJACENCY[neighbour], (
+                f"{group!r} lists {neighbour!r} but not the reverse"
+            )
+
+
+def test_adjacency_covers_every_group_key():
+    assert set(CUISINE_ADJACENCY) == set(CUISINE_GROUPS)
+
+
+def test_no_group_is_adjacent_to_itself():
+    for group, neighbours in CUISINE_ADJACENCY.items():
+        assert group not in neighbours
+
+
+def test_adjacency_stays_sparse():
+    """If everything is adjacent to everything, the finding carries no signal."""
+    total = sum(len(n) for n in CUISINE_ADJACENCY.values())
+    complete = len(CUISINE_GROUPS) * (len(CUISINE_GROUPS) - 1)
+    assert total < complete / 2, "adjacency map has grown too dense to be meaningful"
+
+
+def test_adjacent_crossing_reports_info_even_under_tradition():
+    """Bacon in a Tex-Mex pot is a note, not a decision to adjudicate."""
+    state = _state_with(Intent(cuisine="Tex-Mex", cuisine_stance="tradition"))
+    candidate = Candidate(name="bacon", cuisine_origin="American", functional_role="fat")
+    finding = check_cuisine_drift(candidate, state)
+    assert finding is not None
+    assert finding.severity == Severity.INFO
+    assert "adjacent" in finding.reason
+
+
+def test_distant_crossing_still_reports_soft_under_tradition():
+    """Fish sauce in a Tex-Mex pot is a real crossing; the user should decide."""
+    state = _state_with(Intent(cuisine="Tex-Mex", cuisine_stance="tradition"))
+    candidate = Candidate(
+        name="fish sauce", cuisine_origin="Vietnamese", functional_role="umami_glutamate",
+    )
+    finding = check_cuisine_drift(candidate, state)
+    assert finding is not None
+    assert finding.severity == Severity.SOFT
+
+
+def test_same_group_reports_nothing_regardless_of_adjacency():
+    state = _state_with(Intent(cuisine="Tex-Mex", cuisine_stance="tradition"))
+    candidate = Candidate(name="chipotle", cuisine_origin="Mexican", functional_role="heat")
+    assert check_cuisine_drift(candidate, state) is None

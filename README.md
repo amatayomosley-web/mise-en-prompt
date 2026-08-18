@@ -40,9 +40,12 @@ turns:
 7. **Enhance.** Walk the draft move-by-move under physics and flavor lenses; classify each
    candidate (objectively_better, taste_dependent, tradition_respected, cargo_cult);
    write the deconstruction and elevation candidates to `state.enhancements`.
-8. **Guide.** Render the cooking guide with operational content above the line and
-   deconstruction plus variants below; auto-apply objectively-better upgrades inline with
-   fallbacks; surface taste-dependent options as a Variants menu.
+8. **Guide.** Render the cooking guide as **annotated steps** — each step is a self-contained
+   block carrying its own reasoning in labeled slots (`Cue` / `Why` / `If it goes wrong` /
+   `No <equipment>?`) directly underneath the instruction. The divider separates per-step
+   content from whole-dish content: variants, design notes, and the pruning audit sit below it.
+   Objectively-better upgrades are applied into the step body with their fallback as a slot;
+   taste-dependent options become a Variants menu.
 
 ## The three pillars
 
