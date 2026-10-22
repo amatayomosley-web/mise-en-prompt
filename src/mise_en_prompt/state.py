@@ -135,13 +135,18 @@ class Candidate(BaseModel):
 
 
 class PrunedItem(BaseModel):
-    """A candidate that was removed, with the rule that fired and the human-readable reason."""
+    """A candidate that was removed, with the rule that fired and the human-readable reason.
+
+    An entry stays even when the user overrides the rule and keeps the ingredient; it's
+    then marked ``overridden`` so the audit trail shows the rule fired and was set aside.
+    """
 
     model_config = ConfigDict(extra="forbid")
 
     name: str
     rule: PruneRule
     reason: str
+    overridden: bool = False
 
 
 EnhancementLens = Literal["physics", "flavor"]

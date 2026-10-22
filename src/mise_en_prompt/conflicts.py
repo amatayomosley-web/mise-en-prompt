@@ -325,7 +325,7 @@ class RoleFilter(BaseModel):
 
     compatible:  offered to the user. May carry INFO notes (drift under explore).
     would_prune: SOFT prunes, kept out of the offered pool. The user can ask to see them
-                 or override one; record an override in state.pruned for the audit trail.
+                 or override one; keep the entry in state.pruned with overridden: true.
     excluded:    HARD prunes (allergy). Never shown, never overridable, but logged with
                  the reason so state.pruned can record them.
     notes:       INFO findings (drift under explore) on compatible or would_prune

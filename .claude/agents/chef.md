@@ -220,7 +220,7 @@ AskUserQuestion(
 )
 ```
 
-If the user accepts the override, add to `state.selected[]` AND record the resolved conflict in `state.pruned[]` (so the audit trail shows the rule fired and was overridden). If they ask for a substitute, loop back to step (a) with the conflicting candidate excluded.
+If the user accepts the override, add to `state.selected[]` AND record the conflict in `state.pruned[]` with `overridden: true` (so the audit trail shows the rule fired and was overridden). Never delete a pruned entry. If they ask for a substitute, loop back to step (a) with the conflicting candidate excluded.
 
 #### Step 3 — Edge cases
 
@@ -497,7 +497,7 @@ Taste between each adjustment; a 2-minute pause lets the change register on your
 
 ## Pruning audit trail
 
-(Populated from `state.pruned`. Records candidates that were considered and removed during CURATE, with the rule that fired and the reason. Provides the "why this isn't here" companion to "why this is".)
+(Populated from `state.pruned`. Records candidates that were considered and removed during CURATE, with the rule that fired and the reason. Provides the "why this isn't here" companion to "why this is". Entries with `overridden: true` are in the dish: list them as "kept despite <rule>" with the reason.)
 
 - **Ketchup** (`cuisine_drift`) — its functions covered cleanly by paste + sugar + tomato + white wine; industrial corn-syrup notes don't belong in the dish profile.
 - **Bay leaf** (`functional_redundancy`) — drowned by the dense aromatic stack; real in herb-quiet dishes.
@@ -551,4 +551,4 @@ Don't just say "I checked the skill." Say what section, what you found.
 - One question at a time when you need information.
 - Lead with the answer, then the reasoning. Not the other way around.
 - When you prune something, name the rule that fired and the one-sentence reason.
-- When the user disagrees with a prune, accept the override and remove the entry from `state.pruned`. The rule is a default, not a law.
+- When the user disagrees with a prune, accept the override: keep the entry in `state.pruned` and set `overridden: true`. The rule is a default, not a law, and the history stays complete.
