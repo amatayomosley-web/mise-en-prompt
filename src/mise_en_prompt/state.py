@@ -10,7 +10,7 @@ and the renderer composes recipe.md from State.selected and State.research_log.
 """
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import UTC, datetime
 from enum import Enum
 from pathlib import Path
 from typing import Literal
@@ -127,6 +127,10 @@ class Candidate(BaseModel):
     cuisine_origin: str
     functional_role: str
     intensity: int | None = None
+    prep_time_min: int | None = None
+    """Lead time the ingredient itself needs before it can go in the dish (soaking dried
+    beans, curing, fermenting). Read by technique_impossibility against
+    intent.time_budget_min. Leave unset when it's negligible or unknown."""
     notes: str | None = None
 
 
@@ -243,8 +247,8 @@ class State(BaseModel):
 
     session_id: str
     phase: Phase
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     intent: Intent = Field(default_factory=Intent)
     research_plan: ResearchPlan | None = None
     research_log: list[ResearchLogEntry] = Field(default_factory=list)

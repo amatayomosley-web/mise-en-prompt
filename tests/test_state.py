@@ -224,3 +224,9 @@ def test_pruned_item_round_trip(tmp_path: Path):
     loaded = State.load_yaml(target)
     assert loaded.pruned[0].rule == PruneRule.CUISINE_DRIFT
     assert loaded.pruned[0].name == "miso"
+
+
+def test_default_timestamps_are_timezone_aware_utc():
+    state = State(session_id="tz", phase=Phase.INTAKE)
+    assert state.created_at.utcoffset() is not None
+    assert state.created_at.utcoffset().total_seconds() == 0

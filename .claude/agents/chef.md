@@ -151,7 +151,15 @@ For each role in your chosen order:
 ```bash
 python -m mise_en_prompt.conflicts filter --role <role> --state sessions/<session_id>/state.yaml
 ```
-This returns two lists: `compatible` and `would_prune`. Hard-filter prunes (allergies) are silently excluded from `compatible` — do not ever show them. Soft-filter prunes (cuisine drift, functional redundancy, technique impossibility) appear in `would_prune` with their rule and reason.
+Every candidate for the role lands in exactly one of three lists:
+
+- `compatible` — offer these.
+- `would_prune` — soft prunes (cuisine drift under `tradition`, functional redundancy, technique impossibility), each with its rule and reason. Kept out of the offered pool; the user can ask to see them or override one (step e).
+- `excluded` — hard prunes (allergy). Never show them and never offer an override, but write each to `state.pruned[]` with its reason.
+
+`notes` carries informational findings (cuisine drift under `explore`): mention the shift when you offer the candidate, but it doesn't prune. If the output has a `warning` that `cuisine_stance` is unset, drift was gated as if `tradition`; ask the stance question before going on.
+
+Set `prep_time_min` on a candidate when the ingredient itself needs real lead time (dried beans to soak, a cure, a ferment) so technique impossibility can check it against `intent.time_budget_min`.
 
 **(b) Show the landscape.** Print a markdown table of the *compatible* candidates so the user sees the full role's options:
 
@@ -193,7 +201,7 @@ The auto-added "Other" option lets the user type something not in the list ("I h
 
 - If the user picked a recommended option: write it to `state.selected[]`, update `updated_at`, move to the next role.
 - If the user picked "Show me more options": loop step (c) with the next 4 candidates.
-- If the user typed "Other" with a freeform ingredient: re-run `python -m mise_en_prompt.conflicts check --candidate "<name>" --state sessions/<id>/state.yaml`. If clean, add to `state.selected[]`. If a soft conflict fires, go to step (e).
+- If the user typed "Other" with a freeform ingredient: run `python -m mise_en_prompt.conflicts check --candidate '{"name": "<name>", "cuisine_origin": "<origin>", "functional_role": "<role>"}' --state sessions/<id>/state.yaml` (add `intensity` and `prep_time_min` when known). It returns a `verdict`: `compatible` → add to `state.selected[]`; `would_prune` → go to step (e); `excluded` → tell the user it's blocked by their exclusion and offer the next option.
 
 **(e) Handle a soft conflict on the user's pick.** If the user's chosen ingredient triggers a soft prune rule (cuisine drift, functional redundancy, technique impossibility), don't silently override — fire an `AskUserQuestion` with the rule + reason in the question text:
 

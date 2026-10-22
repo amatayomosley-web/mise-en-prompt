@@ -94,10 +94,12 @@ Four prune rules apply during CURATE (see [`conflicts.py`](src/mise_en_prompt/co
 
 | Rule | Severity | Behavior |
 |---|---|---|
-| `allergy_hard_filter` | HARD | Candidates matching `intent.exclusions` are silently removed (with alias expansion: "shellfish" → shrimp/lobster/crab/etc.). |
-| `cuisine_drift` | SOFT | Candidates in a different cuisine group from the target dish are flagged; the user decides. |
+| `allergy_hard_filter` | HARD | Candidates matching `intent.exclusions` are removed outright and never offered (with alias expansion: "shellfish" → shrimp/lobster/crab/etc.; known false friends like eggplant or coconut milk don't trip it). Takes precedence: a blocked candidate gets no soft flags. |
+| `cuisine_drift` | SOFT / INFO | Candidates in a different cuisine group from the target dish. Under `cuisine_stance: tradition` (or unset) they're pulled from the offered pool and the user can override; under `explore` they're offered with a note. |
 | `functional_redundancy` | SOFT | Adding a same-role candidate within intensity ±2 of an already-selected one is flagged. Stackable roles (herbs, spices) skip this check. |
-| `technique_impossibility` | SOFT | v1 stub. v2 will check candidate prep time against `intent.time_budget_min`. |
+| `technique_impossibility` | SOFT | A candidate's own `prep_time_min` (soak, cure, ferment) exceeds `intent.time_budget_min`. Needs both numbers. |
+
+`filter` puts each candidate in exactly one list: `compatible` (offered), `would_prune` (soft, overridable) or `excluded` (hard, never shown), plus informational `notes`.
 
 Run them on a session yourself:
 
