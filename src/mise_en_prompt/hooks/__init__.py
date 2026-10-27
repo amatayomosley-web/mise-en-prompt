@@ -5,5 +5,5 @@ Two hooks shipped:
     research_log ordering is violated.
   - phase_check: blocks Write/Edit to sessions/<id>/recipe.md when state.phase != GUIDE.
 
-Registered in projects/public/mise-en-prompt/.claude/settings.json.
+Registered in .claude/settings.json at the repo root.
 """

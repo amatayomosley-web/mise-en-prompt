@@ -224,3 +224,30 @@ def test_pruned_item_round_trip(tmp_path: Path):
     loaded = State.load_yaml(target)
     assert loaded.pruned[0].rule == PruneRule.CUISINE_DRIFT
     assert loaded.pruned[0].name == "miso"
+
+
+def test_default_timestamps_are_timezone_aware_utc():
+    state = State(session_id="tz", phase=Phase.INTAKE)
+    assert state.created_at.utcoffset() is not None
+    assert state.created_at.utcoffset().total_seconds() == 0
+
+
+def test_pruned_item_overridden_defaults_false_and_round_trips(tmp_path: Path):
+    state = State(
+        session_id="override",
+        phase=Phase.CURATE,
+        selected=["chipotle"],
+        pruned=[
+            PrunedItem(name="miso", rule=PruneRule.CUISINE_DRIFT, reason="drift"),
+            PrunedItem(
+                name="chipotle", rule=PruneRule.CUISINE_DRIFT, reason="drift",
+                overridden=True,
+            ),
+        ],
+    )
+    path = tmp_path / "state.yaml"
+    state.dump_yaml(path)
+    loaded = State.load_yaml(path)
+    assert [(p.name, p.overridden) for p in loaded.pruned] == [
+        ("miso", False), ("chipotle", True),
+    ]
