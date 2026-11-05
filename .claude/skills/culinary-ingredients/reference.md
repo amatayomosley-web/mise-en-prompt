@@ -696,7 +696,7 @@ Umami is the savory fifth taste, mediated by free glutamate and the nucleotides 
 - Parmesan + bonito together: umami several-fold higher than either alone (dashi with parmesan rinds)
 
 **Common Synergistic Pairs:**
-- Tomato (fresh glutamate ~140-250 mg/100g) + aged cheese (glutamate ~1,200-1,680 mg/100g, IMP from milk proteins): amplified umami (fold depends on ratio and concentration)
+- Tomato (fresh glutamate ~140-250 mg/100g) + aged cheese (glutamate ~1,200-1,680 mg/100g): amplified umami (fold depends on ratio and concentration)
 - Fish (IMP ~100 mg/100g) + soy sauce (glutamate ~400-1,700 mg/100g depending on type): amplified umami (fold depends on ratio and concentration)
 - Mushroom (GMP ~50 mg/100g in fresh, ~150 mg/100g in dried shiitake) + beef (IMP ~200 mg/100g): amplified umami (fold depends on ratio and concentration)
 
