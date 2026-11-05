@@ -478,7 +478,7 @@ class Candidate(BaseModel):
     ``umami_inosinate``, or ``umami_guanylate``, never as a bare ``umami``.
     ``check_functional_redundancy`` uses role equality as its collision test, so a
     single ``umami`` role makes every additional umami source look redundant. That is
-    backwards for this taste specifically: per the ingredients pillar, the ~8x
+    backwards for this taste specifically: per the ingredients pillar, the several-fold
     amplification comes from glutamate x nucleotide synergy and *requires* sources from
     different classes. Splitting by class makes the rule fire correctly within a class
     (two glutamate sources at the same intensity really are redundant) while leaving

@@ -658,7 +658,7 @@ def test_filter_reports_info_findings_as_notes():
 def test_umami_classes_do_not_collide_across_compound_classes():
     """The synergy the ingredients pillar calls for must survive the redundancy rule.
 
-    Glutamate x guanylate is the ~8x multiplicative pairing. Modeled as a single
+    Glutamate x guanylate is the several-fold multiplicative pairing. Modeled as a single
     `umami` role these would collide on intensity and the rule would prune exactly
     the stack the science recommends.
     """

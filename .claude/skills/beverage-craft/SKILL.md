@@ -14,7 +14,7 @@ Invoked in the GROUNDING, RESEARCH, SYNTHESIZE, and GUIDE phases whenever the me
 ### "What kind of drink is this / what template should I build on?"
 1. Open `reference.md` → **Drink Families & Structural Templates** (`#drink-families`)
 2. Run the seven-question template selector at the end of the section (citrus? aromatized wine? carbonation? egg or dairy? split base? base under 25% ABV? batched for a group?)
-3. Return: the family, its skeleton, the typical ratio, the method, the ice, the glass, the expected dilution, and the finished ABV band — the Master Template Comparison table has all seven in one row
+3. Return: the family, its skeleton, the typical ratio, the method, the ice, the glass, the expected dilution, and the finished ABV band — the Master Template Comparison table has all eight in one row
    - Sour · spirit + sugar + citrus · 2 : 0.75 : 0.75 · shake
    - Spirit-forward · Old Fashioned root (spirit + sugar + bitters) or Martini root (spirit + aromatized wine) · stir
    - Highball · 1 part spirit : 2–4 parts carbonation · build
