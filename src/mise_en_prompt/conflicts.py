@@ -2,21 +2,24 @@
 
 Four rules:
   - check_allergy (HARD)            — candidate matches a state.intent.exclusions term
-  - check_cuisine_drift (SOFT)      — candidate's cuisine_origin is in a different group than the dish
+  - check_cuisine_drift (SOFT, or INFO under cuisine_stance=explore)
+                                    — candidate's cuisine_origin is in a different group than the dish
   - check_functional_redundancy (SOFT) — same role + close intensity already in state.selected
-  - check_technique_impossibility (SOFT) — v1 stub, returns None
+  - check_technique_impossibility (SOFT) — candidate.prep_time_min exceeds intent.time_budget_min
 
 Four mirrored rules for drinks, selected when state.intent.medium is "drink":
   - check_drink_allergy (HARD/SOFT)  — nut-bearing liqueurs hard-filter; distilled grain
     spirits surface as soft flags instead of vanishing
-  - check_family_drift (SOFT)        — candidate's cuisine_origin is in a different drink
+  - check_family_drift (SOFT, or INFO under drink.family_stance=explore)
+                                    — candidate's cuisine_origin is in a different drink
     family group than the drink
   - check_drink_redundancy (SOFT)    — same role + same bar-product class already selected
   - check_build_impossibility (SOFT) — v1 stub, returns None
 
-The aggregator check_candidate runs all four of whichever set _rules_for selects.
-filter_candidates_for_role returns the (compatible, would_prune) split used by the chef
-agent during CURATE.
+check_candidate runs whichever set _rules_for selects, with HARD taking precedence: an
+allergy-blocked candidate reports only its hard findings. classify_candidate turns findings
+into exactly one Verdict, and filter_candidates_for_role sorts a role's candidates into the
+matching buckets (compatible, would_prune, excluded) used by the chef agent during CURATE.
 
 Hooks call this module to verify the agent's pruning decisions; the agent calls the CLI
 between AskUserQuestion prompts to compute the eligible pool for each functional role.
@@ -43,8 +46,17 @@ from mise_en_prompt.state import (
 
 
 class Severity(str, Enum):
-    HARD = "HARD"
-    SOFT = "SOFT"
+    HARD = "HARD"  # removed outright, never offered, not overridable
+    SOFT = "SOFT"  # pulled from the offered pool; the user can override
+    INFO = "INFO"  # offered as normal, with a note (cuisine_drift under explore)
+
+
+class Verdict(str, Enum):
+    """The one bucket a candidate lands in. Derived only from its findings."""
+
+    COMPATIBLE = "compatible"
+    WOULD_PRUNE = "would_prune"
+    EXCLUDED = "excluded"
 
 
 class ConflictFinding(BaseModel):
@@ -84,6 +96,30 @@ EXCLUSION_ALIASES: dict[str, list[str]] = {
     ],
     "beef": ["beef", "brisket", "chuck", "ribeye", "tenderloin"],
 }
+
+
+# Names that contain an allergen term without being that allergen. Each phrase is blanked
+# out of the candidate name before that one term is matched, so "almond butter" still
+# trips a nuts exclusion but not a dairy one, and "eggplant with egg wash" still trips eggs.
+ALLERGEN_FALSE_FRIENDS: dict[str, list[str]] = {
+    "egg": ["eggplant"],
+    "lard": ["collard"],
+    "ham": ["champagne", "graham"],
+    "wheat": ["buckwheat"],
+    "butter": [
+        "butternut", "butter bean", "peanut butter", "almond butter", "cashew butter",
+        "nut butter", "apple butter", "cocoa butter",
+    ],
+    "milk": ["coconut milk", "almond milk", "oat milk", "soy milk", "rice milk", "cashew milk"],
+    "cream": ["coconut cream", "cream of tartar"],
+}
+
+
+def _contains_allergen(name_lower: str, term: str) -> bool:
+    """True if ``term`` appears in ``name_lower`` outside any of its false-friend phrases."""
+    for friend in ALLERGEN_FALSE_FRIENDS.get(term, []):
+        name_lower = name_lower.replace(friend, " ")
+    return term in name_lower
 
 
 # Cuisine groupings — same-group cuisines compose comfortably. Hand-curated; expand as needed.
@@ -128,14 +164,29 @@ STACKABLE_ROLES: set[str] = {
 
 
 def _find_cuisine_group(cuisine: str) -> str | None:
-    """Return the group containing the given cuisine via case-insensitive substring."""
+    """Return the group for ``cuisine`` (case-insensitive).
+
+    Tries, in order: an exact member match; the longest member contained in the cuisine
+    ("Veracruz Mexican" -> mexican); the cuisine contained in a member ("Asian" ->
+    east asian). The order matters: a plain substring scan put "American" in Latin
+    American via "central american".
+    """
     if not cuisine:
         return None
-    cuisine_lower = cuisine.lower()
+    cuisine_lower = cuisine.strip().lower()
+    for group, members in CUISINE_GROUPS.items():
+        if cuisine_lower in members:
+            return group
+    best: tuple[int, str] | None = None
     for group, members in CUISINE_GROUPS.items():
         for member in members:
-            if member in cuisine_lower or cuisine_lower in member:
-                return group
+            if member in cuisine_lower and (best is None or len(member) > best[0]):
+                best = (len(member), group)
+    if best:
+        return best[1]
+    for group, members in CUISINE_GROUPS.items():
+        if any(cuisine_lower in member for member in members):
+            return group
     return None
 
 
@@ -145,15 +196,17 @@ def check_allergy(candidate: Candidate, state: State) -> ConflictFinding | None:
         return None
     name_lower = candidate.name.lower()
     for exclusion in state.intent.exclusions:
-        ex_lower = exclusion.lower()
-        if ex_lower in name_lower or name_lower in ex_lower:
+        ex_lower = exclusion.strip().lower()
+        if not ex_lower:
+            continue
+        if _contains_allergen(name_lower, ex_lower) or name_lower in ex_lower:
             return ConflictFinding(
                 severity=Severity.HARD,
                 rule=PruneRule.ALLERGY_HARD_FILTER,
                 reason=f'matches exclusion "{exclusion}"',
             )
         for alias in EXCLUSION_ALIASES.get(ex_lower, []):
-            if alias in name_lower:
+            if _contains_allergen(name_lower, alias):
                 return ConflictFinding(
                     severity=Severity.HARD,
                     rule=PruneRule.ALLERGY_HARD_FILTER,
@@ -163,14 +216,20 @@ def check_allergy(candidate: Candidate, state: State) -> ConflictFinding | None:
 
 
 def check_cuisine_drift(candidate: Candidate, state: State) -> ConflictFinding | None:
-    """SOFT: candidate.cuisine_origin is in a different group than state.intent.cuisine."""
+    """candidate.cuisine_origin is in a different group than state.intent.cuisine.
+
+    Severity follows intent.cuisine_stance: SOFT (gating, overridable) under tradition,
+    INFO (offered with a note) under explore. An unset stance gates like tradition; the
+    agent is meant to ask before CURATE, and the CLI says so when it hasn't.
+    """
     if not state.intent.cuisine or not candidate.cuisine_origin:
         return None
     target_group = _find_cuisine_group(state.intent.cuisine)
     candidate_group = _find_cuisine_group(candidate.cuisine_origin)
     if target_group and candidate_group and target_group != candidate_group:
+        explore = state.intent.cuisine_stance == "explore"
         return ConflictFinding(
-            severity=Severity.SOFT,
+            severity=Severity.INFO if explore else Severity.SOFT,
             rule=PruneRule.CUISINE_DRIFT,
             reason=(
                 f'"{candidate.name}" is {candidate.cuisine_origin} ({candidate_group}); '
@@ -186,7 +245,8 @@ def check_functional_redundancy(
     """SOFT: state.selected already has a same-role candidate within intensity ±2.
 
     Skipped for STACKABLE_ROLES (herbs, spices) where layering multiple is normal.
-    Skipped if either side has no intensity (can't compare).
+    Skipped if either side has no intensity (can't compare). A selected candidate is
+    never compared with itself, so re-filtering a role after a pick keeps the pick.
     """
     if candidate.functional_role.lower() in STACKABLE_ROLES:
         return None
@@ -196,6 +256,7 @@ def check_functional_redundancy(
         c for c in state.candidates
         if c.name in state.selected
         and c.functional_role.lower() == candidate.functional_role.lower()
+        and c.name.lower() != candidate.name.lower()
     ]
     for existing in same_role_selected:
         if existing.intensity is None:
@@ -214,15 +275,28 @@ def check_functional_redundancy(
 
 
 def check_technique_impossibility(
-    candidate: Candidate, state: State,  # noqa: ARG001
+    candidate: Candidate, state: State,
 ) -> ConflictFinding | None:
-    """SOFT: v1 stub. Returns None.
+    """SOFT: the candidate's own lead time (soak, cure, ferment, long simmer) exceeds
+    state.intent.time_budget_min.
 
-    v2 will check candidate.prep_time_min (when added to schema) against
-    state.intent.time_budget_min. For v1, the agent reasons about timing in
-    conversation rather than via a programmatic check.
+    Needs both numbers; with either missing it returns None and the agent reasons about
+    timing in conversation. It compares one candidate against the whole budget, so it
+    catches the impossible (overnight soak in a 30-minute dish), not a tight schedule
+    built from several candidates.
     """
-    return None
+    budget = state.intent.time_budget_min
+    prep = candidate.prep_time_min
+    if budget is None or prep is None or prep <= budget:
+        return None
+    return ConflictFinding(
+        severity=Severity.SOFT,
+        rule=PruneRule.TECHNIQUE_IMPOSSIBILITY,
+        reason=(
+            f'"{candidate.name}" needs about {prep} min of prep; '
+            f"the time budget is {budget} min"
+        ),
+    )
 
 
 _ALL_RULES = [
@@ -521,7 +595,13 @@ def _is_false_friend(term: str, name_lower: str, exclusion: str) -> bool:
     Scoped two ways: the exempt phrase must be present in the candidate name, and it must
     contain the term that fired. "ginger beer" cancels "beer" in "Fever-Tree ginger beer" and
     leaves every other check on that candidate running.
+
+    The food map's ALLERGEN_FALSE_FRIENDS are honored too, keyed on the term that fired, since
+    the HARD tier unions the food aliases in: "milk" must not block coconut or oat milk behind
+    a bar any more than in a kitchen. Per term, so "almond milk" still trips a nut exclusion.
     """
+    if any(friend in name_lower for friend in ALLERGEN_FALSE_FRIENDS.get(term, [])):
+        return True
     return any(
         phrase in name_lower and term in phrase
         for phrase in DRINK_EXCLUSION_EXEMPT.get(exclusion, [])
@@ -622,11 +702,14 @@ def check_drink_allergy(candidate: Candidate, state: State) -> ConflictFinding |
 
 
 def check_family_drift(candidate: Candidate, state: State) -> ConflictFinding | None:
-    """SOFT: candidate.cuisine_origin is in a different group than intent.drink.drink_family.
+    """candidate.cuisine_origin is in a different group than intent.drink.drink_family.
 
     Sibling of check_cuisine_drift. For a drink session cuisine_origin carries a DRINK_FAMILIES
     string; components that belong to no family (syrups, citrus, ice) leave it empty and the
     rule stays silent on them, exactly as the food rule does for an unclassified origin.
+
+    Severity follows intent.drink.family_stance the way the food rule follows cuisine_stance:
+    SOFT under tradition or an unset stance, INFO (offered with a note) under explore.
     """
     drink = state.intent.drink
     target = drink.drink_family if drink else None
@@ -635,8 +718,9 @@ def check_family_drift(candidate: Candidate, state: State) -> ConflictFinding | 
     target_group = _find_drink_family(target)
     candidate_group = _find_drink_family(candidate.cuisine_origin)
     if target_group and candidate_group and target_group != candidate_group:
+        explore = drink.family_stance == "explore"
         return ConflictFinding(
-            severity=Severity.SOFT,
+            severity=Severity.INFO if explore else Severity.SOFT,
             rule=DrinkPruneRule.FAMILY_DRIFT,
             reason=(
                 f'"{candidate.name}" is {candidate.cuisine_origin} ({candidate_group}); '
@@ -727,57 +811,99 @@ def _rules_for(state: State) -> list:
 
 
 def check_candidate(candidate: Candidate, state: State) -> list[ConflictFinding]:
-    """Run every rule against the candidate; return all findings (may be empty)."""
-    findings: list[ConflictFinding] = []
-    for rule_fn in _rules_for(state):
-        finding = rule_fn(candidate, state)
-        if finding is not None:
-            findings.append(finding)
-    return findings
+    """Run the medium's rules against the candidate; return its findings (may be empty).
 
-
-def filter_candidates_for_role(
-    role: str, state: State,
-) -> tuple[list[Candidate], list[PrunedItem]]:
-    """Split state.candidates matching `role` into (compatible, would_prune).
-
-    compatible: ordered candidates with no HARD findings. SOFT findings still allow
-                inclusion — the chef agent surfaces those in the conflict-resolution
-                AskUserQuestion prompt so the user can override or accept.
-    would_prune: PrunedItems for both kinds of findings. Hard ones are silently
-                 excluded from compatible (the agent never displays them). Soft
-                 ones appear in compatible AND here so the agent can tell the user
-                 "this one would drift cuisine" before they pick it.
+    Hard rules win: if one fires, only hard findings come back. A blocked candidate is
+    out, so a soft flag on it would only invite an override the user can't make. Severity
+    is read off each finding rather than off the rule, because check_drink_allergy can
+    return either.
     """
-    role_lower = role.lower()
+    findings = [f for rule_fn in _rules_for(state) if (f := rule_fn(candidate, state))]
+    hard = [f for f in findings if f.severity == Severity.HARD]
+    return hard or findings
+
+
+def classify_candidate(
+    candidate: Candidate, state: State,
+) -> tuple[Verdict, list[ConflictFinding]]:
+    """Return the one bucket the candidate belongs in, with the findings behind it."""
+    findings = check_candidate(candidate, state)
+    severities = {f.severity for f in findings}
+    if Severity.HARD in severities:
+        return Verdict.EXCLUDED, findings
+    if Severity.SOFT in severities:
+        return Verdict.WOULD_PRUNE, findings
+    return Verdict.COMPATIBLE, findings
+
+
+class RoleFilter(BaseModel):
+    """A role's candidates, each in exactly one of compatible / would_prune / excluded.
+
+    compatible:  offered to the user. May carry INFO notes (drift under explore).
+    would_prune: SOFT prunes, kept out of the offered pool. The user can ask to see them
+                 or override one; keep the entry in state.pruned with overridden: true.
+    excluded:    HARD prunes (allergy). Never shown, never overridable, but logged with
+                 the reason so state.pruned can record them.
+    notes:       INFO findings (drift under explore) on compatible or would_prune
+                 candidates, for the agent to mention. Never a reason to prune.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
     compatible: list[Candidate] = []
     would_prune: list[PrunedItem] = []
+    excluded: list[PrunedItem] = []
+    notes: list[PrunedItem] = []
+
+
+def filter_candidates_for_role(role: str, state: State) -> RoleFilter:
+    """Sort state.candidates matching ``role`` into a RoleFilter, preserving order."""
+    role_lower = role.lower()
+    result = RoleFilter()
     for candidate in state.candidates:
         if candidate.functional_role.lower() != role_lower:
             continue
-        findings = check_candidate(candidate, state)
-        hard_findings = [f for f in findings if f.severity == Severity.HARD]
-        soft_findings = [f for f in findings if f.severity == Severity.SOFT]
-        if hard_findings:
-            for finding in hard_findings:
-                would_prune.append(
-                    PrunedItem(
-                        name=candidate.name,
-                        rule=finding.rule,
-                        reason=finding.reason,
-                    )
-                )
-            continue
-        compatible.append(candidate)
-        for finding in soft_findings:
-            would_prune.append(
-                PrunedItem(
-                    name=candidate.name,
-                    rule=finding.rule,
-                    reason=finding.reason,
-                )
-            )
-    return compatible, would_prune
+        verdict, findings = classify_candidate(candidate, state)
+        items = {
+            severity: [
+                PrunedItem(name=candidate.name, rule=f.rule, reason=f.reason)
+                for f in findings if f.severity == severity
+            ]
+            for severity in Severity
+        }
+        if verdict == Verdict.EXCLUDED:
+            result.excluded.extend(items[Severity.HARD])
+        elif verdict == Verdict.WOULD_PRUNE:
+            result.would_prune.extend(items[Severity.SOFT])
+        else:
+            result.compatible.append(candidate)
+        result.notes.extend(items[Severity.INFO])
+    return result
+
+
+_STANCE_UNSET_WARNING = (
+    "intent.cuisine_stance is unset, so cuisine_drift is gated as under tradition. "
+    "Ask tradition or explore before CURATE."
+)
+_FAMILY_STANCE_UNSET_WARNING = (
+    "intent.drink.family_stance is unset, so family_drift is gated as under tradition. "
+    "Ask tradition or explore before CURATE."
+)
+
+
+def _stance_output(state: State) -> dict:
+    """The stance key for the session's medium, plus a warning when it is unset."""
+    if state.intent.medium == "drink":
+        stance = state.intent.drink.family_stance if state.intent.drink else None
+        output: dict = {"family_stance": stance}
+        warning = _FAMILY_STANCE_UNSET_WARNING
+    else:
+        stance = state.intent.cuisine_stance
+        output = {"cuisine_stance": stance}
+        warning = _STANCE_UNSET_WARNING
+    if stance is None:
+        output["warning"] = warning
+    return output
 
 
 # CLI -------------------------------------------------------------------------
@@ -785,11 +911,14 @@ def filter_candidates_for_role(
 
 def _cli_filter(args: argparse.Namespace) -> int:
     state = State.load_yaml(Path(args.state))
-    compatible, would_prune = filter_candidates_for_role(args.role, state)
-    output = {
-        "compatible": [c.model_dump(mode="json") for c in compatible],
-        "would_prune": [p.model_dump(mode="json") for p in would_prune],
+    stance = _stance_output(state)
+    warning = stance.pop("warning", None)
+    output: dict = {
+        **stance,
+        **filter_candidates_for_role(args.role, state).model_dump(mode="json"),
     }
+    if warning:
+        output["warning"] = warning
     print(json.dumps(output, indent=2, ensure_ascii=False))
     return 0
 
@@ -797,11 +926,14 @@ def _cli_filter(args: argparse.Namespace) -> int:
 def _cli_check(args: argparse.Namespace) -> int:
     state = State.load_yaml(Path(args.state))
     candidate = Candidate.model_validate(json.loads(args.candidate))
-    findings = check_candidate(candidate, state)
-    output = {
+    verdict, findings = classify_candidate(candidate, state)
+    output: dict = {
         "candidate": candidate.model_dump(mode="json"),
+        "verdict": verdict.value,
         "findings": [f.model_dump(mode="json") for f in findings],
     }
+    if warning := _stance_output(state).get("warning"):
+        output["warning"] = warning
     print(json.dumps(output, indent=2, ensure_ascii=False))
     return 0
 
