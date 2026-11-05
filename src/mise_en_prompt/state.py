@@ -154,10 +154,93 @@ BuildMethod = Literal[
     "flash_blended",
     "carbonated",
     "clarified",
+    "heated",
 ]
 """How the drink is assembled and chilled. Not a stylistic label: the method sets water
 pickup, aeration, and final temperature, so it has to be known before dilution can be
-computed at all."""
+computed at all. ``heated`` (toddy, mulled, Irish coffee) is the one method with no ice:
+its water comes from the hot liquid, not from melt."""
+
+
+DrinkFamily = Literal[
+    "Spirit-forward",
+    "Sour",
+    "Highball",
+    "Tiki",
+    "Aperitivo & amaro",
+    "Sparkling & wine",
+    "Flip & fizz",
+    "Punch",
+]
+"""The eight drink families, in the pillar's order (beverage-craft section 1.10).
+
+``conflicts.DRINK_FAMILIES`` is keyed by exactly these names; a test pins the two together,
+so the matcher cannot grow a ninth group the schema never heard of. ``cuisine_origin`` on a
+drink candidate carries one of these (or a member name that resolves to one)."""
+
+DRINK_FAMILY_ALIASES: dict[str, tuple[DrinkFamily, ...]] = {
+    "champagne & wine": ("Sparkling & wine",),
+    "flip & punch": ("Flip & fizz", "Punch"),
+}
+"""Family names that older sessions wrote, lower-cased, mapped to the group(s) they became.
+
+``Champagne & wine`` was renamed. ``Flip & punch`` was split in two, so it maps to both
+halves: a legacy session that wrote it for the drink family, or for a milk-punch candidate,
+must not start drifting just because the group divided."""
+
+
+DrinkRole = Literal[
+    "base",
+    "modifier",
+    "sweetener",
+    "acid",
+    "bitters",
+    "lengthener",
+    "texture",
+    "aromatic_garnish",
+]
+"""The eight drink roles, named as the pillar names them (beverage-craft section 3.1).
+Dilution is not a role: ice-melt water is a computed quantity."""
+
+DRINK_ROLE_ALIASES: dict[str, DrinkRole] = {
+    "sweet": "sweetener",
+    "bitter": "bitters",
+    "aromatic": "aromatic_garnish",
+    "aromatics": "aromatic_garnish",
+    "aromatic garnish": "aromatic_garnish",
+    "dilution": "lengthener",
+    "bases": "base",
+    "modifiers": "modifier",
+}
+"""Role names older drink sessions used, lower-cased, mapped to the pillar's role.
+
+The conflict rules read a candidate's role through this map so a session written with
+``bitter`` or ``sweet`` keeps behaving exactly as it did. ``dilution`` is the one lossy
+entry: it maps to ``lengthener`` and the filter reports a warning, because the old role
+named a quantity, not an ingredient."""
+
+
+ComponentTag = Literal[
+    "egg_raw",
+    "aquafaba",
+    "dairy",
+    "foam",
+    "citrus_juice",
+    "pulp",
+    "puree",
+    "carbonation",
+    "cream_liqueur",
+    "beer",
+    "wine",
+    "cider",
+]
+"""What a drink component physically is, as far as the build rules care.
+
+``Candidate.contains`` carries these; ``check_build_impossibility`` reads them against
+``intent.drink.build_method``. ``foam`` marks a dairy component the drink wants whipped
+(a cream or milk foam), as distinct from cream stirred in for body. ``beer``, ``wine`` and
+``cider`` mark a low-proof base. A Literal rather than free strings: a misspelled tag would
+silently turn a rule off."""
 
 
 ServiceFormat = Literal["single", "batched", "bottled", "punch_bowl", "on_tap"]
@@ -287,7 +370,13 @@ class DrinkIntent(BaseModel):
     sweetness_level: SweetnessLevel | None = None
     build_method: BuildMethod | None = None
     abv_target_pct: float | None = None
+    """Finished ABV, in percent, after dilution."""
     dilution_target_pct: float | None = None
+    """Water added, in percent of the PRE-dilution volume (not of the finished drink).
+
+    One convention across the repo, shared with the beverage-craft pillar: 24 means a 3 oz
+    undiluted build gains 0.72 oz and finishes at 3 x (1 + 0.24) = 3.72 oz, and
+    ABV_final = ethanol / finished volume. A Negroni with 0.85 oz of ethanol is 22.8%."""
     service_format: ServiceFormat | None = None
     glassware: str | None = None
 
@@ -396,6 +485,10 @@ class Candidate(BaseModel):
     the cross-class stack the science calls for untouched."""
 
     intensity: int | None = None
+    contains: list[ComponentTag] = Field(default_factory=list)
+    """Drink components only: what the candidate physically is (raw egg, citrus juice,
+    carbonation...). Read by check_build_impossibility against the build method. Empty for
+    a dish candidate, and for a drink candidate nothing about the build depends on."""
     prep_time_min: int | None = None
     """Lead time the ingredient itself needs before it can go in the dish (soaking dried
     beans, curing, fermenting). Read by technique_impossibility against

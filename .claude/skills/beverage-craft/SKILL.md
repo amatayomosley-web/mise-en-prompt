@@ -20,9 +20,9 @@ Invoked in the GROUNDING, RESEARCH, SYNTHESIZE, and GUIDE phases whenever the me
    - Highball · 1 part spirit : 2–4 parts carbonation · build
    - Tiki · split base + multiple acids + compound sweetener · whip shake over crushed
    - Flip / fizz · spirit + sugar + egg or dairy · dry shake then wet
-   - Sparkling · concentrated base topped with wine · shake the base, top, never shake the bubbles
+   - Sparkling & wine · concentrated base topped with wine, or wine in the base slot (Sherry Cobbler, Adonis) · shake the base, top, never shake the bubbles
    - Punch · 1 sour : 2 sweet : 3 strong : 4 weak, dilution designed in
-   - Aperitivo / spritz · bitter liqueur or aromatized wine in the base slot, 6–12% finished
+   - Aperitivo / spritz · bitter liqueur or aromatized wine in the base slot, 6–12% finished (the Americano and the Spritz live here, not in Highball)
 
 ### "Which base spirit, and what does it change?"
 1. Open `reference.md` → **Base Spirits — Structural and Aromatic Taxonomy** (`#base-spirits`)
@@ -32,8 +32,8 @@ Invoked in the GROUNDING, RESEARCH, SYNTHESIZE, and GUIDE phases whenever the me
 
 ### "What goes in the non-base slots?"
 1. Open `reference.md` → **Modifiers, Sweeteners & the Bitter Axis** (`#modifiers-sweeteners-bitter-axis`)
-2. Fill the roles the drink still needs: `base`, `modifier`, `sweetener`, `acid`, `bitters`, `lengthener`, `texture`, `aromatic garnish`
-3. **`base`, `modifier`, `bitters`, and `acid` are stackable roles** — two rums in the base slot and two bitters in a build are canonical construction, not redundancy. Say so explicitly when returning candidates, so nothing downstream prunes them
+2. Fill the roles the drink still needs: `base`, `modifier`, `sweetener`, `acid`, `bitters`, `lengthener`, `texture`, `aromatic_garnish`
+3. **`base`, `modifier`, `bitters`, `acid` and `aromatic_garnish` are stackable roles** — two rums in the base slot and two bitters in a build are canonical construction, not redundancy. `acid` stacks by product class: lemon with lime is a split, two lemon juices are one product twice. Say so explicitly when returning candidates, so nothing downstream prunes them. Water is not a role (a chosen mixer or measured water is `lengthener`), and saline is `texture`. Older sessions that say `sweet`, `bitter`, `aromatic` or `dilution` still load; the conflict rules read them as `sweetener`, `bitters`, `aromatic_garnish` and `lengthener`
 4. Before setting the syrup volume, subtract the sugar already in the glass — liqueurs run ~250 g/L, crème de cassis ≥400, sweet vermouth ~150, PX sherry 350–500
 5. Return: candidates per role with ABV, sugar load, and aromatic register, plus what each substitution would cost
 
@@ -48,7 +48,7 @@ Invoked in the GROUNDING, RESEARCH, SYNTHESIZE, and GUIDE phases whenever the me
 ### "How much water, how cold, and how strong is it?"
 1. Open `reference.md` → **Dilution, Temperature & ABV Math** (`#dilution-temperature-abv`)
 2. Chilling and dilution are **one variable, not two** — the cooling is paid for by melting ice, and the melt goes in the glass
-3. Compute: ethanol_oz = Σ(volume × ABV); ABV_final = ABV_pre ÷ (1 + dilution); standard drinks = ethanol_oz ÷ 0.6 (US)
+3. Compute: ethanol_oz = Σ(volume × ABV); final_volume = pre-dilution volume × (1 + dilution); ABV_final = ABV_pre ÷ (1 + dilution); standard drinks = ethanol_oz ÷ 0.6 (US). The Negroni at 24% dilution: 3 oz becomes 3.72 oz and 0.85 oz of ethanol is 22.8% (Worked Example C)
 4. Return: pre-dilution ABV, the dilution the method implies (stirred 20–25%, shaken 25–30%, whip 10–15%, built 5–10%, swizzle 25–35%, blended 50%+), the finished ABV, the finished **volume** so the glass can be sized to it, and the standard-drink count
 
 ### "Shake or stir?"

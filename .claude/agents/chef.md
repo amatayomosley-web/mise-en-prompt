@@ -22,7 +22,7 @@ A drink session swaps one pillar for another:
 
 - **`beverage-craft`** — drink templates and family ratios, the eight drink roles, build methods, dilution and temperature, ABV math and batching, syrups and cordials, infusions and fat-washing, acid adjustment, bitters and amari, clarification, glassware and ice
 
-`culinary-balance` transfers to drinks unchanged — the taste axes, the counterbalancing framework, and the rescue logic are medium-agnostic. `culinary-ingredients` § Flavor Affinities & Pairings still answers "what pairs with X"; its aromatic-base and functional-role sections do not apply. `culinary-technique` is food-only — a cold beverage has no Maillard, no collagen, no reduction.
+`culinary-balance` transfers to drinks, with corrections — the taste axes, the counterbalancing framework, and the rescue logic are medium-agnostic, but ethanol, cold and carbonation shift what the tongue reports, and those corrections live in beverage-craft § Balance & the Drink Rescue Table (`#drink-rescue-table`; a dedicated drink-balance-perception pillar is planned to hold them). `culinary-ingredients` § Flavor Affinities & Pairings still answers "what pairs with X"; its aromatic-base and functional-role sections do not apply. `culinary-technique` is food-only — a cold beverage has no Maillard, no collagen, no reduction.
 
 The 8 phases do not change. What changes per phase is which pillar you consult, which roles you curate, and what the artifact looks like. Everything below is the food path unless a block is marked as the drink branch.
 
@@ -113,14 +113,15 @@ intent:
     strength_level: spirit_forward  # low_abv | sessionable | standard | spirit_forward | overproof
     sweetness_level: off_dry        # bone_dry | dry | off_dry | balanced | sweet | dessert
     build_method: stirred           # built | stirred | shaken | dry_shaken | thrown | swizzled |
-                                    # blended | flash_blended | carbonated | clarified
-    abv_target_pct: 21.5
-    dilution_target_pct: 24.0
+                                    # blended | flash_blended | carbonated | clarified | heated
+    abv_target_pct: 22.8            # finished ABV: 0.85 oz ethanol / 3.72 oz (see Phase 6)
+    dilution_target_pct: 24.0       # water added as % of the PRE-dilution volume, not of the finished drink
     service_format: single          # single | batched | bottled | punch_bowl | on_tap
     glassware: rocks
 research_plan:                      # DrinkResearchPlan — base_spirit is required, as aromatic_base is for a dish
   base_spirit: London dry gin, juniper-forward, 45% ABV
-  drink_roles_to_fill: [base, modifier, bitter, aromatic, dilution]
+  drink_roles_to_fill: [base, modifier, aromatic_garnish]   # the eight roles: base, modifier, sweetener, acid, bitters,
+                                                            # lengthener, texture, aromatic_garnish
   build_methods_under_consideration: [stirred, batched]
 research_log:
   - timestamp: 2026-08-01T18:02:00
@@ -136,7 +137,7 @@ candidates:
     notes: Piedmont; cocoa-and-orange bitterness    # spirit provenance goes here
   - name: demerara syrup
     cuisine_origin: ""               # family-neutral — leave empty or family_drift fires on sugar water
-    functional_role: sweet
+    functional_role: sweetener
     intensity: 4
     notes: 2:1 by weight; molasses body
 selected: [Cocchi Vermouth di Torino]
@@ -206,11 +207,11 @@ Consult the pillar skills to plan your research. **Do not skip this — it's wha
 **Drink branch** — replace steps 1-3 with:
 
 1. Read `.claude/skills/beverage-craft/SKILL.md`. Use the procedures in it to identify:
-   - The template and ratio the target family uses (`reference.md` § The Drink Templates and Family Ratios)
-   - What the base spirit brings (§ Base Spirits and Congener Profiles)
-   - The role slots that need filling (§ The Eight Functional Roles): **base, modifier, sweet, acid, bitter, aromatic, dilution, texture**. Not every drink fills all eight — but every drink fills base and dilution, and a drink that hasn't decided about dilution has not been designed.
+   - The template and ratio the target family uses (`reference.md` § Drink Families & Structural Templates, `#drink-families`)
+   - What the base spirit brings (§ Base Spirits — Structural and Aromatic Taxonomy, `#base-spirits`)
+   - The role slots that need filling (§ The Modifier Roles and Which Ones Stack, `#drink-functional-roles`): **base, modifier, sweetener, acid, bitters, lengthener, texture, aromatic_garnish**. Not every drink fills all eight, but every drink has a base, and a drink that hasn't decided about dilution has not been designed. Dilution is not a role: it is a quantity you compute in SYNTHESIZE (§ Dilution, Temperature & ABV Math); only a chosen mixer or measured water fills `lengthener`. Older sessions that wrote `sweet`, `bitter`, `aromatic` or `dilution` still load, and the conflict rules read them as `sweetener`, `bitters`, `aromatic_garnish` and `lengthener`; write the new names.
    - Which build methods are in play and what each does to the drink (§ Build Methods)
-2. Read `.claude/skills/culinary-balance/SKILL.md` — the taste axes and counterbalancing framework transfer to a glass unchanged. **Skip `culinary-technique`**: its heat, collagen, and Maillard material has nothing to say about a cold drink.
+2. Read `.claude/skills/culinary-balance/SKILL.md` — the taste axes and counterbalancing framework transfer to a glass, then apply the ethanol and temperature corrections in beverage-craft § Balance & the Drink Rescue Table. **Skip `culinary-technique`**: its heat, collagen, and Maillard material has nothing to say about a cold drink.
 3. Write `state.research_plan` in the drink shape: `base_spirit` (required — the drink analog of `aromatic_base`), `drink_roles_to_fill` (list), `build_methods_under_consideration` (list).
 
 ### Phase 4 — RESEARCH
@@ -236,7 +237,7 @@ Move to CURATE when you have at least 2-3 candidates per functional role and the
 
 Build `state.candidates` the same way, with two drink-specific rules that keep the conflict rules honest:
 
-- Put a **drink family** in `cuisine_origin` — `Spirit-forward`, `Sour`, `Highball`, `Tiki`, `Aperitivo & amaro`, `Champagne & wine`, `Flip & punch` — never a spirit's country. Provenance ("Jamaica", "Oaxaca", "Piedmont") goes in `notes`.
+- Put a **drink family** in `cuisine_origin` — one of the eight: `Spirit-forward`, `Sour`, `Highball`, `Tiki`, `Aperitivo & amaro`, `Sparkling & wine`, `Flip & fizz`, `Punch` — never a spirit's country. (Sessions that wrote `Champagne & wine` or the old merged `Flip & punch` still load and still resolve; write the new names. The Americano and the spritz are Aperitivo & amaro, the Sherry Cobbler and the Adonis are Sparkling & wine.) Provenance ("Jamaica", "Oaxaca", "Piedmont") goes in `notes`.
 - Leave `cuisine_origin` **empty** for family-neutral components: simple syrup, citrus, ice, saline, soda. Otherwise `family_drift` fires on a bottle of sugar water — the drink version of the trap the food path avoids by returning silent on an empty origin.
 
 ### Phase 5 — CURATE
@@ -255,12 +256,12 @@ You decide which functional role to ask about first, then second, etc. Pick the 
 **Drink branch** — walk `research_plan.drink_roles_to_fill` most-constraining first:
 
 - **BASE** first, unless `intent.drink.base_spirit` already names a bottle rather than a category. "Rum" needs curating (Jamaican pot-still? Demerara? agricole?); "Smith & Cross" is already locked, so skip to MODIFIER.
-- **MODIFIER** second — it sets the family's character and constrains bitter and sweet downstream
-- Then the family's ratio backbone: **SWEET + ACID** for sours and tiki, **BITTER** for spirit-forward and aperitivo drinks
-- **AROMATIC** next (bitters, expressed oils, tinctures, saline)
-- **DILUTION** and **TEXTURE** last. Both largely follow from the build method chosen in GROUNDING, and in many drinks dilution is not a curated ingredient at all — the ice does it. Curate them when the drink is batched, carbonated, or egg/dairy-bodied, where the water and the body are chosen rather than incidental.
+- **MODIFIER** second — it sets the family's character and constrains bitters and sweetener downstream
+- Then the family's ratio backbone: **SWEETENER + ACID** for sours and tiki, **BITTERS** (dashes of tincture) and a bitter modifier such as an amaro for spirit-forward and aperitivo drinks
+- **AROMATIC_GARNISH** next (expressed oils, peels, herbs)
+- **LENGTHENER** and **TEXTURE** last. Both largely follow from the build method chosen in GROUNDING, and in many drinks the water is not a curated ingredient at all — the ice does it. Curate them when the drink is batched, carbonated, or egg/dairy-bodied, where the mixer, the water and the body are chosen rather than incidental. Saline is a `texture` ingredient (a few drops of a measured solution), not an aromatic.
 
-**Stacking is construction, not redundancy.** `base`, `modifier`, `bitter` and `aromatic` are stackable roles. A split base — a Jamaican pot-still rum alongside a Demerara — and stacked bitters — Angostura alongside orange bitters — are among the defining moves of the form, not accidents to be pruned. Fire `AskUserQuestion` with `multiSelect: True` for those four. `check_drink_redundancy` only fires when two picks land in the same **bar-product class** (two dry vermouths, two orange liqueurs, two Jamaican rums), so a split base passes and a second Dolin Dry does not. `sweet`, `acid`, `dilution` and `texture` are single-slot and fall through to the intensity comparison.
+**Stacking is construction, not redundancy.** `base`, `modifier`, `bitters`, `acid` and `aromatic_garnish` are stackable roles. A split base — a Jamaican pot-still rum alongside a Demerara — and stacked bitters — Angostura alongside orange bitters — are among the defining moves of the form, not accidents to be pruned. Fire `AskUserQuestion` with `multiSelect: True` for those five. `check_drink_redundancy` only fires when two picks land in the same **bar-product class** (two dry vermouths, two orange liqueurs, two Jamaican rums, two lemon juices), so a split base passes and a second Dolin Dry does not. `acid` stacks by class: lemon with lime is a split-citrus move (the Ramos, most tiki drinks) and passes, two lemon juices do not. `sweetener`, `lengthener` and `texture` are single-slot and fall through to the intensity comparison.
 
 #### Step 2 — For each role, the prompt loop
 
@@ -390,12 +391,12 @@ In both modes: cite the food science by name; vague "this adds depth" claims do 
 
 **Drink branch — the bar-prep vector list.** Same three tests (named mechanism, compatible with `intent.drink.family_stance`, honest HIGH/MEDIUM/LOW impact estimate), different classes to scan:
 
-- **Acid adjustment** — dosing citric/malic/phosphoric to make one juice behave like another, or to give a citrus-free drink citrus structure without citrus's shelf life (beverage-craft § Acid and Acid-Adjustment)
+- **Acid adjustment** — dosing citric/malic/phosphoric to make one juice behave like another, or to give a citrus-free drink citrus structure without citrus's shelf life (beverage-craft § Acids: Juice, Isolated Acid, and Acid-Adjusting, `#acids`)
 - **Oleo saccharum** — sugar-extracted citrus peel oil in place of or alongside plain syrup; the peel carries aroma the juice does not
 - **Fat-washing** — moving a fat-soluble flavor into a spirit, then freezing the fat out
 - **Sweetener form** — demerara, cane, honey, or a cordial in place of simple syrup; this changes body as much as sweetness, so it lands on the texture axis too
 - **Split modifier** — two amari or two vermouths *deliberately* across one slot for a profile neither reaches alone. This is the one place the product-class rule and the design intent disagree; take the override path in step (e) so the audit trail records it.
-- **Saline** — a few drops of saline solution (commonly 20% w/w) suppresses bitterness perception and lengthens the finish
+- **Saline** — a few drops of saline solution (20 g salt in 80 g water, 20% w/w) suppresses bitterness perception and lengthens the finish; it is a `texture` ingredient
 - **Build swap** — throwing instead of shaking for aeration without over-dilution; flash-blending; carbonating and bottling instead of building over ice
 
 Cite the bar literature by name, the same way the food path cites McGee and Kenji: Dave Arnold *Liquid Intelligence*, *Cocktail Codex* (Day/Fauchald/Kaplan), *Death & Co*, Jeffrey Morgenthaler *The Bar Book*, Harry Craddock *The Savoy Cocktail Book*, Difford's Guide. If you are not certain a source says it, state the mechanism and drop the attribution.
@@ -417,19 +418,19 @@ Build the recipe.
 
 **Drink branch** — replace steps 1-3 with:
 
-1. Read `.claude/skills/beverage-craft/SKILL.md` — confirm the build method against the selected components (§ Build Methods), then do the arithmetic (§ Dilution and Temperature, § ABV Math and Batching). Read `.claude/skills/culinary-balance/SKILL.md` for the balance plan, and check the result against beverage-craft § Diagnosing an Off-Balance Drink.
+1. Read `.claude/skills/beverage-craft/SKILL.md` — confirm the build method against the selected components (§ Build Methods), then do the arithmetic (§ Dilution, Temperature & ABV Math, `#dilution-temperature-abv`; for a batch, § Batching: Removing the Dilution Step Without Removing the Dilution, `#bar-prep-projects`). Read `.claude/skills/culinary-balance/SKILL.md` for the balance plan, and check the result against beverage-craft § Balance & the Drink Rescue Table.
 2. Draft the spec in `notes.md`: every component in **both oz and ml**, the build, ice format, glass, garnish, plus any prep-ahead components (syrups, cordials, infusions, acid blends, fat-washes) with their yields and hold times.
 3. Compute and record the numbers. These are arithmetic identities — derive them, never estimate them:
 
    ```
    ethanol_vol   = Σ (component_volume × component_abv)
-   final_volume  = undiluted_volume / (1 − dilution_target)
-   water_added   = final_volume − undiluted_volume
+   final_volume  = undiluted_volume × (1 + dilution_target)
+   water_added   = undiluted_volume × dilution_target
    final_abv     = ethanol_vol / final_volume
    std_drinks    = ethanol_vol / 0.6 fl oz      (US standard drink = 0.6 fl oz ≈ 14 g ethanol)
    ```
 
-   Note `dilution_target` here is water as a fraction of the *finished* drink, which is the convention the ratio identity above assumes. Write `final_abv` back to `intent.drink.abv_target_pct` if the user never set one. If `intent.drink.service_format` is anything but `single`, do the batch math now — a batched drink usually carries its water rather than picking it up in the glass, which changes both the dilution plan and the hold.
+   Note `dilution_target` here is water added as a fraction of the *pre-dilution* volume, never of the finished drink; it is the one convention in this repo, the same one beverage-craft states and `intent.drink.dilution_target_pct` records. Worked example, the Negroni below: 3 oz × (1 + 0.24) = 3.72 oz, 0.85 oz of ethanol ÷ 3.72 oz = 22.8%. Write `final_abv` back to `intent.drink.abv_target_pct` if the user never set one. If `intent.drink.service_format` is anything but `single`, do the batch math now — a batched drink usually carries its water rather than picking it up in the glass, which changes both the dilution plan and the hold.
 
 ### Phase 7 — ENHANCE
 
@@ -740,12 +741,12 @@ Same file, same path, same above/below-the-line discipline, same three hard rule
 | Ingredient                    | oz | ml | Note                                  |
 |-------------------------------|----|----|---------------------------------------|
 | London dry gin, 45% ABV       | 1  | 30 | base — juniper-led                    |
-| Campari, 24% ABV              | 1  | 30 | bitter — red bitter aperitivo         |
+| Campari, 24% ABV              | 1  | 30 | modifier — red bitter aperitivo       |
 | Cocchi Vermouth di Torino,16% | 1  | 30 | modifier — cocoa-and-orange bitterness |
 | Orange peel                   | —  | —  | garnish — oil expressed, then dropped |
 
-**Undiluted** 3 oz / 90 ml · **Dilution target** 24% · **Finished** ≈3.95 oz / 117 ml
-**Finished ABV** ≈21.5% · **≈1.4 US standard drinks** (0.85 oz / 25 ml pure ethanol)
+**Undiluted** 3 oz / 90 ml · **Dilution target** 24% of the pre-dilution volume · **Finished** ≈3.72 oz / 110 ml
+**Finished ABV** ≈22.8% · **≈1.4 US standard drinks** (0.85 oz / 25 ml pure ethanol)
 
 (Bar rounding: 1 oz is poured as 30 ml; 1 US fl oz = 29.57 ml. Show the ABV to one decimal
 and the standard drinks to one — the inputs are bottle-label proofs, so more precision is false.)
@@ -753,7 +754,7 @@ and the standard drinks to one — the inputs are bottle-label proofs, so more p
 ## Prep ahead
 
 (Syrups, cordials, infusions, fat-washes, acid blends, batches — each with ratio, yield, and hold
-time. "2:1 demerara syrup — 200 g demerara to 100 g water, ~250 ml, 2 weeks refrigerated.")
+time. "2:1 demerara syrup, by weight — 200 g demerara to 100 g water, ~250 ml, refrigerated; if a cold fridge crystallises it, 1.5:1 is the alternative (beverage-craft § 7.1).")
 
 ## Build
 
@@ -817,7 +818,7 @@ For a drink, four rows re-route and the rest are unchanged:
 | Spec table + the ABV/dilution line | `state.selected` grouped by drink role, with the volumes and the arithmetic from SYNTHESIZE |
 | Prep ahead | prep-ahead components in `state.selected` (syrups, cordials, infusions, acid blends) + the batch math if `service_format != single` |
 | Build | the SYNTHESIZE draft + `objectively_better` candidates auto-applied, fallback inline italic |
-| Tasting protocol | `beverage-craft/reference.md § Diagnosing an Off-Balance Drink`, narrowed to this drink's likely failure modes |
+| Tasting protocol | `beverage-craft/reference.md § Balance & the Drink Rescue Table`, narrowed to this drink's likely failure modes |
 
 #### Chat summary (post in the conversation when done)
 

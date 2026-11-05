@@ -19,7 +19,7 @@ The knowledge base is organized around the operations a culinary agent performs 
 
 Pillars 1–3 are sequential in a normal cooking workflow (choose ingredients → cook them → taste and adjust), but the agent can enter at any pillar depending on the user's question.
 
-Pillar 4 is not a fourth step in that sequence. It is the whole sequence again in a different medium, which is why it is a single document covering selection, transformation, and balance for drinks rather than three parallel documents. The agent selects between the food pillars and the drink pillar on the session's medium, and the two sets do not mix: a drink is not a dish with liquor in it, and the food pillars have nothing correct to say about dilution, ABV, or a split base.
+Pillar 4 is not a fourth step in that sequence. It is the whole sequence again in a different medium, which is why it is a single document covering selection, transformation, and balance for drinks rather than three parallel documents. The agent selects between the food pillars and the drink pillar on the session's medium. A drink is not a dish with liquor in it, and the food pillars have nothing correct to say about dilution, ABV, or a split base, so the drink pillar owns those. The shared taste axes and the counterbalancing logic of Pillar 3 still apply in a glass, with the ethanol, temperature and carbonation corrections the drink pillar adds (§ Balance & the Drink Rescue Table).
 
 ---
 
@@ -189,7 +189,7 @@ Pillars 1–3 are designed to compose. The agent rarely uses just one — typica
 
 ## Drink workflows (Pillar 4)
 
-Pillar 4 does not compose with Pillars 1–3; it replaces them. The agent picks a medium first and then stays on one side of the line. What follows are the drink-side equivalents of the workflows above, all of them running inside Pillar 4's own sections.
+For a drink, Pillar 4 takes the place of Pillar 2 (technique is food-only) and of most of Pillar 1 (the flavor-affinity pairings still answer "what goes with X"), and it borrows from Pillar 3: the taste axes and the rescue logic carry over, while the arithmetic of dilution and ABV is the drink pillar's own. The agent picks a medium first, then reads the pillars that medium needs. What follows are the drink-side equivalents of the workflows above, all of them running inside Pillar 4's own sections.
 
 **Workflow: Build a new drink from scratch**
 1. Section 1: run the template selector on the brief — citrus? aromatized wine? carbonation? egg or dairy? split base? batched?

@@ -14,7 +14,9 @@ Four mirrored rules for drinks, selected when state.intent.medium is "drink":
                                     — candidate's cuisine_origin is in a different drink
     family group than the drink
   - check_drink_redundancy (SOFT)    — same role + same bar-product class already selected
-  - check_build_impossibility (SOFT) — v1 stub, returns None
+  - check_build_impossibility (SOFT) — a component the build method cannot handle: raw egg
+    in a stirred drink, citrus in a carbonated one, carbonation in a shaker (see
+    BUILD_IMPOSSIBILITY_RULES)
 
 check_candidate runs whichever set _rules_for selects, with HARD taking precedence: an
 allergy-blocked candidate reports only its hard findings. classify_candidate turns findings
@@ -30,15 +32,21 @@ import argparse
 import json
 import re
 import sys
+from collections.abc import Callable
 from enum import Enum
 from functools import cache
 from pathlib import Path
+from typing import NamedTuple
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from mise_en_prompt.state import (
+    DRINK_FAMILY_ALIASES,
+    DRINK_ROLE_ALIASES,
     Candidate,
+    DrinkFamily,
     DrinkPruneRule,
+    DrinkRole,
     PruneRule,
     PrunedItem,
     Severity,
@@ -483,11 +491,17 @@ DRINK_EXCLUSION_EXEMPT: dict[str, list[str]] = {
 
 
 # Drink family groupings — same-group families share a template and compose comfortably.
-# Sibling of CUISINE_GROUPS. Members are multi-word wherever a single word would swallow
-# another family under the bidirectional matcher: bare "fizz" is out of Highball because it is
-# a substring of silver/golden fizz in Flip & punch, and bare "punch" is out of every group
-# because it is a substring of rum punch, milk punch and planter's punch across three of them.
-DRINK_FAMILIES: dict[str, list[str]] = {
+# Sibling of CUISINE_GROUPS, and keyed by exactly the DrinkFamily Literal in state.py (a test
+# pins the two). Members are multi-word wherever a single word would swallow another family
+# under the bidirectional matcher: bare "fizz" is out of Highball because it is a substring
+# of silver/golden fizz in Flip & fizz, and bare "punch" is out of every member list because
+# it is a substring of rum punch, milk punch and planter's punch across two groups. The group
+# names themselves are matched exactly before any member scan, which is how "Punch" resolves.
+#
+# Placement follows the pillar's taxonomy (beverage-craft section 1.10): the Americano and
+# the spritz hold a bitter in the base slot, so they are Aperitivo & amaro, not Highball; the
+# sherry cobbler and the Adonis are wine-led, so they are Sparkling & wine.
+DRINK_FAMILIES: dict[DrinkFamily, list[str]] = {
     "Spirit-forward": [
         "spirit-forward", "spirit forward", "stirred cocktail", "old fashioned",
         "manhattan", "martini", "martinez", "negroni", "boulevardier", "sazerac",
@@ -500,7 +514,7 @@ DRINK_FAMILIES: dict[str, list[str]] = {
     ],
     "Highball": [
         "highball", "collins", "mojito", "cuba libre", "dark and stormy", "paloma",
-        "gin and tonic", "americano", "spritz", "rickey", "gin fizz", "moscow mule",
+        "gin and tonic", "rickey", "gin fizz", "moscow mule",
         "buck", "presbyterian", "tall drink",
     ],
     "Tiki": [
@@ -511,29 +525,62 @@ DRINK_FAMILIES: dict[str, list[str]] = {
     "Aperitivo & amaro": [
         "aperitivo", "amaro", "amari", "italian bitter", "vermouth cocktail",
         "bicicletta", "garibaldi", "milano-torino", "sbagliato", "bitter aperitif",
-        "french aperitif", "low-abv bitter",
+        "french aperitif", "low-abv bitter", "americano", "spritz",
     ],
-    "Champagne & wine": [
+    "Sparkling & wine": [
         "champagne cocktail", "wine cocktail", "sparkling cocktail", "french 75",
         "kir royale", "bellini", "mimosa", "death in the afternoon", "seelbach",
         "sherry cobbler", "bamboo", "adonis", "vermouth aperitif",
     ],
-    "Flip & punch": [
+    "Flip & fizz": [
         "flip", "eggnog", "nog", "brandy alexander", "grasshopper", "golden fizz",
-        "silver fizz", "milk punch", "clarified milk punch", "syllabub",
-        "fish house punch", "bowl punch", "batched punch", "posset", "wassail",
+        "silver fizz", "syllabub", "posset",
+    ],
+    "Punch": [
+        "milk punch", "clarified milk punch", "fish house punch", "bowl punch",
+        "batched punch", "wassail",
     ],
 }
 
 
 # Roles where stacking multiple candidates is normal — skip the intensity check. Sibling of
-# STACKABLE_ROLES. base and modifier are here because the split base (two rums) and the double
-# modifier are canonical construction rather than accidents, and stacked bitters are the
-# defining move of the form. sweet, acid, dilution and texture stay single-slot.
-DRINK_STACKABLE_ROLES: set[str] = {
-    "base", "bases", "modifier", "modifiers",
-    "bitter", "bitters", "aromatic", "aromatics",
+# STACKABLE_ROLES, keyed by the canonical DrinkRole names (older spellings reach it through
+# normalize_drink_role). base and modifier are here because the split base (two rums) and the
+# double modifier are canonical construction rather than accidents, and stacked bitters are
+# the defining move of the form. acid is here because split citrus (lemon plus lime, the
+# Ramos, most tiki) is a real move; it stacks by PRODUCT CLASS, which check_drink_redundancy
+# runs before it consults this set, so two lemon juices are still caught. sweetener,
+# lengthener and texture stay single-slot.
+DRINK_STACKABLE_ROLES: set[DrinkRole] = {
+    "base", "modifier", "bitters", "acid", "aromatic_garnish",
 }
+
+
+def normalize_drink_role(role: str) -> str:
+    """The canonical DrinkRole name for ``role``, or its lower-cased self if it is unknown.
+
+    Reads the legacy spellings through DRINK_ROLE_ALIASES (sweet, bitter, aromatic,
+    dilution...), so a session written before the roles were renamed is judged exactly as the
+    new names would be. An unknown name passes through unchanged: the rules treat it as its
+    own single slot, the same silent fallback they always had.
+    """
+    key = role.strip().lower()
+    return DRINK_ROLE_ALIASES.get(key, key)
+
+
+def drink_role_warning(role: str) -> str | None:
+    """A warning when ``role`` is a legacy name that loses meaning in translation, else None.
+
+    ``dilution`` named a quantity, not an ingredient; it is read as ``lengthener`` so the
+    session still runs, and the agent is told to compute the water instead.
+    """
+    if role.strip().lower() == "dilution":
+        return (
+            "role 'dilution' is read as 'lengthener': dilution is a computed quantity, not a "
+            "role. Compute the water in SYNTHESIZE, and use 'lengthener' only for a chosen "
+            "mixer or measured water."
+        )
+    return None
 
 
 # Bar-product classes. No food sibling — this is what lets the drink redundancy rule allow a
@@ -563,6 +610,14 @@ DRINK_PRODUCT_CLASSES: dict[str, list[str]] = {
     "simple syrup": ["simple syrup", "sugar syrup", "rich syrup", "1:1 syrup", "2:1 syrup"],
     "honey syrup": ["honey syrup", "honey water", "hot honey syrup"],
     "red bitter aperitivo": ["campari", "red bitter", "bitter aperitivo", "contratto bitter"],
+    # Acid-slot classes: this is what lets the acid role stack. Lemon and lime are different
+    # classes, so a split-citrus sour passes; two lemon juices share one, so they do not.
+    # Isolated acids (citric, malic, phosphoric) are deliberately unclassed: a citric/malic
+    # pair is the pillar's own acid-adjusting practice (section 3.7).
+    "lemon juice": ["lemon juice"],
+    "lime juice": ["lime juice"],
+    "grapefruit juice": ["grapefruit juice"],
+    "acid solution": ["acid solution", "acid blend", "acid-adjusted", "super juice"],
 }
 
 
@@ -578,14 +633,24 @@ def _find_drink_family(family: str) -> str | None:
     A *fragment* match — the query appears inside a member, "punch" in "rum punch" — means the
     query is a bare word that several families happen to share. DRINK_FAMILIES deliberately
     withholds those bare words from every group for this reason, but first-wins defeated that:
-    "punch" is a fragment of Tiki's rum punch AND of Flip & punch's milk punch, and whichever
+    "fizz" is a fragment of Highball's gin fizz AND of Flip & fizz's silver fizz, and whichever
     group iterated first silently claimed it. A fragment is therefore only honored when it
     lands in exactly one group; when it straddles groups the honest answer is None, which is
     the same silent no-claim the matcher already gives an unclassifiable string.
+
+    Two things are decided before any member scan. A query that IS a group name ("Punch",
+    "Flip & fizz") is that group, whatever the group's members share. A legacy family name
+    (DRINK_FAMILY_ALIASES) resolves to the first group it became; check_family_drift reads
+    the whole set through _family_groups.
     """
     if not family:
         return None
-    family_lower = family.lower()
+    family_lower = family.strip().lower()
+    for group in DRINK_FAMILIES:
+        if family_lower == group.lower():
+            return group
+    if family_lower in DRINK_FAMILY_ALIASES:
+        return DRINK_FAMILY_ALIASES[family_lower][0]
     named: list[str] = []
     fragments: set[str] = set()
     for group, members in DRINK_FAMILIES.items():
@@ -599,6 +664,21 @@ def _find_drink_family(family: str) -> str | None:
     if len(fragments) == 1:
         return next(iter(fragments))
     return None
+
+
+def _family_groups(family: str) -> frozenset[str]:
+    """Every group ``family`` can mean: one for a normal name, several for a split legacy name.
+
+    ``Flip & punch`` was one group and is now two, so a legacy session that wrote it means
+    either half. Drift is a clash only when the two sides share no group at all.
+    """
+    if not family:
+        return frozenset()
+    legacy = DRINK_FAMILY_ALIASES.get(family.strip().lower())
+    if legacy:
+        return frozenset(legacy)
+    group = _find_drink_family(family)
+    return frozenset({group}) if group else frozenset()
 
 
 def _find_product_class(name: str) -> str | None:
@@ -767,9 +847,11 @@ def check_family_drift(candidate: Candidate, state: State) -> ConflictFinding | 
     target = drink.drink_family if drink else None
     if not target or not candidate.cuisine_origin:
         return None
-    target_group = _find_drink_family(target)
-    candidate_group = _find_drink_family(candidate.cuisine_origin)
-    if target_group and candidate_group and target_group != candidate_group:
+    target_groups = _family_groups(target)
+    candidate_groups = _family_groups(candidate.cuisine_origin)
+    if target_groups and candidate_groups and target_groups.isdisjoint(candidate_groups):
+        target_group = _find_drink_family(target)
+        candidate_group = _find_drink_family(candidate.cuisine_origin)
         explore = drink.family_stance == "explore"
         return ConflictFinding(
             severity=Severity.INFO if explore else Severity.SOFT,
@@ -788,19 +870,21 @@ def check_drink_redundancy(candidate: Candidate, state: State) -> ConflictFindin
     Sibling of check_functional_redundancy, keyed on product class first and intensity second.
     The class check runs unconditionally, so two dry vermouths are caught even inside a
     stackable role; stackability only governs the intensity fallback, which is what lets a
-    split base and stacked bitters through while single-slot roles (sweet, acid, dilution,
-    texture) still fall back to the food-style intensity ±2 comparison.
+    split base, stacked bitters and split citrus through while single-slot roles
+    (sweetener, lengthener, texture) still fall back to the food-style intensity ±2
+    comparison. Roles are compared by their canonical name, so legacy spellings (bitter,
+    sweet, aromatic, dilution) behave as the pillar's names would.
 
     One deliberate divergence from the food sibling: candidates are compared against selected
     peers other than themselves. The food rule hides that case behind its intensity
     requirement; the unconditional class check would otherwise match a candidate to itself.
     """
-    role_lower = candidate.functional_role.lower()
+    role_key = normalize_drink_role(candidate.functional_role)
     same_role_selected = [
         c for c in state.candidates
         if c.name in state.selected
         and c.name != candidate.name
-        and c.functional_role.lower() == role_lower
+        and normalize_drink_role(c.functional_role) == role_key
     ]
     candidate_class = _find_product_class(candidate.name)
     if candidate_class is not None:
@@ -814,7 +898,7 @@ def check_drink_redundancy(candidate: Candidate, state: State) -> ConflictFindin
                         f'at the same {candidate.functional_role} role'
                     ),
                 )
-    if role_lower in DRINK_STACKABLE_ROLES:
+    if role_key in DRINK_STACKABLE_ROLES:
         return None
     if candidate.intensity is None:
         return None
@@ -834,16 +918,143 @@ def check_drink_redundancy(candidate: Candidate, state: State) -> ConflictFindin
     return None
 
 
-def check_build_impossibility(
-    candidate: Candidate, state: State,  # noqa: ARG001
-) -> ConflictFinding | None:
-    """SOFT: v1 stub sibling of check_technique_impossibility. Returns None.
+class _BuildRule(NamedTuple):
+    """One row of the build-impossibility table.
 
-    v2 will check the candidate against state.intent.drink.build_method: an egg white cannot
-    be stirred, and a carbonated build cannot take a fresh-citrus component without
-    pre-clarification. For v1, the agent reasons about the build in conversation rather than
-    via a programmatic check.
+    ``applies`` reads the candidate's role, its own component tags, and the tags of the
+    already-selected peers; ``methods`` is the set of build methods the row forbids (None
+    means any method not in ``except_methods``). ``fix`` completes the sentence "this build
+    ..." in the finding, and names what would work.
     """
+
+    key: str
+    applies: Callable[[str, frozenset[str], frozenset[str]], bool]
+    methods: frozenset[str] | None
+    except_methods: frozenset[str]
+    fix: str
+
+
+def _has(tags: frozenset[str], *wanted: str) -> bool:
+    return any(tag in tags for tag in wanted)
+
+
+# The table is applied in order and the first matching row wins; every row is SOFT, so the
+# user can override one and the audit trail records it. Source: the pillar's build decision
+# rule (beverage-craft section 6.12) and the repair spec's rule table. A module-level tuple,
+# not branches inside the function, so a test can remove one row and watch exactly its
+# finding disappear.
+BUILD_IMPOSSIBILITY_RULES: tuple[_BuildRule, ...] = (
+    _BuildRule(
+        "foam_needs_shake",
+        lambda role, own, peers: _has(own, "egg_raw", "aquafaba")
+        or (_has(own, "dairy") and _has(own, "foam")),
+        frozenset({"stirred", "built", "thrown"}),
+        frozenset(),
+        "adds no air, so the foam never forms: it needs dry_shaken or shaken",
+    ),
+    _BuildRule(
+        "citrus_stirred",
+        lambda role, own, peers: _has(own, "citrus_juice", "pulp", "puree"),
+        frozenset({"stirred"}),
+        frozenset(),
+        "leaves juice, pulp or puree unintegrated and under-diluted: juice needs shaking "
+        "or throwing",
+    ),
+    _BuildRule(
+        "citrus_carbonated",
+        lambda role, own, peers: _has(own, "citrus_juice", "pulp"),
+        frozenset({"carbonated"}),
+        frozenset(),
+        "pours flat and cloudy with fresh juice or pulp in it: clarify first (milk, agar, "
+        "gelatin) or expect a flat, cloudy pour",
+    ),
+    _BuildRule(
+        "carbonation_agitated",
+        lambda role, own, peers: _has(own, "carbonation"),
+        frozenset({"shaken", "dry_shaken", "blended", "flash_blended"}),
+        frozenset(),
+        "drives the gas out: carbonation goes in last and is never agitated",
+    ),
+    _BuildRule(
+        "carbonation_heated",
+        lambda role, own, peers: _has(own, "carbonation"),
+        frozenset({"heated"}),
+        frozenset(),
+        "goes flat when heated: drop the carbonation or add it at service",
+    ),
+    _BuildRule(
+        "egg_heated",
+        lambda role, own, peers: _has(own, "egg_raw"),
+        frozenset({"heated"}),
+        frozenset(),
+        "cooks and curdles raw egg above ~70 °C: a hot flip must be tempered",
+    ),
+    _BuildRule(
+        "dairy_with_citrus",
+        lambda role, own, peers: (_has(own, "dairy") and _has(own | peers, "citrus_juice"))
+        or (_has(own, "citrus_juice") and _has(peers, "dairy")),
+        None,
+        frozenset({"clarified"}),
+        "curdles the casein in dairy against citrus acid: clarify it, or choose one",
+    ),
+    _BuildRule(
+        "cream_liqueur_carbonated",
+        lambda role, own, peers: _has(own, "cream_liqueur"),
+        frozenset({"carbonated"}),
+        frozenset(),
+        "foams a cream liqueur over: add it after the pour, or leave the carbonation out",
+    ),
+    _BuildRule(
+        "low_proof_base_shaken",
+        lambda role, own, peers: role == "base" and _has(own, "beer", "wine", "cider"),
+        frozenset({"shaken"}),
+        frozenset(),
+        "shakes a 5 to 15% base: the dilution target drops to 5-10%, so build it instead",
+    ),
+)
+
+
+def check_build_impossibility(
+    candidate: Candidate, state: State,
+) -> ConflictFinding | None:
+    """SOFT: the candidate's components cannot survive ``intent.drink.build_method``.
+
+    Sibling of check_technique_impossibility. Walks BUILD_IMPOSSIBILITY_RULES in order and
+    reports the first row that matches, so one candidate yields one finding. Silent when the
+    candidate carries no component tags: ``contains`` empty means nothing about the build
+    depends on it, the same silence the food rule gives a candidate with no prep time.
+    A rule that needs the build method stays quiet until intent.drink.build_method is set;
+    the dairy-with-citrus row does not need one and only steps aside for a clarified build.
+    """
+    if not candidate.contains:
+        return None
+    drink = state.intent.drink
+    method = drink.build_method if drink else None
+    own = frozenset(candidate.contains)
+    role = normalize_drink_role(candidate.functional_role)
+    peers = frozenset(
+        tag
+        for c in state.candidates
+        if c.name in state.selected and c.name != candidate.name
+        for tag in c.contains
+    )
+    for rule in BUILD_IMPOSSIBILITY_RULES:
+        if not rule.applies(role, own, peers):
+            continue
+        if rule.methods is None:
+            if method in rule.except_methods:
+                continue
+        elif method not in rule.methods:
+            continue
+        shown = method or "any"
+        return ConflictFinding(
+            severity=Severity.SOFT,
+            rule=DrinkPruneRule.BUILD_IMPOSSIBILITY,
+            reason=(
+                f'"{candidate.name}" ({", ".join(candidate.contains)}) in a {shown} build: '
+                f"this build {rule.fix}"
+            ),
+        )
     return None
 
 
@@ -898,6 +1109,8 @@ class RoleFilter(BaseModel):
                  the reason so state.pruned can record them.
     notes:       INFO findings (drift under explore) on compatible or would_prune
                  candidates, for the agent to mention. Never a reason to prune.
+    warnings:    drink sessions only: legacy role names that were read through an alias and
+                 lost something in translation (``dilution`` -> ``lengthener``).
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -906,15 +1119,31 @@ class RoleFilter(BaseModel):
     would_prune: list[PrunedItem] = []
     excluded: list[PrunedItem] = []
     notes: list[PrunedItem] = []
+    warnings: list[str] = Field(default_factory=list)
 
 
 def filter_candidates_for_role(role: str, state: State) -> RoleFilter:
-    """Sort state.candidates matching ``role`` into a RoleFilter, preserving order."""
-    role_lower = role.lower()
+    """Sort state.candidates matching ``role`` into a RoleFilter, preserving order.
+
+    A drink session compares roles by their canonical name, so asking for ``sweetener``
+    finds candidates written as ``sweet`` and the reverse. A dish session compares
+    lower-cased text exactly as before.
+    """
+    is_drink = state.intent.medium == "drink"
+
+    def role_key(name: str) -> str:
+        return normalize_drink_role(name) if is_drink else name.lower()
+
+    wanted = role_key(role)
     result = RoleFilter()
+    if is_drink and (warning := drink_role_warning(role)):
+        result.warnings.append(warning)
     for candidate in state.candidates:
-        if candidate.functional_role.lower() != role_lower:
+        if role_key(candidate.functional_role) != wanted:
             continue
+        if is_drink and (warning := drink_role_warning(candidate.functional_role)):
+            if warning not in result.warnings:
+                result.warnings.append(warning)
         verdict, findings = classify_candidate(candidate, state)
         items = {
             severity: [

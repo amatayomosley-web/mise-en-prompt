@@ -104,7 +104,7 @@ def _component(name: str, role: str, intensity: int | None = None, origin: str =
         ("Mai Tai", "Tiki"),
         ("Negroni", "Spirit-forward"),
         ("Daiquiri", "Sour"),
-        ("Milk Punch", "Flip & punch"),
+        ("Milk Punch", "Punch"),
         ("Gin and Tonic", "Highball"),
     ],
 )
@@ -118,7 +118,7 @@ def test_find_drink_family_resolves_real_families(family: str, group: str):
     [
         ("Italian aperitivo", "Aperitivo & amaro", "European"),
         ("Japanese highball", "Highball", "East Asian"),
-        ("French 75", "Champagne & wine", "European"),
+        ("French 75", "Sparkling & wine", "European"),
     ],
 )
 def test_drink_family_no_longer_picks_up_food_region_semantics(
@@ -149,14 +149,16 @@ def test_find_drink_family_empty_returns_none():
     assert _find_drink_family("") is None
 
 
-@pytest.mark.parametrize("bare", ["punch", "fizz"])
+@pytest.mark.parametrize("bare", ["fizz"])
 def test_a_bare_word_several_families_share_resolves_to_no_family(bare: str):
     """DRINK_FAMILIES withholds these bare words from every group; the matcher must agree.
 
-    "punch" is a fragment of Tiki's rum punch and of Flip & punch's milk punch, and "fizz" of
-    Highball's gin fizz and Flip & punch's silver fizz. Under first-wins whichever group
-    iterated first silently claimed the word, which made the deliberate omission from the
-    member lists do nothing. Straddling groups means the query is genuinely ambiguous.
+    "fizz" is a fragment of Highball's gin fizz and of Flip & fizz's silver fizz. Under
+    first-wins whichever group iterated first silently claimed the word, which made the
+    deliberate omission from the member lists do nothing. Straddling groups means the query
+    is genuinely ambiguous. ("punch" is no longer in this test: it is now the exact name of
+    the Punch family and resolves to it; test_drink_repairs pins that and keeps the bare
+    word out of every member list.)
     """
     from mise_en_prompt.conflicts import DRINK_FAMILIES
 
@@ -173,7 +175,7 @@ def test_a_fragment_landing_in_exactly_one_group_still_resolves():
 
 def test_naming_a_family_beats_a_fragment_in_an_earlier_group():
     """A member inside the query outranks the query being inside some other group's member."""
-    assert _find_drink_family("hot milk punch") == "Flip & punch"
+    assert _find_drink_family("hot milk punch") == "Punch"
 
 
 def test_every_declared_family_member_resolves_to_its_own_group():
@@ -614,11 +616,15 @@ def test_two_orange_liqueurs_collapse_to_one_slot():
 
 
 def test_single_slot_role_still_falls_back_to_intensity():
-    """sweet/acid/dilution/texture are single-slot — they keep the food-style ±2 comparison."""
-    lime = _component("lime juice", "acid", 7)
-    lemon = _component("lemon juice", "acid", 6)
-    state = _drink_state(candidates=[lime, lemon], selected=["lime juice"])
-    finding = check_drink_redundancy(lemon, state)
+    """sweetener/lengthener/texture are single-slot — they keep the food-style ±2 comparison.
+
+    Acid left this list: it stacks by product class (test_drink_repairs), so lime and lemon
+    juice no longer collide here.
+    """
+    simple = _component("simple syrup", "sweetener", 4)
+    agave = _component("agave nectar", "sweetener", 5)
+    state = _drink_state(candidates=[simple, agave], selected=["simple syrup"])
+    finding = check_drink_redundancy(agave, state)
     assert finding is not None
     assert finding.rule == DrinkPruneRule.DRINK_FUNCTIONAL_REDUNDANCY
 
@@ -653,10 +659,11 @@ def test_unclassified_components_fall_through_to_intensity_only():
     assert check_drink_redundancy(aquafaba, state) is not None
 
 
-# check_build_impossibility (v1 stub) ------------------------------------------
+# check_build_impossibility (silent without component tags) -------------------
 
 
-def test_build_impossibility_v1_stub_returns_none():
+def test_build_impossibility_is_silent_for_a_candidate_with_no_component_tags():
+    """An untagged candidate says nothing about its build; the table is in test_drink_repairs."""
     state = _drink_state(DrinkIntent(build_method="stirred"))
     assert check_build_impossibility(_component("egg white", "texture"), state) is None
 

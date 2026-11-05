@@ -6,7 +6,9 @@ This pillar is the drink-side parallel to the three food pillars. Where those re
 ingredients, transformations, and balance in a dish, this one reasons about the same four
 questions in a glass: what structural template is this drink, what fills each slot, what does
 cold water do to it, and what has to be built days in advance. Coverage is cocktails and bar
-prep. Fermentation and brewing are deliberately out of scope.
+prep. Production is explained, not taught: how a spirit or wine is made appears only to the
+depth that explains what the bottle does in a glass (the Spirits & Production Science pillar
+carries the fuller explanation), and nothing here is a how-to for making spirits.
 
 **Scope**: drink families and templates, base spirits, modifiers and sweeteners, balance and
 rescue, dilution/temperature/ABV arithmetic, build methods, bar prep projects, service.
@@ -94,8 +96,9 @@ Every figure in the last column is the pre-dilution ABV divided by the stirred d
 | Japanese Whisky Highball | Soda water | Nothing but carbonation and cold — the driest reading of the template, and the one that leaves the base fully exposed | ~9–11% |
 | Gin & Tonic | Tonic | Quinine bitterness *and* **~7–9 g/100 mL sugar**; the lengthener is also the sweetener, so nothing else in the build should be | ~11–14% |
 | Cuba Libre | Cola + lime | Sugar, caramel color, phosphoric acid and its own spice load; the base recedes to a supporting voice | ~10–12% |
-| Americano | Soda water | Only volume and carbonation — the bitterness and the sugar already sit in the base slot (§1.9) | ~9–11% |
 | Paloma | Grapefruit soda + lime + salt | Sugar, a second acid against the citric, and salt acting as a bitterness suppressor (§4.1) | ~11–13% |
+
+The Americano and the Spritz are built on this root's skeleton but belong to the aperitivo family (§1.9): a bitter, not a spirit, holds the base slot. Their strength falls inside both bands, so the base slot, not the ABV, decides the family.
 
 **Why carbonation is structural, not decorative.** Dissolved CO₂ is converted to carbonic acid at the tongue by **carbonic anhydrase IV** expressed on sour-sensing taste cells, and it independently stimulates trigeminal receptors. Carbonation is therefore simultaneously an *acid*, a *tactile irritant*, and a *volatile carrier* — bursting bubbles eject aroma into the nasal cavity. Sparkling water typically sits at **pH 3.9–5.0**. This is why a highball needs less added acid than an equivalent-strength still drink, and why a flat highball tastes not just dull but noticeably *sweeter*.
 
@@ -162,6 +165,15 @@ Because Brut already contributes up to 12 g/L sugar and real acidity, a sparklin
 
 **Worked check — the base-slot proof trap.** This template is the one place where the format lies about the strength, so run the arithmetic on the base-slot band above before trusting it. Take a 1.5 oz pour of a 60% base plus 4.5 oz of sparkling wine at ~12%, which together fill a 6 oz flute (§8.1): that is 0.9 + 0.54 = 1.44 oz of ethanol in 6 oz — **24% finished**, and **20–28%** across the full 45–74% band of the anise-spirit category in §3.4. That is a Martini-strength drink wearing a sparkling-cocktail costume, not a 15% aperitif. The lengthener cannot rescue it either: even at the bottom of that range, landing the drink at 18% would take 6.75 oz of sparkling wine on top of the 1.5 oz pour (10.5 oz at 60%), which is more than a flute holds. Any base-slot spirit above about 45% behaves the same way here, and the glass runs out of room before the arithmetic does — which is the general lesson, and the reason the 1.5–2.5 oz base-slot band above is a ceiling rather than a suggestion.
 
+**Wine-based relatives.** Two drinks an older cut filed under aperitivo belong in this family, because a wine holds the base slot and no bitter liqueur sets the strength. A sparkling cocktail's base is a spirit; these two are wine all the way down, and they finish at wine strength or a little above it.
+
+| Drink | Structure, by role | Wine in the base slot (ABV) | Finished ABV |
+|---|---|---|---|
+| Sherry Cobbler | oxidative sherry at a long base pour + a small sugar dose + fruit, crushed ice | amontillado 17–19% | ~10–13% |
+| Adonis | biological sherry + sweet vermouth sharing the base slot + orange bitters, no lengthener at all — which is why it finishes highest of the wine-led drinks | — | ~15–16% |
+
+So the family's members run from the Sherry Cobbler at ~10% to the base-slot proof trap above at 20–28%. The core of the sparkling-cocktail form, a compact base under a flute of wine, sits at **12–16%**; the band in §1.10 is wider because it has to contain every member.
+
 ### 1.8 Punch {#template-punch}
 
 The oldest mixed-drink structure in English, and the ancestor of the sour. The mnemonic is **"one of sour, two of sweet, three of strong, four of weak"** — 1 part citrus : 2 parts sugar : 3 parts spirit : 4 parts water/tea — with a **fifth element, spice** (nutmeg, clove, cinnamon, or tea tannin), which is why the word is often traced to the Sanskrit/Hindi *pañc*, "five." David Wondrich's *Punch: The Delights (and Dangers) of the Flowing Bowl* (2010) is the standard history and the source for most reconstructed period specs.
@@ -185,9 +197,9 @@ The consequence for volume is the thing most builds get wrong. Because the base 
 | Aperol Spritz (IBA) | low-bitter, heavily sugared aperitivo in the base slot, lengthened with sparkling wine and a splash of soda, over ice | Aperol (11%) | ~7–9% |
 | Americano | bitter aperitivo + sweet vermouth sharing the base slot, lengthened with soda | Campari (20.5% IT / 24% US) | ~9–11% |
 | Bicicletta | bitter aperitivo + dry white wine, lengthened with soda; the wine does the work sparkling wine does in a spritz, without the carbonation | Campari | ~9–11% |
-| Sherry Cobbler | oxidative sherry at a long base pour + a small sugar dose + fruit, crushed ice | — (amontillado 17–19%) | ~10–13% |
 | Cynar Spritz | vegetal artichoke amaro in the base slot, lengthened with sparkling wine and soda | Cynar (16.5%) | ~8–10% |
-| Adonis | biological sherry + sweet vermouth sharing the base slot + orange bitters, no lengthener at all — which is why it finishes highest in the family | — | ~15–16% |
+
+The Sherry Cobbler and the Adonis take a wine, not a bitter, in the base slot and finish at or above the top of this band; they sit with the wine-led drinks in §1.7.
 
 **Why it works.** Bitterness is doing the structural job that ethanol does in a spirit-forward drink: it provides the astringent, palate-clearing counterweight that keeps sugar from dominating. The bittering compounds are real and named — **quinine** in tonic, **gentiopicroside** in gentian (Suze, Aperol's bitter backbone), **cynarin** in artichoke (Cynar), **absinthin** in wormwood-based vermouths, and citrus-peel **naringin/limonin** in the Campari family. Because these liqueurs are already sweetened (Aperol and Campari both carry substantial residual sugar), the aperitivo family usually needs **no added sweetener at all** — adding syrup on top is the most common way to wreck one.
 
@@ -202,9 +214,24 @@ The consequence for volume is the thing most builds get wrong. Because the base 
 | Highball | spirit + carbonation | 1 : 2–4 | Build | Large cubes, tall | Collins / highball | 5–10% | 9–14% |
 | Tiki | split base + multi-acid + compound sweet | 2–4 oz total spirit | Whip / flash blend | Crushed | Tiki mug / Collins | 30–35% at service | 14–20% |
 | Flip / dairy | spirit + sugar + egg/cream | 2 : 0.5 : 1 egg | Dry + wet shake | Fine-strain | Coupe / fizz | 25–30% | 12–18% |
-| Sparkling | concentrated base + sparkling wine | 2 : 2–3 | Shake base, top | Up or cubes | Flute / coupe | 10–20% | 12–16% |
+| Sparkling & wine | concentrated base + sparkling wine, or wine in the base slot | 2 : 2–3 | Shake base, top | Up or cubes | Flute / coupe | 10–20% | 10–28% (core 12–16%) |
 | Punch | 1 sour : 2 sweet : 3 strong : 4 weak | scaled batch | Pre-batch | One large block | Punch cup | designed in | 10–14% |
 | Aperitivo / spritz | bitter liqueur + wine + soda | 3 : 2 : 1 | Build | Cubes | Wine glass | 5–15% | 6–12% |
+
+**Band check.** Each finished-ABV band above contains every member the pillar names for the family; the table below gives the lowest and highest member and where its figure comes from. A band may be wider than its members; it may not be narrower. A member that does not fit is moved to the family it belongs to, not averaged away.
+
+| Family | Band | Lowest member | Highest member |
+|---|---|---|---|
+| Sour | 16–20% | the §4 anchor sour, ~17% | Worked Example B (§5.3), 18.0% |
+| Sidecar (liqueur sour) | 20–25% | the 1.5 : 0.75 : 0.75 ratio, both liquors at 40%, at 30% dilution: 23.1% | the same ratio at 25% dilution: 24.0% |
+| Old Fashioned | 32–38% | Old Fashioned, ~32–35% (§1.3) | Sazerac, ~35–38% (§1.3) |
+| Martini root | 22–35% | Negroni, 22.8% (Worked Example C, §5.3) | Martini, ~34–35% (§1.3) |
+| Highball | 9–14% | Japanese Whisky Highball, ~9–11% | Gin & Tonic, ~11–14% |
+| Tiki | 14–20% | no member in this pillar carries a figure | no member in this pillar carries a figure |
+| Flip / dairy | 12–18% | no member in this pillar carries a figure | Whiskey Sour with egg white, ~15–18% (§1.6) |
+| Sparkling & wine | 10–28% | Sherry Cobbler, ~10–13% | Death in the Afternoon, 20–28% (§1.7 worked check) |
+| Punch | 10–14% | a 1 : 2 : 3 : 4 punch on a 40% spirit, ~12% before ice melt (§1.8) | the same punch |
+| Aperitivo / spritz | 6–12% | Aperol Spritz, ~7–9% | Americano and Bicicletta, ~9–11% |
 
 ### 1.11 Template Selection
 
@@ -350,13 +377,15 @@ Everything that is not the base spirit and not the water is a **modifier**. The 
 | `base` | Ethanol structure, congener aroma, the drink's identity | 1.5–2.5 oz | **Yes** — split bases are canonical (see §2.3 on rum ester classes and §1.5) |
 | `modifier` | Aroma, secondary alcohol, some sugar; the "second voice" | 0.25–1.5 oz | **Yes** — two amari, or a vermouth plus a liqueur, is standard construction |
 | `sweetener` | Sugar, viscosity, ethanol-masking | 0.25–1 oz | Rarely; a second sweetener is usually a modifier in disguise |
-| `acid` | Titratable acidity, salivation, sugar suppression | 0.5–1 oz | Occasionally — split citrus (lemon + lime) is a real move |
+| `acid` | Titratable acidity, salivation, sugar suppression | 0.5–1 oz | **Yes, by product class** — lemon and lime are different classes and stack (a split-citrus sour, the Ramos, tiki); two lemon juices are one class and are redundant |
 | `bitters` | Aromatic top note, trace bitterness, "seasoning" | 1–6 dashes (0.6–6 mL) | **Yes** — stacking is correct practice, not redundancy (§3.8) |
 | `lengthener` | Volume, carbonation, temperature | 2–6 oz | No |
 | `texture` | Viscosity, foam, mouth-coating (egg, dairy, gum, saline) | trace–1 oz | No |
-| `aromatic garnish` | Orthonasal aroma only; contributes almost no volume | expressed peel, sprig, dash-on-foam | Yes |
+| `aromatic_garnish` | Orthonasal aroma only; contributes almost no volume | expressed peel, sprig, dash-on-foam | Yes |
 
-The stackable roles are exactly the ones where **two ingredients in the same slot are additive rather than competitive**, because each brings a distinct congener profile. A pruning rule that treats "two things with role = modifier" as redundancy will delete the Negroni's structure, the Vieux Carré's double bitters, and every split-base tiki drink in the canon.
+Water is not a role. Ice melt is a computed quantity (§5.1), and where a mixer or measured water is chosen it fills `lengthener`. Saline is a `texture` ingredient: a measured solution used at drop scale, which changes how the drink tastes by suppressing bitterness rather than by adding aroma.
+
+The stackable roles are exactly the ones where **two ingredients in the same slot are additive rather than competitive**, because each brings a distinct congener profile. The test that separates a split from a duplicate is the **product class**: two lemon juices, two dry vermouths or two orange liqueurs are the same product twice, while lemon with lime, or a Jamaican rum with a Demerara, are two voices. A pruning rule that treats "two things with role = modifier" as redundancy will delete the Negroni's structure, the Vieux Carré's double bitters, and every split-base tiki drink in the canon.
 
 ### 3.2 Fortified & Aromatized Wines {#aromatized-wines}
 
@@ -618,7 +647,7 @@ A substitution is safe when it preserves the slot's three numbers — **ABV, sug
 
 A cocktail is balanced across **three axes at once**, and a diagnosis that names the wrong axis will make the drink worse:
 
-1. **Strength** — finished ABV after dilution. Spirit-forward stirred drinks land at **25–35%**; sours at **12–18%**; highballs and spritzes at **5–12%**.
+1. **Strength** — finished ABV after dilution. Spirit-forward stirred drinks land at **22–38%** (the Negroni at the bottom, the Sazerac at the top); sours at **16–20%** (an egg-white sour sits lower, 15–18%, in the flip band); highballs at **9–14%** and spritzes at **6–12%**.
 2. **Sweet ↔ sour** — sugar and acid suppress each other's perception nearly symmetrically, which is why a sour is stable across a *band* of ratios rather than balanced at a point.
 3. **Texture and temperature** — viscosity, dilution, aeration, and cold. This axis is invisible on paper and accounts for most drinks that are "correct by the recipe" and still wrong in the glass.
 
@@ -804,6 +833,19 @@ Sensitivity check across the plausible stirred band: at 20% dilution the drink l
 Shaken to 27% dilution: water added = 0.945 fl oz. Final volume 4.45 fl oz (132 mL). Final ABV = 0.800 ÷ 4.45 = **18.0%**. Ethanol served: **1.33 US standard drinks**.
 
 Read the two examples together. The sour starts 12 points lower in ABV, takes *more* water, and finishes at 18% — but it also finishes at 4.45 fl oz versus 3.71, which is why a sour needs a larger coupe. **Glassware must be sized to the post-dilution volume, not the recipe as written.** A 4.5 oz coupe cannot hold Example B.
+
+#### Worked Example C — a stirred Negroni at 24% dilution
+
+| Component | Volume | ABV | Ethanol contributed |
+|---|---|---|---|
+| Base spirit (London dry gin), 90 proof | 1.00 fl oz | 45% | 0.450 fl oz |
+| Red bitter aperitivo | 1.00 fl oz | 24% | 0.240 fl oz |
+| Aromatized wine (sweet vermouth style) | 1.00 fl oz | 16% | 0.160 fl oz |
+| **Pre-dilution total** | **3.00 fl oz** | **28.3%** | **0.850 fl oz** |
+
+Stirred to 24% dilution: water added = 0.24 × 3.00 = 0.72 fl oz. Final volume = 3.00 × (1 + 0.24) = **3.72 fl oz** (110 mL). Final ABV = 0.850 ÷ 3.72 = **22.8%**, inside the 22–24% Negroni row of §1.3. Ethanol served: 0.850 fl oz = **1.4 US standard drinks**.
+
+This is the same build, with the same convention, that the chef agent prints in its drink recipe template. Reading the same 24% as a share of the *finished* drink would change both the volume and the strength for the same label; the convention in this document is always water over the pre-dilution volume.
 
 ### 5.4 Chilling Glassware and Serving Temperature
 
@@ -991,7 +1033,7 @@ Three disciplines apply to every prep in this section and are not repeated in ea
 
 Sugar syrups are the sweetening backbone of the entire sour and highball families. **The ratios, sugar-per-mL figures, viscosities, and substitution arithmetic are in §3.6** — that is the design table and it is not repeated here. This section covers what happens between making a syrup and throwing it away.
 
-**Which ratio to actually keep on the shelf.** 2:1 by weight sits at roughly sucrose saturation and will throw crystals in a cold fridge, so **1.5:1 (≈60% sugar) is the ratio most bars run day to day**: most of the shelf life and most of the body of 2:1, with no crystallization risk. Reach for true 2:1 when the drink wants the full viscosity jump, and stabilize it with demerara or a trace of citric acid. Dissolve every ratio **cold** — three minutes of shaking, no heat.
+**Which ratio to keep on the shelf.** The house default is **2:1 by weight, refrigerated** (§3.6; it is rank 1 on the Prep Board in §7.13). 2:1 sits at roughly sucrose saturation, so in a cold fridge it can throw crystals; the answer is a stabilizer (demerara, or a trace of citric acid, below), not a different default. If a cold fridge keeps defeating it, the alternative is **1.5:1 (≈60% sugar)**: most of the shelf life and most of the body of 2:1 with no crystallization risk, at about 1.2 times the volume for the same sugar (0.89 against 0.76 g/mL, §3.6). Dissolve every ratio **cold** — three minutes of shaking, no heat.
 
 **Why syrups spoil.** Sugar suppresses water activity, but not enough to sterilize: a 1:1 syrup sits around a_w 0.90–0.93 and a 2:1 around 0.85, while osmophilic yeasts (*Zygosaccharomyces* spp.) and common molds grow well below that. Sugar alone buys you weeks, not months. Refrigeration is doing most of the work.
 
@@ -1001,7 +1043,7 @@ Sugar syrups are the sweetening backbone of the entire sour and highball familie
 - **Citric acid** at 0.1–0.25% w/w drops pH below ~3.5 and does inhibit bacterial spoilage, but bacteria were never your problem in a 50%-sugar solution. Its real utility is different: acid slowly inverts sucrose to glucose + fructose, and invert sugar resists crystallization. Use citric to stop a rich syrup from throwing crystals, not to sterilize it.
 - **Filtration and clean bottling** matter more than either. Decant into a sanitized bottle, never return a used pour spout to the batch, and never top up an old bottle with new syrup.
 
-**Failure modes.** *Crystallization*: 2:1 by weight is ~67% sucrose, which is essentially the saturation limit at 20 °C and above it at refrigerator temperature (~64%). A true 2:1 will drop crystals in the cold. Fixes: make it 1.5:1, use demerara or turbinado (the invert and molasses fraction depresses crystallization), or add 0.1% citric acid. *Scorching*: heating sugar syrup to a boil to "dissolve faster" caramelizes the edges and introduces a burnt note that never leaves; sucrose dissolves in cold water with three minutes of shaking or stirring. *Fermentation*: a syrup that fizzes, smells solvent-like, or has a pressurized cap has been colonized — discard, do not "cook it off."
+**Failure modes.** *Crystallization*: 2:1 by weight is ~67% sucrose, which is essentially the saturation limit at 20 °C and above it at refrigerator temperature (~64%). A true 2:1 will drop crystals in the cold. Fixes: use demerara or turbinado (the invert and molasses fraction depresses crystallization), add 0.1% citric acid, or fall back to 1.5:1. *Scorching*: heating sugar syrup to a boil to "dissolve faster" caramelizes the edges and introduces a burnt note that never leaves; sucrose dissolves in cold water with three minutes of shaking or stirring. *Fermentation*: a syrup that fizzes, smells solvent-like, or has a pressurized cap has been colonized — discard, do not "cook it off."
 
 ### 7.2 Infused Syrups: Cinnamon and Friends
 
@@ -1290,7 +1332,7 @@ What matters mechanically:
 | Absinthe rinse | Coats the glass; aroma leads the sip | Poured into the body of the drink |
 | Dehydrated wheel, edible flower, skewer | It smells of something at the nose | Purely visual, and it is fine to say so — just do not claim it is flavor |
 
-**Salt, inside the drink.** A few grains of salt, or 3–5 drops of a 20% w/v saline solution, suppresses bitterness and raises perceived sweetness and aromatic intensity — the same mechanism described in Pillar 3 for food. It is one of the most reliable fixes for a drink that tastes technically correct but muted, and it is invisible to the drinker.
+**Salt, inside the drink.** A few grains of salt, or 3–5 drops of a saline solution made from 20 g salt dissolved in 80 g water (20% w/w), suppresses bitterness and raises perceived sweetness and aromatic intensity — the same mechanism described in Pillar 3 for food. It is one of the most reliable fixes for a drink that tastes technically correct but muted, and it is invisible to the drinker.
 
 ### 8.3 Rim Treatments
 
