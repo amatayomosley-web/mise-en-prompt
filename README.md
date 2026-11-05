@@ -60,9 +60,12 @@ gets consulted, which roles get curated, and which conflict rules run.
 7. **Enhance.** Walk the draft move-by-move under physics and flavor lenses; classify each
    candidate (objectively_better, taste_dependent, tradition_respected, cargo_cult);
    write the deconstruction and elevation candidates to `state.enhancements`.
-8. **Guide.** Render the cooking guide (for a drink, the build and service guide) with operational
-   content above the line and deconstruction plus variants below; auto-apply objectively-better
-   upgrades inline with fallbacks; surface taste-dependent options as a Variants menu.
+8. **Guide.** Render the cooking guide (for a drink, the build and service guide) as **annotated
+   steps**: each step is a self-contained block carrying its own reasoning in labeled slots (`Cue` /
+   `Why` / `If it goes wrong` / `No <equipment>?`) directly under the instruction. The divider
+   separates per-step content from whole-dish content: variants, design notes and the pruning audit
+   sit below it. Objectively-better upgrades are applied into the step body with their fallback as a
+   slot; taste-dependent options become a Variants menu.
 
 ## The four pillars
 
@@ -154,6 +157,14 @@ labels a drink decision with a food-named rule.
 | `family_drift` | SOFT / INFO | Candidates in a different drink family group from the target drink. Under `intent.drink.family_stance: tradition` (or unset) they're pulled from the offered pool and the user can override; under `explore` they're offered with a note. Family-neutral components (syrups, citrus, ice) carry no family and the rule stays silent on them. |
 | `drink_functional_redundancy` | SOFT | Keyed on bar-product class first, intensity second. Two dry vermouths or two orange liqueurs in the same slot are flagged even in a stackable role, while a split base (two different rums) and stacked bitters pass, because those are the defining moves of the form rather than accidents. Single-slot roles (sweet, acid, dilution, texture) fall back to the same intensity ±2 comparison the food rule uses. |
 | `build_impossibility` | SOFT | v1 stub, same as its food sibling. v2 will check the candidate against `intent.drink.build_method`: an egg white cannot be stirred, and a carbonated build cannot take fresh citrus without pre-clarification. |
+
+### Umami is named by compound class
+
+Umami candidates take a `functional_role` of `umami_glutamate`, `umami_inosinate`, or `umami_guanylate` — never a
+bare `umami`. `functional_redundancy` uses role equality as its collision test, and umami is the one taste where
+multiple sources are the *goal* rather than a mistake: the several-fold amplification comes from glutamate × nucleotide
+synergy and requires sources from different classes. Splitting by class makes the rule fire correctly within a class
+(two glutamate sources at the same intensity really are redundant) while leaving the cross-class stack alone.
 
 Run either set on a session yourself. The CLI reads the medium off the state file and dispatches:
 

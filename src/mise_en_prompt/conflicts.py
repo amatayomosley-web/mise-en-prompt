@@ -41,14 +41,9 @@ from mise_en_prompt.state import (
     DrinkPruneRule,
     PruneRule,
     PrunedItem,
+    Severity,
     State,
 )
-
-
-class Severity(str, Enum):
-    HARD = "HARD"  # removed outright, never offered, not overridable
-    SOFT = "SOFT"  # pulled from the offered pool; the user can override
-    INFO = "INFO"  # offered as normal, with a note (cuisine_drift under explore)
 
 
 class Verdict(str, Enum):
@@ -57,6 +52,21 @@ class Verdict(str, Enum):
     COMPATIBLE = "compatible"
     WOULD_PRUNE = "would_prune"
     EXCLUDED = "excluded"
+
+
+__all__ = [
+    "CUISINE_ADJACENCY",
+    "ConflictFinding",
+    "RoleFilter",
+    "Severity",
+    "Verdict",
+    "check_allergy",
+    "check_candidate",
+    "check_cuisine_drift",
+    "check_functional_redundancy",
+    "check_technique_impossibility",
+    "filter_candidates_for_role",
+]
 
 
 class ConflictFinding(BaseModel):
@@ -157,6 +167,42 @@ CUISINE_GROUPS: dict[str, list[str]] = {
 }
 
 
+# Group pairs with enough historical culinary exchange that crossing them is a note,
+# not a warning. CUISINE_GROUPS is a partition, but real cuisines are not partitioned:
+# chili con carne is genuinely both Latin American and North American, and no single
+# group value is correct for it. Rather than forcing a dish to pick one group (or
+# widening Intent.cuisine to a set, which every consumer would then have to handle),
+# adjacency makes drift a function of *distance* between groups instead of mere
+# inequality. Adjacent crossings report INFO; distant ones report SOFT.
+#
+# Kept deliberately short. If everything is adjacent to everything, the signal is gone.
+_ADJACENT_GROUP_PAIRS: tuple[tuple[str, str], ...] = (
+    ("Latin American", "North American"),      # Tex-Mex, Cal-Mex, Southwestern, Creole
+    ("Latin American", "European"),            # Columbian exchange; Iberian colonization
+    ("Latin American", "Sub-Saharan African"), # transatlantic: okra, rice, black-eyed peas
+    ("North American", "European"),            # settler cuisine; most US canon is European-derived
+    ("European", "Middle Eastern"),            # the Mediterranean basin is one food world
+    ("Middle Eastern", "South Asian"),         # Persian-Mughal exchange
+    ("Middle Eastern", "Sub-Saharan African"), # trans-Saharan trade; the North African bridge
+    ("South Asian", "East Asian"),             # Buddhist trade routes; curry dispersal
+)
+
+CUISINE_ADJACENCY: dict[str, frozenset[str]] = {
+    group: frozenset(
+        other
+        for pair in _ADJACENT_GROUP_PAIRS
+        for other in pair
+        if group in pair and other != group
+    )
+    for group in CUISINE_GROUPS
+}
+
+
+def _groups_are_adjacent(one: str, other: str) -> bool:
+    """True if crossing between these two groups is a note rather than a warning."""
+    return other in CUISINE_ADJACENCY.get(one, frozenset())
+
+
 # Roles where stacking multiple candidates is normal — skip redundancy check.
 STACKABLE_ROLES: set[str] = {
     "aromatic_herb", "aromatic_herbs", "spice", "spices", "aromatic", "aromatics",
@@ -175,7 +221,7 @@ def _find_cuisine_group(cuisine: str) -> str | None:
         return None
     cuisine_lower = cuisine.strip().lower()
     for group, members in CUISINE_GROUPS.items():
-        if cuisine_lower in members:
+        if cuisine_lower == group.lower() or cuisine_lower in members:
             return group
     best: tuple[int, str] | None = None
     for group, members in CUISINE_GROUPS.items():
@@ -227,14 +273,20 @@ def check_cuisine_drift(candidate: Candidate, state: State) -> ConflictFinding |
     target_group = _find_cuisine_group(state.intent.cuisine)
     candidate_group = _find_cuisine_group(candidate.cuisine_origin)
     if target_group and candidate_group and target_group != candidate_group:
-        explore = state.intent.cuisine_stance == "explore"
+        exploring = state.intent.cuisine_stance == "explore"
+        adjacent = _groups_are_adjacent(target_group, candidate_group)
+        reason = (
+            f'"{candidate.name}" is {candidate.cuisine_origin} ({candidate_group}); '
+            f'target is {state.intent.cuisine} ({target_group})'
+        )
+        if adjacent:
+            reason += " — adjacent groups, long history of exchange"
+        if exploring:
+            reason += " — informational only, cuisine_stance is explore"
         return ConflictFinding(
-            severity=Severity.INFO if explore else Severity.SOFT,
+            severity=Severity.INFO if (exploring or adjacent) else Severity.SOFT,
             rule=PruneRule.CUISINE_DRIFT,
-            reason=(
-                f'"{candidate.name}" is {candidate.cuisine_origin} ({candidate_group}); '
-                f'target is {state.intent.cuisine} ({target_group})'
-            ),
+            reason=reason,
         )
     return None
 
