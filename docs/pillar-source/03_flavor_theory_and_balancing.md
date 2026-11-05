@@ -106,7 +106,7 @@ Based on Samin Nosrat's foundational framework from [*Salt, Fat, Acid, Heat: Mas
 
 **Function**: Drives cooking reactions (Maillard browning, caramelization, sugar polymerization), develops flavor through oxidation and polymerization of aromatic compounds, activates spice volatility, denatures proteins, breaks down cell walls, and speeds diffusion of salt and other seasonings. Heat is the catalyst that transforms raw ingredients into cooked dishes and creates hundreds of new flavor compounds not present in the raw ingredients.
 
-**Mechanism**: Heat energy speeds molecular motion, breaking weak bonds and forming new flavor compounds through chemical reactions. The Maillard reaction (between amino acids and reducing sugars) creates hundreds of new compounds at temperatures above 280°F. Caramelization (breakdown of sugars) creates bitter, sweet, and burnt notes at temperatures above 320°F. Heat also reduces water content, concentrating flavors—a sauce reduced by half has twice the flavor intensity (assuming no volatile loss).
+**Mechanism**: Heat energy speeds molecular motion, breaking weak bonds and forming new flavor compounds through chemical reactions. The Maillard reaction (between amino acids and reducing sugars) creates hundreds of new compounds, appreciable above ~120°C (250°F) surface temperature and fast at 140-165°C (285-330°F); it and caramelization also proceed slowly at lower temperatures over hours. Caramelization (breakdown of sugars) creates bitter, sweet, and burnt notes at temperatures above 320°F. Heat also reduces water content, concentrating flavors—a sauce reduced by half has twice the flavor intensity (assuming no volatile loss).
 
 **Applications**:
 - High heat (400-500°F) for browning and crust development on proteins and vegetables; creates fond (browned bits) for sauce making
@@ -622,7 +622,7 @@ Salt penetrates food through *diffusion*, a slow process following concentration
 ### Brining vs. Dry Brining: Mechanism Comparison
 
 **Wet Brining** (e.g., 4-6 hours in salt solution):
-- Salt concentration in brine: typically 3-6% (roughly 1-2 tablespoons per cup of water)
+- Salt concentration in brine: typically 5-6% salt by weight
 - Mechanism: Water and salt both penetrate through osmosis and diffusion; meat weight can increase by 10%+ from retained water
 - Fish and poultry benefit most (they dry out easily during cooking)
 - Meat becomes juicy but can become waterlogged if over-brined (>24 hours)
@@ -637,7 +637,7 @@ Salt penetrates food through *diffusion*, a slow process following concentration
 - Thick pork roasts: 12-24 hours
 
 **Dry Brining** (e.g., 12-24 hours unwrapped in refrigerator):
-- Salt applied directly to surface; no water added
+- Salt applied directly to surface, about 0.5-1% of the meat's weight; no water added
 - Mechanism: Osmotic pressure draws water out initially, creating a concentrated salt solution on the surface. This solution then penetrates into meat slowly over 12-24 hours. Water retained is re-absorbed and bound by proteins (salt-holding effect).
 - Results: Drier surface (better for browning and crust development) and juicier interior compared to unsalted meat
 - Duration: 12-48 hours; longer is generally better for deep penetration
@@ -853,14 +853,14 @@ Umami is the fifth basic taste—the savory flavor from glutamates and nucleotid
 - **IMP (Inosinate)**: Found in meats, fish, shellfish, dashi (bonito flakes—katsuobushi), aged fish (miso, fish sauce), cured meats
 - **GMP (Guanylate)**: Found in vegetables, mushrooms (especially dried shiitake), seaweed (kombu, nori)
 - Alone: Nucleotides do not taste umami; they activate umami receptors weakly by themselves
-- Together with glutamate: When combined, they amplify umami perception 8-fold
+- Together with glutamate: When combined, they amplify umami perception several-fold (a multiplicative effect, not a fixed multiplier)
 - Mechanism: The amplification (synergy) occurs because glutamate and nucleotides activate different subunits of the umami receptor; together, they create a stronger activation signal than either alone
 
-### The Umami Synergy Principle: The 8-Fold Amplification
+### The Umami Synergy Principle: Multiplicative Amplification
 
-This is the critical insight, first discovered by Shintaro Kodama and Kikunae Ikeda in early 1900s Japan: **Glutamate + IMP + GMP together create 8x more umami perception than glutamate alone.**
+This is the critical insight. Ikeda identified glutamate as an umami substance in 1908 and Kodama identified inosinate in 1913; Yamaguchi measured the synergy between them in 1967. **A 1:1 glutamate:nucleotide mix tastes several-fold stronger than the same weight of glutamate alone (often quoted as 7-8x, a popular figure whose primary source we could not read). The effect is multiplicative, so the fold depends on concentration and ratio.**
 
-[Springer Nature: Umami and MSG](https://link.springer.com/chapter/10.1007/978-3-031-32692-9_2) documents that the synergistic effect is dramatic: a mixture of glutamate (MSG) and 5'-inosinate (IMP) at equal concentrations produces a umami response about 8 times stronger than MSG alone at the same concentration.
+[Springer Nature: Umami and MSG](https://link.springer.com/chapter/10.1007/978-3-031-32692-9_2) discusses the synergistic effect: a mixture of glutamate (MSG) and 5'-inosinate (IMP) tastes several-fold stronger than MSG alone (the fold depends on concentration and ratio, not a fixed multiplier).
 
 **Practical application**:
 - A dish with only glutamate (e.g., miso soup with just kombu dashi and miso, no meat or fish) has moderate umami
@@ -1137,7 +1137,7 @@ Temperature dramatically affects flavor perception:
 2. Flavor layering uses the same ingredient in multiple forms to create depth and dimensional flavor
 3. Timing of ingredient addition affects volatility preservation and integration—understand the volatility hierarchy
 4. The Four Cardinal Elements (salt, fat, acid, heat) control all other flavors and are the foundation of balance
-5. Umami synergy (glutamate + nucleotides) creates 8x amplification of umami perception
+5. Umami synergy (glutamate + nucleotides) creates a multiplicative, several-fold amplification of umami perception
 6. Global flavor balance philosophies (rot chart, má-lá, masala balance) provide cultural context for diagnosis
 7. Professional tasting follows a systematic protocol: spoon method, palate cleansing, five-question framework
 8. Every flavor problem has a diagnostic path, primary remedy, and secondary/tertiary options for fallback

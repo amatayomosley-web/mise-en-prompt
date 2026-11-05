@@ -15,7 +15,7 @@ Invoked in the GROUNDING, SYNTHESIZE, and GUIDE phases. Match the question to on
 1. Open `reference.md` → **Section 2: State Changes & Structural Breakdown**
 2. Identify the cut by collagen content + fat content
 3. Return: braise vs. pressure-cook vs. sous-vide vs. dry-heat with target temps and times
-   - Collagen-rich, tough → braise (70–80°C / 160–180°F, 3–6 hr) or pressure (115–120°C / 240–250°F, ~3× faster)
+   - Collagen-rich, tough → braise (pot liquid 80–90°C / 176–194°F, meat core 70–80°C; 3–6 hr) or pressure (15 psi gauge ≈ 121°C / 250°F, roughly 3× faster)
    - Lean, tender → dry-heat (sear, roast) or precise sous-vide
    - High fat, intermediate → sous-vide for control + finishing sear
 
@@ -23,7 +23,7 @@ Invoked in the GROUNDING, SYNTHESIZE, and GUIDE phases. Match the question to on
 1. Open `reference.md` → **Section 1: Maillard Reaction & Caramelization**
 2. Identify the desired flavor outcome (sweet caramel, savory crust, bitter complex char)
 3. Return: target temperature + time + visual cues + the chemistry
-   - **Maillard** (140–165°C / 285–330°F): amino acid + reducing sugar → pyrazines, thiazoles, melanoidins
+   - **Maillard** (appreciable above ~120°C; fast at 140–165°C / 285–330°F): amino acid + reducing sugar → pyrazines, thiazoles, melanoidins
    - **Caramelization** (160–190°C / 320–375°F): pure sugar pyrolysis
    - **Strecker degradation** at higher temps: bitter, complex notes
 
@@ -38,7 +38,7 @@ Invoked in the GROUNDING, SYNTHESIZE, and GUIDE phases. Match the question to on
 
 ## Worked example
 Pinto beans slow-simmered with pork shoulder:
-- Pork shoulder = high collagen, high fat → braise at 70–80°C / 160–180°F for 3–4 hr so collagen → gelatin
+- Pork shoulder = high collagen, high fat → braise with pot liquid at 80–90°C / 176–194°F for 3–4 hr so collagen → gelatin
 - Beans cook in the same liquid → starch gelatinization + slow flavor diffusion from the pork's rendered fat and gelatin
 - Final reduction concentrates glutamates and raises gelatin viscosity → glossy, body-rich pot liquor
 

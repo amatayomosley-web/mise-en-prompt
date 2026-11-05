@@ -20,11 +20,11 @@ How Heat and Time Alter Ingredient Profiles
 
 Browning in cooking occurs through two distinct but often-confused mechanisms: the **Maillard reaction** and **caramelization**. Both darken food and create savory complexity, but they operate on fundamentally different chemistry and occur at different temperatures.
 
-- **Maillard Reaction**: Non-enzymatic browning resulting from amino acids + reducing sugars reacting under heat. Produces hundreds of flavor compounds. Requires protein/amino acids AND sugars. Temperature window: 140-165°C (285-330°F).
+- **Maillard Reaction**: Non-enzymatic browning resulting from amino acids + reducing sugars reacting under heat. Produces hundreds of flavor compounds. Requires protein/amino acids AND sugars. Appreciable above ~120°C (250°F) surface temperature, fast at 140-165°C (285-330°F); it also proceeds slowly at lower temperatures over hours (dulce de leche, braises).
 
 - **Caramelization**: Pure sugar pyrolysis—sugar molecules breaking down from heat alone, without amino acids. Creates bitter, burnt, complex notes. Temperature window: 160-190°C (320-375°F) for sucrose; varies by sugar type.
 
-The **key distinction**: Maillard can happen at lower temperatures (~140°C) because amino acids catalyze the reaction; caramelization needs higher heat to break sugar bonds alone.
+The **key distinction**: Maillard can happen at lower temperatures than caramelization (appreciable above ~120°C) because amino acids catalyze the reaction; caramelization needs higher heat to break sugar bonds alone.
 
 ### Chemistry of the Maillard Reaction
 
@@ -34,7 +34,7 @@ The Maillard reaction is a complex cascade of condensation and polymerization re
 - An amino acid (from proteins: meat, fish, dairy, legumes) reacts with a reducing sugar (glucose, fructose, lactose)
 - They form an unstable glycosylamine intermediate
 - This rearranges to an amadori product
-- Takes place at ~100°C and above, accelerates sharply from 140°C upward
+- Appreciable above ~120°C, accelerates sharply from 140°C upward
 
 **Stage 2: Breaking & Polymerization (Deepening Color & Aroma)**
 - The amadori compounds break down into furans, aldehydes, ketones, and other volatile compounds
@@ -106,7 +106,7 @@ Dry pan or with minimal oil over high heat. Goal: deep browning via Maillard + c
 - **Mechanism**: Pan temperature 120-160°C. Spices have both proteins (legume-based spices like chana dal) and sugars (natural plant carbs). Dry environment (no steam) lets temperature rise; shaking prevents burning in one spot.
 - **Chemistry**: Maillard and some caramelization. Essential oils in spices volatilize (myrcene, limonene, pinene escape), and the Maillard products (new pyrazines, new aldehydes) combine with remaining essential oils to create richer, roasted aroma.
 - **Flavor Shift**: Cumin goes from slightly bitter/dusty to warm, toasty, earthy. Coriander: floral-citrus to slightly nutty. Mustard seeds: sharp to deeper, more complex.
-- **Kitchen Consequence**: If you leave them 10 seconds too long (>165°C), they go acrid. The volatiles burn off and you get a scorched, bitter flavor. Shake constantly and use sound/aroma as a cue: when the spice starts to smell fragrant and toasty (not acrid), remove immediately.
+- **Kitchen Consequence**: If you leave them 10 seconds too long (above ~180°C), they go acrid. The volatiles burn off and you get a scorched, bitter flavor. Shake constantly and use sound/aroma as a cue: when the spice starts to smell fragrant and toasty (not acrid), remove immediately.
 - **Global Example**: Indian bhuna technique (see State Changes section) uses this principle—you roast spices in hot oil to bloom them before adding other ingredients.
 
 #### Searing Meat (French, American, Modern)
@@ -173,11 +173,11 @@ Dry pan or with minimal oil over high heat. Goal: deep browning via Maillard + c
 
 #### Indian Bhuna Technique (Spice Blooming + Flavor Extraction)
 
-**Technique**: Tempering spices in hot oil/ghee (120-160°C) for 30 seconds to 2 minutes until fragrant, then adding other ingredients (onions, tomatoes, etc.).
+**Technique**: Tempering spices in hot oil/ghee (120-160°C) for 30-90 seconds until fragrant, then adding other ingredients (onions, tomatoes, etc.).
 
 - **Chemistry**: The dry spices, now in hot oil, undergo Maillard and caramelization. Their essential oils volatilize and recombine with Maillard products. The fat (oil/ghee) absorbs the spice's lipophilic compounds (capsaicinoids, volatile esters, thiols). The heat is rapid but controlled (not as extreme as wok hei).
 - **Flavor Consequence**: Spices become "bloomed"—their aroma is amplified, their flavors more integrated into the oil, which then carries those flavors into subsequent ingredients. A dish that begins with bloomed spices tastes more cohesive and complex.
-- **Timing**: Too short (10 seconds) and the spices don't bloom. Too long (>2 minutes) and they scorch, turning bitter.
+- **Timing**: Too short (10 seconds) and the spices don't bloom. Too long (past about 90 seconds, or above ~180°C) and they scorch, turning bitter.
 - **Kitchen Rule**: "Bloom your spices early" is fundamental in Indian cooking for this reason.
 
 #### Dulce de Leche (Milk + Sugar Caramelization)
@@ -209,7 +209,7 @@ Dry pan or with minimal oil over high heat. Goal: deep browning via Maillard + c
 
 **If you want spices to smell roasted and toasty** → Dry pan, medium heat, 1-3 min, constant shaking. Remove at first sign of fragrance.
 
-**If you want a savory meat crust** → High heat, 150-180°C+, short sear, minimal movement. High heat is NON-NEGOTIABLE.
+**If you want a savory meat crust** → High heat, surface 180-220°C, short sear, minimal movement. High heat is NON-NEGOTIABLE.
 
 **If you want a charred, smoky vegetable** → Extreme heat (200°C+), very short time, direct flame or screaming-hot pan. Char until blackened in spots.
 
@@ -233,30 +233,30 @@ Separate from Maillard browning, heat and time cause dramatic structural changes
 
 **Mechanism & Chemistry**
 
-Braising involves simmering tough cuts (shoulder, chuck, brisket, short ribs, bone-in chicken thighs) in liquid at 70-90°C for 2-4 hours.
+Braising involves simmering tough cuts (shoulder, chuck, brisket, short ribs, bone-in chicken thighs) in liquid at 80-90°C (meat core 70-80°C) for 2-4 hours.
 
 **What Happens to Collagen**:
 - Collagen is the primary protein in tendons, skin, and connective tissue. It has a rigid triple-helix structure, held together by hydrogen bonds and covalent crosslinks.
-- At 70°C, collagen begins to denature (heat breaks hydrogen bonds, partially unwinding the helix).
+- From about 60°C, collagen begins to denature and solubilise (heat breaks hydrogen bonds, partially unwinding the helix); it does so usefully above 70°C.
 - As heating continues, collagen hydrolyzes—water molecules break C-N bonds in the collagen chains.
 - The collagen chains fragment into smaller, soluble pieces called **gelatin**.
 - Gelatin has a waxy, mouth-coating texture (hydrophilic colloid that thickens liquid and adds viscosity).
-- Complete collagen conversion takes 2-4 hours at 70-90°C, depending on meat age, cut, and thickness.
+- Collagen conversion takes hours at braising temperatures, and longer at lower ones, depending on meat age, cut, and thickness.
 
-**Collagen Conversion Table**
+**Collagen Conversion (illustrative direction only; no percentages are claimed)**
 
 | Time | Temperature (°C) | Temperature (°F) | Collagen Status | Texture | Flavor |
 |---|---|---|---|---|---|
-| 15 min | 80 | 176 | ~5% converted | Tough, dry | Raw, metallic |
-| 30 min | 80 | 176 | ~10% converted | Tough, slightly juicy | Meaty but raw |
-| 1 hour | 75 | 167 | ~20% converted | Chewy, beginning to yield | Meaty, some richness |
-| 2 hours | 75 | 167 | ~50% converted | Tender, moist, sticky | Rich, savory, unified |
-| 3 hours | 70 | 158 | ~75% converted | Tender, silky, falling apart | Deep, complex, umami |
-| 4+ hours | 70 | 158 | ~90% converted | Disintegrating, mushy | Potentially over-extracted, one-dimensional |
+| 15 min | 80 | 176 | barely begun | Tough, dry | Raw, metallic |
+| 30 min | 80 | 176 | just starting | Tough, slightly juicy | Meaty but raw |
+| 1 hour | 75 | 167 | partial | Chewy, beginning to yield | Meaty, some richness |
+| 2 hours | 75 | 167 | well under way | Tender, moist, sticky | Rich, savory, unified |
+| 3 hours | 70 | 158 | largely converted | Tender, silky, falling apart | Deep, complex, umami |
+| 4+ hours | 70 | 158 | fully converted | Disintegrating, mushy | Potentially over-extracted, one-dimensional |
 
 **Important Notes**:
-- Temperature BELOW 70°C conversion is extremely slow (takes 8+ hours). Temperature ABOVE 90°C speeds conversion slightly but risks toughening muscle (muscle proteins coagulate excessively at temps >85°C for extended periods, squeezing out moisture).
-- The "sweet spot" for braising is 75-80°C (165-176°F)—warm enough for efficient collagen conversion, cool enough to avoid over-coagulating muscle.
+- Below about 70°C conversion is much slower and needs far longer. Temperature ABOVE 90°C speeds conversion slightly but risks toughening muscle (muscle proteins coagulate excessively at temps >85°C for extended periods, squeezing out moisture).
+- The "sweet spot" for braising is pot liquid at 80-90°C (176-194°F), taking the meat core to 70-80°C (158-176°F)—warm enough for efficient collagen conversion, cool enough to avoid over-coagulating muscle.
 - The braising liquid becomes collagen-rich, forming a silky mouthfeel and body when cooled (gelatin gels). This is why braise liquid is prized for sauces.
 
 **Flavor Extraction in Braising**
@@ -276,7 +276,7 @@ As the meat breaks down:
 
 **Ingredients**: Chuck or brisket, red wine (acid + tannins), pearl onions, mushrooms, lardons (bacon), beef stock.
 
-**Process**: Sear meat at high heat to develop Maillard crust. Sauté aromatics. Add wine (deglazes fond, adds acid for flavor), stock, herbs (bouquet garni: thyme, bay, parsley). Simmer 3-4 hours at 75-80°C.
+**Process**: Sear meat at high heat to develop Maillard crust. Sauté aromatics. Add wine (deglazes fond, adds acid for flavor), stock, herbs (bouquet garni: thyme, bay, parsley). Simmer 3-4 hours at 80-90°C.
 
 **Flavor Development**:
 - **Hour 0-1**: Acid from wine is sharp, tannins are astringent. Meat is still tough.
@@ -304,7 +304,7 @@ As the meat breaks down:
 
 **Traditional Method**: Wrap meat in banana leaves with aromatics (onion, garlic, dried chiles, vinegar). Dig a pit, line with hot rocks, lower the wrapped meat into the pit, cover with soil. Steam/braise for 4-6 hours.
 
-**Modern Stovetop Version**: Same ingredients, braised in a covered pot at 75-80°C for 3-4 hours.
+**Modern Stovetop Version**: Same ingredients, braised in a covered pot at 80-90°C for 3-4 hours.
 
 **Chemistry**:
 - The pit method keeps temperature around 70-80°C (steam escaping prevents excessive heating). The long time (4-6 hours) allows for complete collagen conversion.
@@ -345,7 +345,7 @@ As the meat breaks down:
 
 **Ingredients**: Pork belly, soy sauce, rock sugar, star anise, cinnamon, bay leaves, Shaoxing wine, ginger, garlic, scallion.
 
-**Process**: Blanch pork belly briefly, cut into chunks. Caramelize with a little oil and rock sugar. Add soy sauce, Shaoxing wine, and aromatics. Simmer at 75-80°C for 2-3 hours, until the belly is meltingly tender and the sauce is reduced and glossy.
+**Process**: Blanch pork belly briefly, cut into chunks. Caramelize with a little oil and rock sugar. Add soy sauce, Shaoxing wine, and aromatics. Simmer at 80-90°C for 2-3 hours, until the belly is meltingly tender and the sauce is reduced and glossy.
 
 **Chemistry**:
 - Pork belly has alternating layers of meat and fat. The fat (intramuscular and subcutaneous) renders slowly during the long braise, enriching the sauce and tenderizing the meat.
@@ -376,10 +376,10 @@ As the meat breaks down:
 
 Pressure cooking maintains water at a temperature ABOVE its normal boiling point. At sea level:
 - Normal boiling water: 100°C (212°F)
-- Pressure cooker (15 PSI): ~120°C (248°F)
+- Pressure cooker (15 psi gauge): ~121°C (250°F)
 - Instant Pot high pressure (12 PSI, modern cookware): ~115°C (239°F)
 
-At 115-120°C, collagen converts 3-4 times faster than at 75-80°C (because reaction rates double for every ~10°C increase). A 3-hour braise becomes a 45-minute pressure-cooked dish.
+At 115-120°C, collagen converts roughly 3 times faster than at braising temperatures (reaction rate roughly doubles per 10°C, and the water stays liquid above 100°C). A 3-hour braise becomes roughly a 1-hour pressure-cooked dish.
 
 **Chemistry of High-Temperature Braise**
 
@@ -391,9 +391,9 @@ The higher temperature has side effects:
 
 **Comparison: 3-Hour Low-Temp Braise vs. 45-Minute Pressure Cook**
 
-| Aspect | 75-80°C, 3 hours | 115-120°C, 45 min |
+| Aspect | 80-90°C, 3 hours | 115-120°C, ~1 hour |
 |---|---|---|
-| Collagen conversion | 75-90% | 70-80% |
+| Collagen conversion | Thorough | Substantial, a little less than slow braising |
 | Meat texture | Very tender, delicate, silky | Tender but firmer, less tender |
 | Sauce body | Rich, silky, thick from gelatin | Thick but less silky (less gelatin released) |
 | Flavor intensity | Balanced, nuanced, complex | Intense, concentrated, bold |
@@ -423,7 +423,7 @@ Confit (from French "confire," meaning to preserve) is a technique where protein
 
 **Collagen Breakdown in Confit**
 
-At 65-75°C, collagen conversion is slow—it takes 4-6 hours for moderate conversion (40-60%). However, the low temperature protects muscle from over-coagulating, and the fat keeps the cooked protein very moist and tender.
+At 65-75°C, collagen conversion is slow—it takes hours (see Baldwin 2012, Int J Gastronomy Food Sci 1:15-30, for sous-vide time-temperature tables). However, the low temperature protects muscle from over-coagulating, and the fat keeps the cooked protein very moist and tender.
 
 **Flavor Development**
 
@@ -463,11 +463,11 @@ Sous-vide is French for "under vacuum." Food is vacuum-sealed and submerged in a
 
 **Temperature Precision as a Tool**
 
-Unlike traditional braising, which has a range (75-80°C), sous-vide targets a specific temperature. This allows for control of:
+Unlike traditional braising, which has a range (pot liquid 80-90°C), sous-vide targets a specific temperature. This allows for control of:
 
-1. **Collagen conversion**: At 65°C for 1 hour, collagen converts ~10%. At 70°C for 2 hours, conversion reaches ~40%. At 75°C for 3 hours, ~75%.
+1. **Collagen conversion**: Conversion rises with both time and temperature; low temperatures need many hours.
 2. **Protein coagulation**: Different proteins denature at different temperatures.
-   - Collagen starts denaturing at 65°C
+   - Collagen starts denaturing and solubilising from ~60°C
    - Myosin (thick filament in muscle) denatures at 65-75°C
    - Actin (thin filament) denatures at 80°C
    - Elastin (structural protein in tendons) requires 90°C+
@@ -496,7 +496,7 @@ Sous-vide has one limitation: submerged food doesn't brown (no Maillard, no cara
 **Example: Sous-Vide Beef Short Rib**
 
 1. Season and vacuum-seal a 5cm short rib.
-2. Sous-vide at 65°C for 4 hours (collagen ~ 50% converted, protein partly coagulated, structure intact).
+2. Sous-vide at 65°C for 4 hours (collagen partly converted, protein partly coagulated, structure intact).
 3. Chill in ice water bath to 10°C.
 4. Pat dry, sear in hot pan (200°C) for 30 seconds per side.
 5. Plate with seared crust and a tender, perfectly pink interior.
@@ -1040,7 +1040,7 @@ In Indian cooking, a spice-tomato-based sauce is often cooked down until the oil
 
 | Situation | Cause | Solution |
 |---|---|---|
-| A braise tastes one-dimensional | Insufficient Maillard development, under-reduced | Sear meat more aggressively at high temp (180-200°C) before braising. Or extend braise by 30-60 min to increase Maillard in the liquid and flavor concentration. |
+| A braise tastes one-dimensional | Insufficient Maillard development, under-reduced | Sear meat more aggressively at high temp (180-220°C) before braising. Or extend braise by 30-60 min to increase Maillard in the liquid and flavor concentration. |
 | A pan sauce tastes thin | Pan wasn't deglazed well, sauce not reduced enough | Scrape the pan more vigorously to dissolve fond. Reduce the sauce for 5-10 min longer. |
 | A reduction tastes bitter | Over-reduced, too much Maillard (HMF formation), or burnt | If slightly bitter, add a touch of butter or cream to round the bitterness. If very bitter, discard and start over—over-reduction is hard to recover from. |
 | A sauce tastes acidic or sour | Too much wine, not enough reduction (alcohol not evaporated), or cream curdled | Reduce further at gentle heat to evaporate remaining alcohol. Add a small pinch of baking soda to neutralize slight acidity. If curdled, recover per "Cream sauce curdling" above. |
@@ -1049,20 +1049,20 @@ In Indian cooking, a spice-tomato-based sauce is often cooked down until the oil
 ### Decision Tree: Choosing a Braising Technique
 
 **Question 1: How much time do you have?**
-- **Less than 1 hour** → Pressure cook at 115-120°C, 30-45 min (collagen conversion, ~70%, fast)
-- **1-2 hours** → Slow braise at 75-80°C with a sear first, OR pressure cook then sear for crust (hybrid)
-- **2-4 hours** → Slow braise at 75-80°C (collagen conversion, ~75-90%, tender and silky)
+- **Less than 1 hour** → Pressure cook at 115-120°C, 30-45 min (collagen conversion, substantial, fast)
+- **1-2 hours** → Slow braise at 80-90°C with a sear first, OR pressure cook then sear for crust (hybrid)
+- **2-4 hours** → Slow braise at 80-90°C (thorough collagen conversion, tender and silky)
 - **4+ hours** → Very slow braise at 70-75°C OR extend time in oven with heat diffuser (deep flavor, very tender)
 
 **Question 2: What texture do you want?**
-- **Very tender, silky, melt-in-mouth** → Slow braise at 75-80°C for 2-4+ hours (collagen converts completely, gelatin-rich)
+- **Very tender, silky, melt-in-mouth** → Slow braise at 80-90°C for 2-4+ hours (collagen converts completely, gelatin-rich)
 - **Tender but with some bite, firm meat** → Pressure cook at 115-120°C for 30-40 min OR short braise at 80-85°C for 1-1.5 hours (collagen partially converted, muscle stays firm from higher coagulation)
-- **Tender on the outside, juicy inside** → Sear first (develop Maillard), then braise at 75-80°C for 1.5-2 hours (balance of texture and moisture)
+- **Tender on the outside, juicy inside** → Sear first (develop Maillard), then braise at 80-90°C for 1.5-2 hours (balance of texture and moisture)
 
 **Question 3: What about the sauce/liquid?**
-- **Want a rich, silky sauce** → Braise with collagen-rich broth (veal, chicken, beef stock). The collagen converts to gelatin, thickening the sauce. Slow braise (75-80°C) for 2-3 hours to maximize gelatin extraction.
-- **Want a wine-forward sauce** → Use white or red wine (at least 250ml per 1kg meat). Wine's tannins integrate with the gelatin from collagen breakdown, creating a balanced sauce. Braise at 75-80°C for 2-3 hours.
-- **Want a spice-forward sauce** → Use broth or water, bloom spices first, then braise at 75-80°C for 1.5-2 hours. The spices will infuse and the sauce will concentrate.
+- **Want a rich, silky sauce** → Braise with collagen-rich broth (veal, chicken, beef stock). The collagen converts to gelatin, thickening the sauce. Slow braise (80-90°C) for 2-3 hours to maximize gelatin extraction.
+- **Want a wine-forward sauce** → Use white or red wine (at least 250ml per 1kg meat). Wine's tannins integrate with the gelatin from collagen breakdown, creating a balanced sauce. Braise at 80-90°C for 2-3 hours.
+- **Want a spice-forward sauce** → Use broth or water, bloom spices first, then braise at 80-90°C for 1.5-2 hours. The spices will infuse and the sauce will concentrate.
 - **Want to minimize liquid reduction** → Use pressure cooking (retains more liquid) or braise covered (less evaporation). Open braising reduces liquid significantly (60-80% water loss), concentrating flavors and Maillard.
 
 ---

@@ -372,7 +372,7 @@ For each vector, write:
 
 Example vector classes to scan for every dish:
 
-- **Umami stacking via cross-cuisine glutamate × guanylate × inosinate** — pair the dish's native glutamate source (tomato, parmesan, aged sources) with mushroom/seafood-derived guanylate or inosinate; up to 7× perceived umami vs. either alone (Ikeda + Akamine-Kuninaka). Hidden anchovy paste below taste-identification threshold is a classic move.
+- **Umami stacking via cross-cuisine glutamate × guanylate × inosinate** — pair the dish's native glutamate source (tomato, parmesan, aged sources) with mushroom/seafood-derived guanylate or inosinate; several-fold perceived umami vs. either alone (a 1:1 glutamate:nucleotide mix is often quoted at 7-8x; the effect is multiplicative, so the fold depends on concentration and ratio) (Ikeda + Akamine-Kuninaka). Hidden anchovy paste below taste-identification threshold is a classic move.
 - **Extended Maillard windows on aromatics** — tomato paste at 4-5 min instead of 90 sec; onion past sweat into golden caramelization where the dish allows; chile toasting longer than recipes specify.
 - **Lipid-soluble flavor migration via overnight rest** — herbs (thyme, rosemary, garlic) continue migrating into vegetable cells during cooling. Make-ahead is not just convenience; it's a real flavor improvement.
 - **Cold-start vs. hot-start pan** — for some vegetables (peppers, alliums) cold-start gives sweeter caramelization curves than hot-start; for proteins hot-start is correct.
@@ -499,7 +499,7 @@ The drink rule reads at the family level. Technique crosses families freely — 
 - Better timing? (Acid added late vs early; herbs added in vs on top; phased aromatic additions)
 
 **Flavor-lens scan list:**
-- Glutamate × guanylate × inosinate stacking — does the dish have one but not the others? (Tomato has glutamate; mushroom adds guanylate; cured fish/meat adds inosinate. Up to 7× perceived umami via Ikeda + Akamine-Kuninaka.)
+- Glutamate × guanylate × inosinate stacking — does the dish have one but not the others? (Tomato has glutamate; mushroom adds guanylate; cured fish/meat adds inosinate. Several-fold perceived umami via Ikeda + Akamine-Kuninaka (multiplicative; the fold depends on concentration and ratio).)
 - Hidden-umami below taste-identification threshold (fish sauce, anchovy paste, MSG, miso, Maggi)
 - Same-ingredient layered forms (two/three forms of garlic, three forms of tomato, two forms of onion)
 - Lipid-soluble flavor migration via overnight rest

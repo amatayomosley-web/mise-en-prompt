@@ -110,7 +110,7 @@ Aromatic foundations are ingredient combinations that form the flavor base of co
 **Technique:** Heat oil to medium heat, add onions, sauté until golden (8–12 minutes), add ginger-garlic paste, cook 2–3 minutes. This is the soften-aromatics phase common across Indian cuisine.
 
 **Tadka (Tempering):**
-Tadka is a separate technique—whole spices bloomed in hot fat (oil or ghee at 165–170°C / 330–340°F) for ~30 seconds, then added to a dish.
+Tadka is a separate technique—whole spices bloomed in hot fat (oil or ghee at 120–160°C / 250–320°F) for 30–90 seconds, then added to a dish.
 
 **Common Tadka Spices:**
 - Cumin seeds (+ limonene, cymene—warm, nutty)
@@ -120,7 +120,7 @@ Tadka is a separate technique—whole spices bloomed in hot fat (oil or ghee at 
 - Red chilies (capsaicin, pungent heat)
 - Curry leaves (aromatic esters, fruity, herbal)
 
-**Flavor Chemistry:** Heat causes essential oils and volatile terpenes to evaporate rapidly and infuse into the fat. The short exposure (< 30 seconds) extracts aromatic compounds before they degrade into bitter pyrroles and thiophenes. Ghee's high smoke point (~482°F / 250°C) allows optimal extraction without oxidative degradation.
+**Flavor Chemistry:** Heat causes essential oils and volatile terpenes to evaporate rapidly and infuse into the fat. The short exposure (30–90 seconds) extracts aromatic compounds before they degrade into bitter pyrroles and thiophenes. Ghee's high smoke point (~482°F / 250°C) allows optimal extraction without oxidative degradation.
 
 **Example Application:** South Indian dal (lentil soup) finished with a cumin-mustard-curry leaf tadka; this single step transforms a bland, smooth base into aromatic, deeply satisfying soup.
 
@@ -177,7 +177,7 @@ Tadka is a separate technique—whole spices bloomed in hot fat (oil or ghee at 
 
 **Flavor Chemistry:**
 - **Kombu:** Free glutamate (~3000 mg/100g in dried), guanylate (5'-GMP) — umami anchor
-- **Katsuobushi:** Inosinate (5'-IMP, ~150 mg/100g) — synergizes with kombu glutamate for 8x amplified umami
+- **Katsuobushi:** Inosinate (5'-IMP, ~470-700 mg/100g) — synergizes with kombu glutamate for several-fold stronger umami
 
 **Mirepoix Equivalent (Aromatic Base for Braises):**
 - Japanese cooks often use the holy trinity of **leek (negi), carrot, ginger** in dashi-based braises (nikumi), paralleling French mirepoix structure
@@ -214,7 +214,7 @@ Tadka is a separate technique—whole spices bloomed in hot fat (oil or ghee at 
 
 **Technique:** Sauté onions and peppers in palm oil or groundnut oil until soft, add tomato paste, cook 2–3 minutes, add tomatoes and remaining ingredients, simmer until thickened.
 
-**Flavor Chemistry:** Palm oil contains carotenoids (beta-carotene, lycopene) that contribute deep red color and nutty, slightly smoky aroma. Scotch bonnet peppers (80,000–100,000 SHU) bring capsaicin heat, plus fruity esters (ethyl acetate). Maggi cubes provide glutamate + high sodium, acting as umami accelerant.
+**Flavor Chemistry:** Palm oil contains carotenoids (beta-carotene, lycopene) that contribute deep red color and nutty, slightly smoky aroma. Scotch bonnet peppers (100,000–350,000 SHU) bring capsaicin heat, plus fruity esters (ethyl acetate). Maggi cubes provide glutamate + high sodium, acting as umami accelerant.
 
 **Example Application:** Jollof rice (tomato-based West African rice dish), peanut stews, okra soups. In jollof, the base is built, then rice is added and cooked in the flavorful liquid.
 
@@ -233,7 +233,7 @@ Tadka is a separate technique—whole spices bloomed in hot fat (oil or ghee at 
 **Advieh (Iranian):** 
 - Cinnamon, cumin, coriander, rose petals, barberry (dried), turmeric
 
-**Technique:** Build onion-garlic-tomato base slowly, then add spice blend (1–2 teaspoons per 2 cups) and bloom for 1–2 minutes in oil to activate essential oils.
+**Technique:** Build onion-garlic-tomato base slowly, then add spice blend (1–2 teaspoons per 2 cups) and bloom for 30–90 seconds in oil to activate essential oils.
 
 **Flavor Chemistry:** These blends contain limonene (citrus), cinnamaldehyde (warm, sweet), and floral esters (rose, geraniol in advieh). The blend creates warm, slightly sweet aromatic profiles that distinguish regional North African and Middle Eastern cuisines.
 
@@ -270,7 +270,7 @@ Tadka is a separate technique—whole spices bloomed in hot fat (oil or ghee at 
 |---------|---------|-----------------|--------------|
 | Rosemary | European | Pinene bonds with beef fat during long braises; earthy character suits beef umami | Rosemary braise |
 | Red wine | French | Tannins (polyphenols) bind to proteins; acidity balances rich fat | Beef bourguignon |
-| Mushroom (porcini) | European | Guanylate in dried mushrooms amplifies beef inosinate (8x umami boost); earthy = earthy | Porcini-crusted steak |
+| Mushroom (porcini) | European | Guanylate in dried mushrooms amplifies beef inosinate (several-fold umami boost); earthy = earthy | Porcini-crusted steak |
 | Black pepper | Global | Piperine cuts fat richness; warming notes suit beef umami | Pepper steak |
 | Horseradish | Eastern European | Isothiocyanates (pungent, volatile) clear palate between bites | Prime rib with horseradish |
 | Mustard | European/Global | Allyl isothiocyanate (pungent) + acidity + fat compatibility | Beef with mustard sauce |
@@ -681,24 +681,24 @@ Salt enhances flavor, controls moisture, preserves, and balances taste. Differen
 
 ### 3.4 UMAMI
 
-Umami is the savory fifth taste, mediated by free glutamate and the nucleotides inosinate (IMP) and guanylate (GMP). Umami synergy occurs when free glutamate combines with IMP or GMP, amplifying perceived umami ~8x.
+Umami is the savory fifth taste, mediated by free glutamate and the nucleotides inosinate (IMP) and guanylate (GMP). Umami synergy occurs when free glutamate combines with IMP or GMP, so the combination tastes several-fold stronger than glutamate alone (often quoted as 7-8x for a 1:1 mix, a popular figure whose primary source we could not read; Yamaguchi 1967 measured the synergy). The effect is multiplicative, so the fold depends on concentration and ratio.
 
 #### Umami Synergy Explanation
 
 **The Mechanism:**
 1. **Glutamate (free, ~1,200-1,680 mg/100g in aged parmesan) activates the TAS1R1/TAS1R3 receptor** (mGluR4 and mGluR1 are secondary), creating basic umami.
-2. **IMP (from cooked/aged meat, ~100 mg/100g in dried bonito) activates a different receptor pathway,** creating umami via a distinct mechanism.
-3. **When both are present simultaneously,** they activate complementary receptor pathways, creating an **8x amplification in perceived umami intensity** (not additive, but multiplicative synergy).
+2. **IMP (from cooked/aged meat; ~470-700 mg/100g in dried bonito, Umami Information Center table https://www.umamiinfo.com/richfood.php) activates a different receptor pathway,** creating umami via a distinct mechanism.
+3. **When both are present simultaneously,** they activate complementary receptor pathways, creating a **several-fold amplification in perceived umami intensity** (not additive, but multiplicative synergy; the fold depends on concentration and ratio).
 
 **Culinary Example:**
 - Parmesan alone: umami = 1x
 - Bonito flakes alone: umami = 1x
-- Parmesan + bonito together: umami = ~8x (dashi with parmesan rinds)
+- Parmesan + bonito together: umami several-fold higher than either alone (dashi with parmesan rinds)
 
 **Common Synergistic Pairs:**
-- Tomato (glutamate ~100 mg/100g) + aged cheese (glutamate ~1000+ mg/100g, IMP from milk proteins): 5x–8x amplification
-- Fish (IMP ~100 mg/100g) + soy sauce (glutamate ~200 mg/100g): 6x–8x amplification
-- Mushroom (GMP ~50 mg/100g in fresh, ~150 mg/100g in dried shiitake) + beef (IMP ~200 mg/100g): 8x amplification
+- Tomato (fresh glutamate ~140-250 mg/100g) + aged cheese (glutamate ~1,200-1,680 mg/100g, IMP from milk proteins): amplified umami (fold depends on ratio and concentration)
+- Fish (IMP ~100 mg/100g) + soy sauce (glutamate ~400-1,700 mg/100g depending on type): amplified umami (fold depends on ratio and concentration)
+- Mushroom (GMP ~50 mg/100g in fresh, ~150 mg/100g in dried shiitake) + beef (IMP ~200 mg/100g): amplified umami (fold depends on ratio and concentration)
 
 #### Umami-Rich Ingredients by Source
 
@@ -706,10 +706,10 @@ Umami is the savory fifth taste, mediated by free glutamate and the nucleotides 
 
 | Ingredient | Glutamate mg/100g | IMP mg/100g | GMP mg/100g | Source Notes |
 |-----------|--------|---------|---------|---------|
-| Parmigiano-reggiano (aged) | 1200 | 0 | 0 | Aged hard cheese, proteolysis releases glutamate |
+| Parmigiano-reggiano (aged) | 1200–1680 | 0 | 0 | Aged hard cheese, proteolysis releases glutamate |
 | Aged gouda | 1000 | 0 | 0 | Long aging (12+ months) |
 | Blue cheese (Roquefort) | 1100 | 0 | 0 | Strong mold fermentation releases glutamate |
-| Tomato (fresh) | 100–150 | 0 | 0 | Free glutamate in fruit cells |
+| Tomato (fresh) | 140–250 | 0 | 0 | Free glutamate in fruit cells |
 | Tomato paste | 400–600 | 0 | 0 | Concentrated free glutamate |
 | Tomato (sun-dried) | 650 | 0 | 0 | Dehydrated, concentrated |
 | Mushroom (fresh button) | 40–50 | 0 | 10 | Mild glutamate; GMP present |
@@ -723,7 +723,7 @@ Umami is the savory fifth taste, mediated by free glutamate and the nucleotides 
 | Nori (dried seaweed) | 1400 | 0 | 0 | Roasted sheets, high glutamate |
 | Wakame (dried seaweed) | 900 | 0 | 0 | Medium umami seaweed |
 | Dashi (kombu + bonito) | ~500 | ~100 | ~0 | Synergistic blend of glutamate (kombu) + IMP (bonito) |
-| Bonito flakes (katsuobushi) | 0 | 150–200 | 0 | Dried, fermented fish; high IMP |
+| Bonito flakes (katsuobushi) | 0 | 470–700 | 0 | Dried, fermented fish; high IMP |
 | Dried shrimp | 100 | 200 | 0 | Dried seafood, IMP-rich |
 | Shrimp paste | 300–400 | 150 | 0 | Fermented, concentrated IMP + glutamate |
 | Nutritional yeast | 800 | 0 | 0 | Deactivated yeast, fortified with glutamate |
@@ -738,7 +738,7 @@ Umami is the savory fifth taste, mediated by free glutamate and the nucleotides 
 | Chicken (cooked) | 150–180 | 15 | Less IMP than beef, but present |
 | Pork (cooked) | 100–150 | 20 | Cooking develops IMP |
 | Fish (general, cooked) | 100–150 | 30 | IMP varies by species; fresh fish higher than aged |
-| Bonito (katsuobushi, dried) | 150–200 | 0 | Fermented drying concentrates IMP |
+| Bonito (katsuobushi, dried) | 470–700 | 0 | Fermented drying concentrates IMP |
 | Tuna (dried) | 130 | 0 | Drying concentrates nucleotides |
 | Sardine (canned) | 80 | 20 | Canning includes liquid with IMP |
 | Anchovy | 100 | 300 | Both IMP + high glutamate (fermented) |
@@ -747,7 +747,7 @@ Umami is the savory fifth taste, mediated by free glutamate and the nucleotides 
 
 | Ingredient | GMP mg/100g | Note |
 |-----------|---------|---------|
-| Shiitake (dried) | 150–200 | Drying concentrates GMP; fresh has ~10 mg/100g |
+| Shiitake (dried) | ~150 | Drying concentrates GMP; fresh has ~10 mg/100g |
 | Oyster mushroom | 100–120 | Milder GMP than shiitake |
 | Porcini (dried) | 50–80 | Lower GMP; higher glutamate + IMP |
 | Morel (dried) | 60–100 | Fresh morels have trace GMP |
@@ -758,7 +758,7 @@ Umami is the savory fifth taste, mediated by free glutamate and the nucleotides 
 1. **Italian Risotto with Parmesan & Porcini:**
    - Porcini: glutamate ~150 mg/100g + IMP ~50 mg/100g
    - Parmesan: glutamate ~1200 mg/100g
-   - Combined synergy: ~8x amplification, deeply savory result
+   - Combined synergy: several-fold amplification, deeply savory result
 
 2. **Japanese Miso Soup with Dashi & Tofu:**
    - Dashi: glutamate ~500 mg/100g (kombu) + IMP ~100 mg/100g (bonito) = already synergistic
@@ -767,7 +767,7 @@ Umami is the savory fifth taste, mediated by free glutamate and the nucleotides 
    - Result: Maximum umami saturation
 
 3. **Southeast Asian Fish Sauce-Based Curry:**
-   - Fish sauce: glutamate ~300 mg/100g + IMP ~150 mg/100g
+   - Fish sauce: glutamate ~950-1,400 mg/100g + IMP ~150 mg/100g
    - Shrimp paste: glutamate ~300 mg/100g + IMP ~150 mg/100g
    - Fresh fish: IMP ~100 mg/100g
    - Result: Extreme umami synergy across multiple components
@@ -788,7 +788,7 @@ Heat (capsaicin from chiles, piperine from black pepper) and related pungent com
 | Serrano | 10,000–25,000 | 0.1–0.3% | Hot, bright, fruity | Fresh slices, salsas, heat element |
 | Thai bird's eye | 50,000–100,000 | 0.1% | Very hot, fruity, slightly funky | Dried, fresh, heat accent |
 | Habanero | 100,000–350,000 | 0.15–0.3% | Very hot, fruity, citrus notes (from other volatiles) | Hot sauce, Scotch bonnet substitute |
-| Scotch bonnet | 80,000–400,000 | 0.2–0.4% | Very hot, fruity, floral notes | Caribbean cooking, hot sauce |
+| Scotch bonnet | 100,000–350,000 | 0.2–0.4% | Very hot, fruity, floral notes | Caribbean cooking, hot sauce |
 | Ghost pepper (Bhut jolokia) | 800,000–1,000,000 | 0.4–0.6% | Extremely hot, smoky, delayed heat | Extreme heat challenges, sauces (use sparingly) |
 | Carolina Reaper | 1,400,000–2,200,000 | 0.8–1.0% | Among hottest peppers, delayed heat spike | Extreme use only, hot sauce extreme |
 | Pure capsaicin | 16,000,000 | 100% | Pure chemical heat, no flavor | Laboratory/chemical use |
@@ -868,8 +868,8 @@ Some vegetables develop natural sweetness through slow cooking or roasting:
 1. **Soften mirepoix (2 onions : 1 carrot : 1 celery) in lard** over medium heat for 10 minutes. Release diallyl disulfide from onions; gentle browning develops pyrazines (nutty, savory).
 2. **Add beef chuck (2 lbs, cubed), sear deeply** at high heat. Maillard reaction develops hundreds of new flavors; the meat already carries IMP (inosinate, ~200 mg/100g) from post-mortem ATP breakdown; heat does not create it.
 3. **Deglaze with red wine,** scraping fond (browned bits = concentrated Maillard products + caramelized sugars). Wine acidity brightens; tannins bind to proteins.
-4. **Add beef stock + tomato paste + herbs (thyme, bay, parsley).** Stock = gelatin (collagen hydrolyzed to amino acids); tomato paste adds glutamate (~400 mg/100g concentrated).
-5. **Slow braise at 300°F for 3 hours.** Collagen hydrolyzes to gelatin, creating silky mouthfeel; Maillard compounds deepen; flavors marry.
+4. **Add beef stock + tomato paste + herbs (thyme, bay, parsley).** Stock = gelatin (collagen hydrolyzed to amino acids); tomato paste adds glutamate (~400-600 mg/100g concentrated).
+5. **Slow braise for 3 hours (pot liquid 80-90°C, meat core 70-80°C).** Collagen hydrolyzes to gelatin, creating silky mouthfeel; Maillard compounds deepen; flavors marry.
 
 **Flavor Profile at Each Stage:**
 - **After searing:** Pungent sulfur + savory umami + bitter notes (charred surface).
@@ -877,7 +877,7 @@ Some vegetables develop natural sweetness through slow cooking or roasting:
 - **Final braise:** Umami synergy (beef IMP + tomato glutamate + aged wine tannins) creates deeply savory, complex, balanced dish. Salt balances acidity. Fat (beef, lard) carries all aromatics.
 
 **Why it Works (Science):**
-- Allium sulfur (onion) + beef IMP + tomato glutamate = umami synergy (8x amplification).
+- Allium sulfur (onion) + beef IMP + tomato glutamate = umami synergy (several-fold amplification).
 - Wine tannins + beef protein = complex bitter-savory balance.
 - Long, slow heat transforms tough collagen into tender gelatin without drying meat.
 - Mirepoix vegetables break down into the sauce, thickening and enriching.
@@ -892,7 +892,7 @@ Some vegetables develop natural sweetness through slow cooking or roasting:
 3. **Fry curry paste in coconut cream** (isolated top fat from canned coconut milk) over medium heat for 2–3 minutes. Heat blooms essential oils from paste; shrimp paste aromatics deepen; spices release terpenes into fat.
 4. **Add coconut milk + chicken + lime juice + fish sauce.**
    - Coconut fat carries all fat-soluble aromatics (capsaicin, citral, terpenes).
-   - Chicken IMP (~150 mg/100g) + fish sauce glutamate (~300 mg/100g) + shrimp paste = umami synergy.
+   - Chicken IMP (~150 mg/100g) + fish sauce glutamate (~950-1,400 mg/100g) + shrimp paste = umami synergy.
    - Lime juice (citric acid) brightens; fish sauce adds salty umami; coconut adds slight sweetness.
 
 **Flavor Profile:**
@@ -944,7 +944,7 @@ Some vegetables develop natural sweetness through slow cooking or roasting:
 4. **Season with turmeric** (curcumin, earthy, warming, anti-inflammatory).
 
 **Tadka (Tempering):**
-1. **Heat ghee in small pan** to 165–170°C (330–340°F)—crucial: not smoking, but very hot.
+1. **Heat ghee in small pan** to 120–160°C (250–320°F)—crucial: not smoking, but hot (spices turn acrid above ~180°C).
 2. **Add mustard seeds** (volatile glucosinolates → isothiocyanates on heat, sharp pungency) — ~30 seconds, they crackle and pop.
 3. **Add cumin seeds** (cuminaldehyde, warm, nutty) — ~20 seconds.
 4. **Add dried curry leaves** (aromatic esters, fruity-herbal) — ~15 seconds.
