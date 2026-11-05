@@ -38,7 +38,7 @@ Aromatic foundations are ingredient combinations that form the flavor base of co
 
 **Technique:** Sauté vegetables slowly in lard or olive oil, often finishing with tomato paste and white wine to deglaze.
 
-**Flavor Chemistry:** Similar allium and carrot chemistry to mirepoix, but the addition of tomato paste brings free glutamate (umami ~100–200 mg/100g in paste), and acidity from wine (citric/tartaric acid) brightens the base. Lard carries fat-soluble compounds more efficiently than oil alone.
+**Flavor Chemistry:** Similar allium and carrot chemistry to mirepoix, but the addition of tomato paste brings free glutamate (fresh tomato ~140-250 mg/100g; paste ~400-600 mg/100g), and acidity from wine (citric/tartaric acid) brightens the base. Lard carries fat-soluble compounds more efficiently than oil alone.
 
 **Example Application:** The aromatic foundation of ragu bolognese, minestrone, and risotto. In a traditional ragu, soffritto is built slowly, then ground meat and tomatoes are added in stages, creating a complex layered sauce over hours.
 
@@ -686,7 +686,7 @@ Umami is the savory fifth taste, mediated by free glutamate and the nucleotides 
 #### Umami Synergy Explanation
 
 **The Mechanism:**
-1. **Glutamate (free, ~300 mg/100g in aged parmesan) activates the mGluR4 receptor,** creating basic umami.
+1. **Glutamate (free, ~1,200-1,680 mg/100g in aged parmesan) activates the TAS1R1/TAS1R3 receptor** (mGluR4 and mGluR1 are secondary), creating basic umami.
 2. **IMP (from cooked/aged meat, ~100 mg/100g in dried bonito) activates a different receptor pathway,** creating umami via a distinct mechanism.
 3. **When both are present simultaneously,** they activate complementary receptor pathways, creating an **8x amplification in perceived umami intensity** (not additive, but multiplicative synergy).
 
@@ -734,7 +734,7 @@ Umami is the savory fifth taste, mediated by free glutamate and the nucleotides 
 
 | Ingredient | IMP mg/100g | Secondary Glutamate | Culinary Note |
 |-----------|---------|---------|---------|
-| Beef (cooked) | 200 | 20 | Heating converts myosin to IMP-rich umami |
+| Beef (cooked) | 200 | 20 | IMP comes from post-mortem ATP breakdown (ATP > ADP > AMP > IMP), not from heat |
 | Chicken (cooked) | 150–180 | 15 | Less IMP than beef, but present |
 | Pork (cooked) | 100–150 | 20 | Cooking develops IMP |
 | Fish (general, cooked) | 100–150 | 30 | IMP varies by species; fresh fish higher than aged |
@@ -866,7 +866,7 @@ Some vegetables develop natural sweetness through slow cooking or roasting:
 
 **Aromatic Foundation:**
 1. **Soften mirepoix (2 onions : 1 carrot : 1 celery) in lard** over medium heat for 10 minutes. Release diallyl disulfide from onions; gentle browning develops pyrazines (nutty, savory).
-2. **Add beef chuck (2 lbs, cubed), sear deeply** at high heat. Maillard reaction develops hundreds of new flavors; high-heat cooking converts muscle myosin to IMP (inosinate, ~200 mg/100g).
+2. **Add beef chuck (2 lbs, cubed), sear deeply** at high heat. Maillard reaction develops hundreds of new flavors; the meat already carries IMP (inosinate, ~200 mg/100g) from post-mortem ATP breakdown; heat does not create it.
 3. **Deglaze with red wine,** scraping fond (browned bits = concentrated Maillard products + caramelized sugars). Wine acidity brightens; tannins bind to proteins.
 4. **Add beef stock + tomato paste + herbs (thyme, bay, parsley).** Stock = gelatin (collagen hydrolyzed to amino acids); tomato paste adds glutamate (~400 mg/100g concentrated).
 5. **Slow braise at 300°F for 3 hours.** Collagen hydrolyzes to gelatin, creating silky mouthfeel; Maillard compounds deepen; flavors marry.

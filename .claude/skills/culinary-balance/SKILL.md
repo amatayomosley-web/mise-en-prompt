@@ -23,7 +23,7 @@ Invoked in the GROUNDING, SYNTHESIZE, and GUIDE phases — and any time the user
 2. Return: timing prescription with reasoning
    - Volatile aromatics (cilantro leaf, raw garlic, citrus zest) → late or finishing
    - Salt → early for diffusion, late for finishing pop
-   - Acid → mostly late (preserves brightness; early acid toughens proteins, dulls greens)
+   - Acid → mostly late (preserves brightness; long cooking in acid turns green vegetables olive by altering chlorophyll in the pot)
    - Whole spices → early (need time to bloom); ground spices → mid-to-late (volatiles flash off)
 
 ### "Layer this ingredient for depth"

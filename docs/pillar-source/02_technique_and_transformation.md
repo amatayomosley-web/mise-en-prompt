@@ -149,7 +149,7 @@ Dry pan or with minimal oil over high heat. Goal: deep browning via Maillard + c
 
 **Technique**: Dry roast poblano or ancho chiles directly over a gas flame or in a very hot dry cast-iron skillet, 30-60 seconds per side, until blackened and blistered.
 
-- **Chemistry**: Surface temp exceeds 200°C. The chile's capsaicinoids (the heat compounds) undergo Strecker degradation (amino acid breakdown), producing volatile sulfides and other aroma compounds. Cellulose and hemicellulose in the skin char. Maillard occurs on the protein/sugar layer beneath the skin.
+- **Chemistry**: Surface temp exceeds 200°C. Sugars and amino acids in the skin brown and pyrolyse, and Strecker degradation of those amino acids produces aldehydes and other aroma compounds. Capsaicinoids are not amino acids and are not the Strecker substrate. Cellulose and hemicellulose in the skin char. Maillard occurs on the protein/sugar layer beneath the skin.
 - **Flavor Change**: Uncharred chile is fruity-fresh (volatile esters: myrcene, limonene). Charring adds a smoky, slightly bitter depth and increases perceived complexity without increasing literal heat (capsaicinoids are relatively heat-stable; the blackness is skin char, not systemic chemical change).
 - **Aroma Compounds**: Pyrazines (roasted), furans (burnt), sulfur compounds (smoky, savory).
 - **Consequence**: The blackened skin is peeled off post-roast, leaving just the interior with the subtle flavor additions from Maillard happening just beneath the surface. This is not about burning the whole chile; it's about targeted surface Maillard and light charring.
@@ -419,7 +419,7 @@ Confit (from French "confire," meaning to preserve) is a technique where protein
 - Fat is hydrophobic and prevents oxidation (which causes rancidity, off-flavors).
 - Fat is an excellent heat-transfer medium, conducting heat evenly.
 - Fat carries fat-soluble flavor compounds, absorbing and concentrating them.
-- When fat cools and solidifies, it seals the cooked protein from air, extending shelf life (preserved confit can last weeks refrigerated, months if kept cold and sealed properly).
+- When fat cools and solidifies, it keeps air off the cooked protein. That slows rancidity, but it also makes an **anaerobic** environment, which is what *C. botulinum* needs. Refrigerate confit and use it within 1 week for home practice, unless it was cured with nitrite or is held frozen.
 
 **Collagen Breakdown in Confit**
 
@@ -451,7 +451,7 @@ At 65-75°C, collagen conversion is slow—it takes 4-6 hours for moderate conve
 - The flavor is preserved, delicate, not savory-complex (no Maillard), but rich and luxurious from the fat.
 - Aromatic compounds from the herbs and garlic infuse the fat, which carries them throughout.
 
-**Storage**: Covered in solidified fat, duck confit keeps for weeks refrigerated, and can be re-melted, clarified, and re-solidified multiple times, extending its life.
+**Storage**: Covered in solidified fat, duck confit stays refrigerated and is used within 1 week for home practice (see the botulism note under Why Fat?), or frozen for longer. Re-melting and re-solidifying does not reset the clock.
 
 **Other Confits**: Pork belly confit, chicken confit, even fish confit (though less common). The principle is the same—low temp, fat, extended time, preservation.
 
@@ -483,9 +483,9 @@ Unlike traditional braising, which has a range (75-80°C), sous-vide targets a s
 **Precise Texture Control**
 
 Sous-vide is popular in fine dining because temperature precision allows for extremely specific texture targets:
-- Beef cooked to 54°C for 30 min is very rare (nearly raw) but warm and technically "cooked" (enzymes damaged, pathogens killed via heat, though less robustly than traditional cooking).
+- Beef held at 54.4°C (130°F) for 30 min is very rare, but it is not pasteurised. The FDA Food Code whole-roast table requires **112 min** at that temperature (3-401.11(B); see also FSIS Appendix A Table 2). Sous-vide safety is always time at temperature at the core, never a temperature alone.
 - Beef cooked to 56.5°C for 1 hour is rare with a slightly more opaque center.
-- Duck cooked to 65°C for 1.5 hours is very pink but safely cooked (salmonella in duck fat dies at 65°C).
+- Duck held at 65°C for 1.5 hours is very pink and well past the time needed at that core temperature; the safety comes from the time, not the number 65.
 
 **The Crust Problem**
 
@@ -572,7 +572,7 @@ Curing is food preservation via salt and/or sugar. The osmotic potential of salt
 
 **Chemistry & Flavor**:
 - Salt denatures proteins, causing them to absorb more salt and moisture (paradoxically, salt "cures" the protein, binding water). The meat becomes firmer and stays moist internally while drying on the surface.
-- Salt inhibits myoglobin oxidation, keeping the color pink or red longer (without salt, myoglobin oxidizes to brown).
+- Salt alone accelerates myoglobin oxidation, so salted uncured meat browns faster. Nitrite is what fixes the pink colour (next line).
 - Sugar (if used) undergoes slight Maillard with amino acids (amino acids from the protein), creating subtle browning and savory notes.
 - Nitrates/nitrites (used in traditional curing) react with myoglobin, creating a pink color and slightly savory flavor (cured nitrite + myoglobin = nitrosomyoglobin, the pink color in bacon, ham, pastrami).
 - Spices (juniper, coriander, pepper, thyme) are drawn into the curing brine (if wet-curing) or infuse the dry salt (if dry-curing).
@@ -1013,7 +1013,7 @@ In Indian cooking, a spice-tomato-based sauce is often cooked down until the oil
 | Situation | Solution | Mechanism |
 |---|---|---|
 | A braise or stew lacks body | Increase heat to 85-95°C and simmer uncovered for 20-30 min, reducing by 15-20% | Water evaporation concentrates solutes and Maillard develops, thickening |
-| A pan sauce lacks viscosity | Make a beurre manié (equal parts butter + flour, knead together, whisk into sauce), or mount with cold butter | Roux (flour cooked in butter) thickens via starch gelatinization; butter emulsifies and adds viscosity |
+| A pan sauce lacks viscosity | Make a beurre manié (equal parts butter + raw flour, knead together, whisk into sauce and simmer a few minutes), or mount with cold butter | Beurre manié is not a roux: its flour is uncooked and thickens by starch gelatinization as the butter releases it; butter emulsifies and adds viscosity |
 | An emulsion-based sauce (cream, curry) is too thin | Simmer 5-10 min longer at 70-75°C to reduce and concentrate proteins | Water loss concentrates protein, increasing thickening power |
 | A stock is thin after braising | Don't reduce further (risk of bitter over-reduction); instead, add gelatin powder (1 tsp per 250ml liquid) or cook a veal knuckle or chicken bones in the liquid for 1-2 hours | Gelatin adds body; additional collagen conversion from bones adds gelatin to the liquid |
 
