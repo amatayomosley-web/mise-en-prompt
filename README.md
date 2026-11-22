@@ -134,22 +134,24 @@ Four prune rules apply during CURATE in a dish session (see
 
 | Rule | Severity | Behavior |
 |---|---|---|
-| `allergy_hard_filter` | HARD | Candidates matching `intent.exclusions` are silently removed (with alias expansion: "shellfish" → shrimp/lobster/crab/etc.). |
-| `cuisine_drift` | SOFT | Candidates in a different cuisine group from the target dish are flagged; the user decides. |
+| `allergy_hard_filter` | HARD | Candidates matching `intent.exclusions` are removed outright and never offered (with alias expansion: "shellfish" → shrimp/lobster/crab/etc.; known false friends like eggplant or coconut milk don't trip it). Takes precedence: a blocked candidate gets no soft flags. |
+| `cuisine_drift` | SOFT / INFO | Candidates in a different cuisine group from the target dish. Under `cuisine_stance: tradition` (or unset) they're pulled from the offered pool and the user can override; under `explore` they're offered with a note. |
 | `functional_redundancy` | SOFT | Adding a same-role candidate within intensity ±2 of an already-selected one is flagged. Stackable roles (herbs, spices) skip this check. |
-| `technique_impossibility` | SOFT | v1 stub. v2 will check candidate prep time against `intent.time_budget_min`. |
+| `technique_impossibility` | SOFT | A candidate's own `prep_time_min` (soak, cure, ferment) exceeds `intent.time_budget_min`. Needs both numbers. |
+
+`filter` puts each candidate in exactly one list: `compatible` (offered), `would_prune` (soft, overridable) or `excluded` (hard, never shown), plus informational `notes`.
 
 A drink session runs four mirrored rules instead, selected on `intent.medium`, and those four
 carry the five labels below (the allergy rule can resolve either way). They are siblings, not
 overrides: the food rules are never branched, never consulted for a drink, and unchanged by any of
-this. The two rule vocabularies are separate enums, so the audit trail in `state.pruned` never
+this. The bucketing is shared: hard wins over soft, and each candidate lands in one list. The two rule vocabularies are separate enums, so the audit trail in `state.pruned` never
 labels a drink decision with a food-named rule.
 
 | Rule | Severity | Behavior |
 |---|---|---|
 | `drink_allergy_hard_filter` | HARD | Candidates matching `intent.exclusions` are silently removed, including the nut paths that carry no nut word: orgeat, falernum, Amaretto, Frangelico, Nocino, crème de noyaux. Gluten aside, this tier reads the food alias list as well as the drink one, so a drink session cannot lose a category the food session catches — Clamato and clam juice under shellfish, Worcestershire under fish, a bacon fat-wash under pork. Matching is whole-word and a false-friend guard cancels known collisions, so cream sherry and crème de cacao are not read as dairy, coconut and nutmeg are not read as tree nuts, ginger beer is not read as beer, and Salers, Fish House Punch and Beefeater are not read as anything. Each false friend cancels only the word it explains, so a coconut orgeat is still caught on the orgeat. |
-| `drink_allergy_soft_flag` | SOFT | No food counterpart. Distillation leaves gluten protein behind in the wash, so a rye whiskey is not a gluten exposure the way a beer is, but plenty of drinkers avoid grain spirits anyway. Those candidates are surfaced for the user to decide rather than silently deleted. Same tier for sulfites in wine-based products. |
-| `family_drift` | SOFT | Candidates in a different drink family group from the target drink are flagged; the user decides. Family-neutral components (syrups, citrus, ice) carry no family and the rule stays silent on them. |
+| `drink_allergy_soft_flag` | SOFT | No food counterpart. Distillation leaves gluten protein behind in the wash, so a rye whiskey is not a gluten exposure the way a beer is, but plenty of drinkers avoid grain spirits anyway. Those candidates land in `would_prune` with the reason, for the user to see and override, rather than silently deleted. Same tier for sulfites in wine-based products. |
+| `family_drift` | SOFT / INFO | Candidates in a different drink family group from the target drink. Under `intent.drink.family_stance: tradition` (or unset) they're pulled from the offered pool and the user can override; under `explore` they're offered with a note. Family-neutral components (syrups, citrus, ice) carry no family and the rule stays silent on them. |
 | `drink_functional_redundancy` | SOFT | Keyed on bar-product class first, intensity second. Two dry vermouths or two orange liqueurs in the same slot are flagged even in a stackable role, while a split base (two different rums) and stacked bitters pass, because those are the defining moves of the form rather than accidents. Single-slot roles (sweet, acid, dilution, texture) fall back to the same intensity ±2 comparison the food rule uses. |
 | `build_impossibility` | SOFT | v1 stub, same as its food sibling. v2 will check the candidate against `intent.drink.build_method`: an egg white cannot be stirred, and a carbonated build cannot take fresh citrus without pre-clarification. |
 

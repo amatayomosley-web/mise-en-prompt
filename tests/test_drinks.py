@@ -302,16 +302,18 @@ def test_ginger_beer_survives_the_curate_filter_under_a_gluten_exclusion():
     """The exemption has to hold end-to-end, not just in the rule."""
     pool = [_component("ginger beer", "dilution", 4), _component("stout", "dilution", 7)]
     state = _drink_state(exclusions=["gluten"], candidates=pool)
-    compatible, would_prune = filter_candidates_for_role("dilution", state)
-    assert [c.name for c in compatible] == ["ginger beer"]
-    assert [p.name for p in would_prune] == ["stout"]
+    result = filter_candidates_for_role("dilution", state)
+    assert [c.name for c in result.compatible] == ["ginger beer"]
+    assert [p.name for p in result.excluded] == ["stout"]
+    assert result.would_prune == []
 
 
 def test_soft_flagged_spirit_stays_visible_to_the_user():
     """End-to-end proof of the not-a-silent-delete claim, through the CURATE filter.
 
-    A SOFT gluten flag lands in BOTH compatible (so the user can still pick it) and
-    would_prune (so the agent surfaces the reason). A HARD nut hit lands only in would_prune.
+    Each candidate lands in exactly one bucket. A SOFT gluten flag lands in would_prune,
+    with its reason, where the user can see it and override it. A HARD nut hit lands only
+    in excluded: never offered, never overridable, still logged.
     """
     pool = [
         _component("rye whiskey", "base", 8),
@@ -319,16 +321,18 @@ def test_soft_flagged_spirit_stays_visible_to_the_user():
     ]
     state = _drink_state(exclusions=["gluten", "nuts"], candidates=pool)
 
-    compatible, would_prune = filter_candidates_for_role("base", state)
-    assert [c.name for c in compatible] == ["rye whiskey"]
-    assert ("rye whiskey", DrinkPruneRule.DRINK_ALLERGY_SOFT_FLAG) in [
-        (p.name, p.rule) for p in would_prune
+    result = filter_candidates_for_role("base", state)
+    assert result.compatible == []
+    assert result.excluded == []
+    assert [(p.name, p.rule) for p in result.would_prune] == [
+        ("rye whiskey", DrinkPruneRule.DRINK_ALLERGY_SOFT_FLAG),
     ]
 
-    compatible, would_prune = filter_candidates_for_role("sweet", state)
-    assert [c.name for c in compatible] == []
-    assert ("orgeat", DrinkPruneRule.DRINK_ALLERGY_HARD_FILTER) in [
-        (p.name, p.rule) for p in would_prune
+    result = filter_candidates_for_role("sweet", state)
+    assert result.compatible == []
+    assert result.would_prune == []
+    assert [(p.name, p.rule) for p in result.excluded] == [
+        ("orgeat", DrinkPruneRule.DRINK_ALLERGY_HARD_FILTER),
     ]
 
 
@@ -548,11 +552,12 @@ def test_a_hard_hit_outranks_a_soft_hit_on_an_earlier_exclusion():
     assert "pork" in finding.reason
 
     pool = [_component("bacon fat-washed bourbon", "base", 8)]
-    compatible, would_prune = filter_candidates_for_role("base", _drink_state(
+    result = filter_candidates_for_role("base", _drink_state(
         exclusions=["gluten", "pork"], candidates=pool,
     ))
-    assert compatible == []
-    assert [p.rule for p in would_prune] == [DrinkPruneRule.DRINK_ALLERGY_HARD_FILTER]
+    assert result.compatible == []
+    assert result.would_prune == []
+    assert [p.rule for p in result.excluded] == [DrinkPruneRule.DRINK_ALLERGY_HARD_FILTER]
 
 
 # check_drink_redundancy -------------------------------------------------------
@@ -665,11 +670,15 @@ def test_rules_for_dispatches_on_medium():
 
 
 def test_drink_session_never_emits_a_food_rule():
-    """A drifting drink candidate is labelled family_drift, never cuisine_drift."""
+    """A drifting drink candidate is labelled family_drift, never cuisine_drift.
+
+    Hard wins, so the allergy hit and the drift are checked on separate candidates.
+    """
     state = _drink_state(DrinkIntent(drink_family="Mai Tai"), exclusions=["nuts"])
-    candidate = _component("amaretto", "sweet", 5, origin="Negroni")
-    findings = check_candidate(candidate, state)
-    rules = {f.rule for f in findings}
+    rules = {f.rule for f in check_candidate(_component("amaretto", "sweet", 5), state)}
+    rules |= {
+        f.rule for f in check_candidate(_component("Campari", "sweet", 5, origin="Negroni"), state)
+    }
     assert DrinkPruneRule.DRINK_ALLERGY_HARD_FILTER in rules
     assert DrinkPruneRule.FAMILY_DRIFT in rules
     assert not any(isinstance(r, PruneRule) for r in rules)
@@ -677,14 +686,60 @@ def test_drink_session_never_emits_a_food_rule():
 
 def test_dish_session_never_emits_a_drink_rule():
     state = _dish_state(Intent(cuisine="Honduran", exclusions=["shellfish"]))
-    candidate = Candidate(
-        name="dried shrimp", cuisine_origin="Japanese", functional_role="umami",
-    )
-    findings = check_candidate(candidate, state)
-    rules = {f.rule for f in findings}
+    shrimp = Candidate(name="dried shrimp", cuisine_origin="Honduran", functional_role="umami")
+    miso = Candidate(name="white miso", cuisine_origin="Japanese", functional_role="umami")
+    rules = {f.rule for f in check_candidate(shrimp, state)}
+    rules |= {f.rule for f in check_candidate(miso, state)}
     assert PruneRule.ALLERGY_HARD_FILTER in rules
     assert PruneRule.CUISINE_DRIFT in rules
     assert not any(isinstance(r, DrinkPruneRule) for r in rules)
+
+
+def test_a_hard_drink_hit_suppresses_its_soft_findings():
+    """Hard wins in a drink session too: a blocked component carries no drift to override."""
+    state = _drink_state(DrinkIntent(drink_family="Mai Tai"), exclusions=["nuts"])
+    findings = check_candidate(_component("amaretto", "sweet", 5, origin="Negroni"), state)
+    assert [f.rule for f in findings] == [DrinkPruneRule.DRINK_ALLERGY_HARD_FILTER]
+
+
+@pytest.mark.parametrize(
+    ("stance", "severity"),
+    [("tradition", Severity.SOFT), (None, Severity.SOFT), ("explore", Severity.INFO)],
+)
+def test_family_drift_follows_family_stance(stance: str | None, severity: Severity):
+    """family_stance mirrors cuisine_stance: gating under tradition or unset, a note
+    under explore."""
+    state = _drink_state(DrinkIntent(drink_family="Mai Tai", family_stance=stance))
+    finding = check_family_drift(_component("Campari", "bitter", 6, origin="Negroni"), state)
+    assert finding is not None
+    assert finding.rule == DrinkPruneRule.FAMILY_DRIFT
+    assert finding.severity == severity
+
+
+def test_explore_offers_a_drifting_component_with_a_note():
+    pool = [_component("Campari", "sweet", 6, origin="Negroni")]
+    state = _drink_state(
+        DrinkIntent(drink_family="Mai Tai", family_stance="explore"), candidates=pool,
+    )
+    result = filter_candidates_for_role("sweet", state)
+    assert [c.name for c in result.compatible] == ["Campari"]
+    assert result.would_prune == []
+    assert [p.rule for p in result.notes] == [DrinkPruneRule.FAMILY_DRIFT]
+
+
+@pytest.mark.parametrize("name", ["coconut milk", "oat milk", "cocoa butter"])
+def test_food_false_friends_hold_behind_the_bar(name: str):
+    """The food aliases union into the drink HARD tier, so their false friends must too."""
+    state = _drink_state(exclusions=["dairy"])
+    assert check_drink_allergy(_component(name, "texture"), state) is None
+
+
+def test_almond_milk_is_still_a_nut_hit_behind_the_bar():
+    state = _drink_state(exclusions=["dairy", "nuts"])
+    finding = check_drink_allergy(_component("almond milk", "texture"), state)
+    assert finding is not None
+    assert finding.severity == Severity.HARD
+    assert "nuts" in finding.reason
 
 
 def test_food_redundancy_still_prunes_the_pair_the_drink_rule_allows():
@@ -1296,6 +1351,6 @@ def test_cli_check_command_on_a_drink_state(tmp_path: Path):
     )
     output = json.loads(result.stdout)
     rules = [f["rule"] for f in output["findings"]]
-    assert DrinkPruneRule.DRINK_ALLERGY_HARD_FILTER.value in rules
-    assert DrinkPruneRule.FAMILY_DRIFT.value in rules
-    assert PruneRule.CUISINE_DRIFT.value not in rules
+    assert output["verdict"] == "excluded"
+    assert rules == [DrinkPruneRule.DRINK_ALLERGY_HARD_FILTER.value]
+    assert "family_stance" in output["warning"]

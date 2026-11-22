@@ -270,7 +270,15 @@ For each role in your chosen order:
 ```bash
 python -m mise_en_prompt.conflicts filter --role <role> --state sessions/<session_id>/state.yaml
 ```
-This returns two lists: `compatible` and `would_prune`. Hard-filter prunes (allergies) are silently excluded from `compatible` — do not ever show them. Soft-filter prunes (cuisine drift, functional redundancy, technique impossibility) appear in `would_prune` with their rule and reason.
+Every candidate for the role lands in exactly one of three lists:
+
+- `compatible` — offer these.
+- `would_prune` — soft prunes (cuisine drift under `tradition`, functional redundancy, technique impossibility), each with its rule and reason. Kept out of the offered pool; the user can ask to see them or override one (step e).
+- `excluded` — hard prunes (allergy). Never show them and never offer an override, but write each to `state.pruned[]` with its reason.
+
+`notes` carries informational findings (cuisine drift, or family drift in a drink session, under `explore`): mention the shift when you offer the candidate, but it doesn't prune. If the output has a `warning` that `cuisine_stance` (or `intent.drink.family_stance`) is unset, drift was gated as if `tradition`; ask the stance question before going on.
+
+Set `prep_time_min` on a candidate when the ingredient itself needs real lead time (dried beans to soak, a cure, a ferment) so technique impossibility can check it against `intent.time_budget_min`.
 
 The filter is medium-aware: a drink state dispatches to the drink rules automatically, no flag to pass. One drink rule has no food counterpart — **`drink_allergy_soft_flag`**, an *ambiguous* allergen path rather than a definite one. The canonical case is a distilled grain spirit against a gluten exclusion: distillation removes the gluten protein from the wash, so a rye whiskey is not the exposure a stout is, but avoiding grain spirits is a legitimate personal choice. It is soft on purpose. Surface it in `would_prune`, name the mechanism, and let the user decide. Never silently drop it, and never promote it to a hard filter — a hard rule there would delete the entire whiskey category from the session without the user ever seeing it.
 
@@ -316,7 +324,7 @@ The auto-added "Other" option lets the user type something not in the list ("I h
 
 - If the user picked a recommended option: write it to `state.selected[]`, update `updated_at`, move to the next role.
 - If the user picked "Show me more options": loop step (c) with the next 4 candidates.
-- If the user typed "Other" with a freeform ingredient: re-run `python -m mise_en_prompt.conflicts check --candidate "<name>" --state sessions/<id>/state.yaml`. If clean, add to `state.selected[]`. If a soft conflict fires, go to step (e).
+- If the user typed "Other" with a freeform ingredient: run `python -m mise_en_prompt.conflicts check --candidate '{"name": "<name>", "cuisine_origin": "<origin>", "functional_role": "<role>"}' --state sessions/<id>/state.yaml` (add `intensity` and `prep_time_min` when known). It returns a `verdict`: `compatible` → add to `state.selected[]`; `would_prune` → go to step (e); `excluded` → tell the user it's blocked by their exclusion and offer the next option.
 
 **(e) Handle a soft conflict on the user's pick.** If the user's chosen ingredient triggers a soft prune rule (cuisine drift, functional redundancy, technique impossibility), don't silently override — fire an `AskUserQuestion` with the rule + reason in the question text:
 
@@ -335,7 +343,7 @@ AskUserQuestion(
 )
 ```
 
-If the user accepts the override, add to `state.selected[]` AND record the resolved conflict in `state.pruned[]` (so the audit trail shows the rule fired and was overridden). If they ask for a substitute, loop back to step (a) with the conflicting candidate excluded.
+If the user accepts the override, add to `state.selected[]` AND record the conflict in `state.pruned[]` with `overridden: true` (so the audit trail shows the rule fired and was overridden). Never delete a pruned entry. If they ask for a substitute, loop back to step (a) with the conflicting candidate excluded.
 
 #### Step 3 — Edge cases
 
@@ -654,7 +662,7 @@ Taste between each adjustment; a 2-minute pause lets the change register on your
 
 ## Pruning audit trail
 
-(Populated from `state.pruned`. Records candidates that were considered and removed during CURATE, with the rule that fired and the reason. Provides the "why this isn't here" companion to "why this is".)
+(Populated from `state.pruned`. Records candidates that were considered and removed during CURATE, with the rule that fired and the reason. Provides the "why this isn't here" companion to "why this is". Entries with `overridden: true` are in the dish: list them as "kept despite <rule>" with the reason.)
 
 - **Ketchup** (`cuisine_drift`) — its functions covered cleanly by paste + sugar + tomato + white wine; industrial corn-syrup notes don't belong in the dish profile.
 - **Bay leaf** (`functional_redundancy`) — drowned by the dense aromatic stack; real in herb-quiet dishes.
@@ -811,4 +819,4 @@ Numbers get the same discipline, and drinks print more of them than dishes do. A
 - One question at a time when you need information.
 - Lead with the answer, then the reasoning. Not the other way around.
 - When you prune something, name the rule that fired and the one-sentence reason.
-- When the user disagrees with a prune, accept the override and remove the entry from `state.pruned`. The rule is a default, not a law.
+- When the user disagrees with a prune, accept the override: keep the entry in `state.pruned` and set `overridden: true`. The rule is a default, not a law, and the history stays complete.
